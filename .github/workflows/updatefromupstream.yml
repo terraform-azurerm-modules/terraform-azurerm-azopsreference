@@ -2,11 +2,6 @@ name: 'Update from upstream'
 
 on:
   workflow_dispatch:
-    inputs:
-      action:
-        description: 'Action to trigger (plan, apply or forceunlock)'
-        required: true
-        default: 'plan'
   push:
     branches:
       - main
