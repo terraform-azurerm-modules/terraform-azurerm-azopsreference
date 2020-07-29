@@ -60,7 +60,7 @@ jobs:
           git config --global user.email $GIT_USER_EMAIL
           git add *.tf
           git commit -m 'Updated from upstream'
-          git push -u origin autoupdate
+          git push --force -u origin autoupdate
           gh pr create --title "Autoupdate from upstream" --body "Auto-generated PR" --label "system"
         fi
       working-directory: ${{ github.workspace }}/module
