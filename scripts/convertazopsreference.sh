@@ -127,6 +127,12 @@ output "policysetdefinition_$TFNAME" {
   value = azurerm_policy_set_definition.$TFNAME
 }
 
+output "policysetdefinition_${TFNAME}_definitions" {
+  value = [
+    $POLICYSETDEPS
+  ]
+}
+
 EOF
 }
 
@@ -185,7 +191,7 @@ find $REFDIR -iname *policySetDefinitions* -print0 | xargs -0 -I % -n 1 -P 8 bas
 
 # Replace MG prefix if specified
 echo "Changing policyDefinitions refs in policysets"
-find $OUTDIR -iname \*policyset\*.tf | xargs -n 1 -P 8 sed -i 's/\/ES\//\/${var.management_group_name}\//g'
+find $OUTDIR -iname \*policyset\*.tf | xargs -n 1 -P 8 sed -i 's/\/contoso\//\/${var.management_group_name}\//g'
 
 # Terraform fmt
 if [ $(command -v terraform) ]; then
