@@ -51,9 +51,9 @@ jobs:
         jq --version
         $GITHUB_WORKSPACE/module/scripts/convertazopsreference.sh -r "$GITHUB_WORKSPACE/es/azopsreference" -o "$GITHUB_WORKSPACE/module"
     
-    - name: Add changes
+    - name: Add changes & create PR
       run: |
-        if [ $(git status -s) ]; then
+        if [ "$(git status -s)" ]; then
           git add *.tf
           git commit -m 'Updated from upstream'
           git push -u origin autoupdate
