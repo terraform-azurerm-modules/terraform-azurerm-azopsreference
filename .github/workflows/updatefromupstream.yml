@@ -36,4 +36,4 @@ jobs:
     
     - name: Convert AzOpsReference
       run: |
-        $GITHUB_WORKSPACE/terraform-azurerm-azopsreference/scripts/convertazopsreference.sh -r $GITHUB_WORKSPACE/es/azopsreference -o $GITHUB_WORKSPACE/terraform-azurerm-azopsreference
+        $GITHUB_WORKSPACE/scripts/convertazopsreference.sh -r $GITHUB_WORKSPACE/es/azopsreference -o $GITHUB_WORKSPACE
