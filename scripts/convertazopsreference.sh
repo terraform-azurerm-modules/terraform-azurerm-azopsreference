@@ -178,10 +178,10 @@ export -f process_policydef
 export -f process_policysetdef
 
 # Find all policyDefinitions and convert in parallel
-find $REFDIR -iname *policyDefinitions* | xargs -I % -n 1 -P 8 bash -c "process_policydef % $OUTDIR"
+find $REFDIR -iname *policyDefinitions* | xargs -I % -n 1 -P 8 bash -c "process_policydef \"%\" $OUTDIR"
 
 # Find all policySetDefinitions and convert in parallel
-find $REFDIR -iname *policySetDefinitions* | xargs -I % -n 1 -P 8 bash -c "process_policysetdef % $OUTDIR"
+find $REFDIR -iname *policySetDefinitions* | xargs -I % -n 1 -P 8 bash -c "process_policysetdef \"%\" $OUTDIR"
 
 # Replace MG prefix if specified
 echo "Changing policyDefinitions refs in policysets"
