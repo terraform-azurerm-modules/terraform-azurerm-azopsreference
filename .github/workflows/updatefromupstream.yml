@@ -44,7 +44,7 @@ jobs:
       run: |
         git checkout -b autoupdate
         git reset --hard origin/main
-      working-directory: ${GITHUB_WORKSPACE}/module
+      working-directory: ${{ github.workspace }}/module
       
     - name: Convert AzOpsReference
       run: |
@@ -58,5 +58,5 @@ jobs:
           git commit -m 'Updated from upstream'
           git push -u origin autoupdate
           gh pr create --title "Autoupdate from upstream" --body "Auto-generated PR" --label "system"
-      working-directory: ${GITHUB_WORKSPACE}/module
+      working-directory: ${{ github.workspace }}/module
           
