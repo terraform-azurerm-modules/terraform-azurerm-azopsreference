@@ -7,7 +7,6 @@ env:
   GH_CLI_VER: 0.11.1
 
 jobs:
-  # Plan and Apply job
   update:
     name: Update
     runs-on: ubuntu-latest
@@ -15,18 +14,21 @@ jobs:
       run:
         shell: bash
     steps:
-    - name: Checkout
+    - name: Checkout module
       uses: actions/checkout@v2.3.1
       with:
         persist-credentials: true
-        path: this
+        path: module
     
     - name: Checkout upstream
       uses: actions/checkout@v2.3.1
       with:
         repository: Azure/Enterprise-Scale
         path: es
-    
+    - name: Display env
+      run: |
+        env | sort
+
     - name: Install gh cli
       run: |
         wget https://github.com/cli/cli/releases/download/v${GH_CLI_VER}/gh_${GH_CLI_VER}_linux_amd64.deb -O /tmp/gh_${GH_CLI_VER}_linux_amd64.deb
@@ -46,12 +48,12 @@ jobs:
       run: |
         git checkout -b autoupdate
         git reset --hard origin/main
-      working-directory: $GITHUB_WORKSPACE/this
+      working-directory: $GITHUB_WORKSPACE/module
       
     - name: Convert AzOpsReference
       run: |
         jq --version
-        $GITHUB_WORKSPACE/this/scripts/convertazopsreference.sh -r "$GITHUB_WORKSPACE/es/azopsreference" -o "$GITHUB_WORKSPACE/this"
+        $GITHUB_WORKSPACE/module/scripts/convertazopsreference.sh -r "$GITHUB_WORKSPACE/es/azopsreference" -o "$GITHUB_WORKSPACE/module"
     
     - name: Add changes
       run: |
@@ -60,5 +62,5 @@ jobs:
           git commit -m 'Updated from upstream'
           git push -u origin autoupdate
           gh pr create --title "Autoupdate from upstream" --body "Auto-generated PR" --label "system"
-      working-directory: $GITHUB_WORKSPACE/this
+      working-directory: $GITHUB_WORKSPACE/module
           
