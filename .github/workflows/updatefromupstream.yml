@@ -30,7 +30,7 @@ jobs:
     - name: Install gh cli
       run: |
         wget https://github.com/cli/cli/releases/download/v${GH_CLI_VER}/gh_${GH_CLI_VER}_linux_amd64.deb -O /tmp/gh_${GH_CLI_VER}_linux_amd64.deb
-        dpkg -i /tmp/gh_${GH_CLI_VER}_linux_amd64.deb
+        sudo dpkg -i /tmp/gh_${GH_CLI_VER}_linux_amd64.deb
 
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v1.1.0
