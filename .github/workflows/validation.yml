@@ -25,10 +25,6 @@ jobs:
       with:
         persist-credentials: true
 
-    - name: Display env
-      run: |
-        env | sort
-
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v1.1.0
         
