@@ -36,4 +36,5 @@ jobs:
     
     - name: Convert AzOpsReference
       run: |
+        jq --version
         $GITHUB_WORKSPACE/scripts/convertazopsreference.sh -r "$GITHUB_WORKSPACE/es/azopsreference" -o "$GITHUB_WORKSPACE"
