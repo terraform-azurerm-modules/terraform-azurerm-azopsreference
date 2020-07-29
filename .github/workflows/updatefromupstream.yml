@@ -5,6 +5,8 @@ on:
 
 env:
   GH_CLI_VER: 0.11.1
+  GIT_USER_NAME: System
+  GIT_USER_EMAIL: noreply@azure.com
 
 jobs:
   update:
@@ -54,6 +56,8 @@ jobs:
     - name: Add changes & create PR
       run: |
         if [ "$(git status -s)" ]; then
+          git config --global user.name $GIT_USER_NAME
+          git config --global user.email $GIT_USER_EMAIL
           git add *.tf
           git commit -m 'Updated from upstream'
           git push -u origin autoupdate
