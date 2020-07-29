@@ -33,8 +33,9 @@ jobs:
       run: terraform fmt -check
 
     - name: Terraform init
-      run: terraform init
+      run: |
+        cp validatefiles/*.tf .
+        terraform init
     
     - name: Terraform validate
       run: terraform validate
-          
