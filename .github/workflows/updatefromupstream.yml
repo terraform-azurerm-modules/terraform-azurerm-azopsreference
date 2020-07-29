@@ -37,7 +37,9 @@ jobs:
     - name: Download jq 1.6
       run: |
         curl -L https://github.com/stedolan/jq/releases/download/jq-1.6/jq-linux64 -o $HOME/jq
-        chmod a+x $HOME/jq
+        sudo cp -fv $HOME/jq /usr/bin
+        sudo chmod a+x /usr/bin/jq
+        rm $HOME/jq
 
     - name: Convert AzOpsReference
       run: |
