@@ -1,0 +1,43 @@
+name: 'Update from upstream'
+
+on:
+  workflow_dispatch:
+    inputs:
+      action:
+        description: 'Action to trigger (plan, apply or forceunlock)'
+        required: true
+        default: 'plan'
+  push:
+    branches:
+      - main
+    paths: 
+      - '*.tf'
+  pull_request:
+    paths:
+      - '*.tf'
+
+jobs:
+  # Plan and Apply job
+  update:
+    name: Update
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2.3.1
+      with:
+        persist-credentials: true
+    
+    - name: Checkout upstream
+      with:
+        repository: Azure/Enterprise-Scale
+        path: es
+
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v1.1.0
+    
+    - name: Convert AzOpsReference
+      run: |
+        $GITHUB_WORKSPACE/terraform-azurerm-azopsreference/scripts/convertazopsreference.sh -r $GITHUB_WORKSPACE/es/azopsreference -o $GITHUB_WORKSPACE/terraform-azurerm-azopsreference
