@@ -33,7 +33,7 @@ generate_tf_name() {
 
 process_policydef() {
   local PDBASE=$(basename "$1")
-  echo "Converting: $PDBASE"
+  printf "Converting: $PDBASE\n - $1"
   local POLICYJSON=$(jq 'def recurse_remove_null: walk( if type == "object" then with_entries( select( .value != null ) ) else . end); recurse_remove_null | .' "$1")
   local TFNAME=$(generate_tf_name $PDBASE policyDefinitions)
   local POLICYNAME=$(echo $POLICYJSON | jq -r '.parameters.input.value.Name')
@@ -76,7 +76,7 @@ EOF
 
 process_policysetdef() {
   local PSDBASE=$(basename "$1")
-  echo "Converting: $PSDBASE"
+  printf "Converting: $PSDBASE\n - $1"
   local POLICYJSON=$(jq 'def recurse_remove_null: walk( if type == "object" then with_entries( select( .value != null ) ) else . end); recurse_remove_null | .' "$1")
   local TFNAME=$(generate_tf_name $PSDBASE policySetDefinitions)
   local POLICYSETNAME=$(echo $POLICYJSON | jq -r '.parameters.input.value.Name')
