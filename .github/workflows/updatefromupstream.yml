@@ -34,7 +34,13 @@ jobs:
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v1.1.0
     
+    - name: Download jq 1.6
+      run: |
+        curl -L https://github.com/stedolan/jq/releases/download/jq-1.6/jq-linux64 -o $HOME/jq
+        sudo cp -f $HOME/jq /usr/bin
+        sudo chmod a+x /usr/bin/jq
+
     - name: Convert AzOpsReference
       run: |
-        jq --version
+        $HOME/jq --version
         $GITHUB_WORKSPACE/scripts/convertazopsreference.sh -r "$GITHUB_WORKSPACE/es/azopsreference" -o "$GITHUB_WORKSPACE"
