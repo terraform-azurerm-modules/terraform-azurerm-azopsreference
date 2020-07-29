@@ -12,7 +12,7 @@ It is very simple to get the policies deployed:
 
 ```terraform
 module "azopsreference" {
-  source                = "../modules/azopsreference"
+  source                = "github.com/terraform-azurerm-modules/terraform-azurerm-azopsreference?ref=v0.1.0"
   management_group_name = azurerm_management_group.mymg.name
 }
 ```
