@@ -108,6 +108,7 @@ resource "azurerm_policy_definition" "deploy_vhub" {
               }
             },
             "variables": {
+              "vhubsku": "Standard",
               "vwanresourceid": "[concat(subscription().id,'/resourceGroups/',parameters('rgName'),'/providers/Microsoft.Network/virtualWans/',parameters('vwanname'))]",
               "vwanhub": "[concat(subscription().id,'/resourceGroups/',parameters('rgName'),'/providers/Microsoft.Network/virtualHubs/',parameters('vHUBName'))]"
             },
@@ -145,7 +146,7 @@ resource "azurerm_policy_definition" "deploy_vhub" {
                             "id": "[variables('vwanresourceid')]"
                           },
                           "addressPrefix": "[parameters('vHUB').addressPrefix]",
-                          "vpnGateway": "[if(not(empty(parameters('vHUB').vpnGateway)),parameters('vHUB').vpnGateway, json('null'))]"
+                          "sku": "[variables('vhubsku')]"
                         }
                       }
                     ]
@@ -171,7 +172,7 @@ resource "azurerm_policy_definition" "deploy_vhub" {
                     "resources": [
                       {
                         "type": "Microsoft.Network/vpnGateways",
-                        "apiVersion": "2019-09-01",
+                        "apiVersion": "2020-05-01",
                         "location": "[parameters('vHUB').location]",
                         "name": "[parameters('vpngw').name]",
                         "properties": {
@@ -205,53 +206,14 @@ resource "azurerm_policy_definition" "deploy_vhub" {
                     "resources": [
                       {
                         "type": "Microsoft.Network/expressRouteGateways",
-                        "apiVersion": "2019-09-01",
+                        "apiVersion": "2020-05-01",
                         "location": "[parameters('vHUB').location]",
                         "name": "[parameters('ergw').name]",
                         "properties": {
                           "virtualHub": {
                             "id": "[variables('vwanhub')]"
                           },
-                          "autoScaleConfiguration": "[parameters('ergw').autoScaleConfiguration]",
-                          "expressRouteConnections": "[parameters('ergw').expressRouteConnections]"
-                        }
-                      }
-                    ]
-                  }
-                }
-              },
-              {
-                "type": "Microsoft.Resources/deployments",
-                "apiVersion": "2018-05-01",
-                "condition": "[greater(length(parameters('azfw')),0)]",
-                "resourceGroup": "[parameters('rgName')]",
-                "dependsOn": [
-                  "[concat('vHUBdeploy-',parameters('vHUB').location)]"
-                ],
-                "name": "[concat(parameters('vHUBName'),'-azfw')]",
-                "properties": {
-                  "mode": "Incremental",
-                  "template": {
-                    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
-                    "contentVersion": "1.0.0.0",
-                    "parameters": {},
-                    "resources": [
-                      {
-                        "apiVersion": "2019-09-01",
-                        "type": "Microsoft.Network/azureFirewalls",
-                        "name": "[parameters('azfw').name]",
-                        "location": "[parameters('vHUB').location]",
-                        "properties": {
-                          "virtualHub": {
-                            "id": "[variables('vwanhub')]"
-                          },
-                          "sku": {
-                            "Name": "AZFW_Hub",
-                            "Tier": "Standard"
-                          },
-                          "firewallPolicy": {
-                            "id": "[if(not(empty(parameters('azfw').firewallPolicy.id)),parameters('azfw').firewallPolicy.id, json('null'))]"
-                          }
+                          "autoScaleConfiguration": "[parameters('ergw').autoScaleConfiguration]"
                         }
                       }
                     ]
