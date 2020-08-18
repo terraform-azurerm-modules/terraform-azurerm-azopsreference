@@ -86,6 +86,26 @@ resource "azurerm_policy_definition" "deploy_diagnostics_cosmosdb" {
                     {
                       "category": "QueryRuntimeStatistics",
                       "enabled": true
+                    },
+                    {
+                      "category": "PartitionKeyStatistics",
+                      "enabled": true
+                    },
+                    {
+                      "category": "PartitionKeyRUConsumption",
+                      "enabled": true
+                    },
+                    {
+                      "category": "ControlPlaneRequests",
+                      "enabled": true
+                    },
+                    {
+                      "category": "CassandraRequests",
+                      "enabled": true
+                    },
+                    {
+                      "category": "GremlinRequests",
+                      "enabled": true
                     }
                   ]
                 }

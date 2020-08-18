@@ -4,7 +4,7 @@ resource "azurerm_policy_definition" "deny_private_dns_zones" {
   policy_type  = "Custom"
   mode         = "All"
   display_name = "Deny-Private-DNS-Zones"
-  description  = "Denies creation of Private DNS Zones under the assigned scope"
+  description  = "Denies creation of Private DNS Zones at the assigned scope."
 
   management_group_name = var.management_group_name
   policy_rule           = <<POLICYRULE

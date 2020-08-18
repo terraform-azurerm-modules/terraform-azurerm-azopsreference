@@ -84,6 +84,10 @@ resource "azurerm_policy_definition" "deploy_diagnostics_sqldbs" {
                       "enabled": true
                     },
                     {
+                      "category": "DevOpsOperationsAudit",
+                      "enabled": true
+                    },
+                    {
                       "category": "QueryStoreRuntimeStatistics",
                       "enabled": true
                     },
