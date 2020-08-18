@@ -1,5 +1,7 @@
 # terraform-azurerm-azopsreference
 
+> Now Terraform 0.13 compatible
+
 This module contains the reference Azure policy & initiative (policySet) definitions from [Enterprise-Scale](https://github.com/Azure/Enterprise-Scale).
 
 It will deploy the definitions to the supplied Azure AD Management Group.
