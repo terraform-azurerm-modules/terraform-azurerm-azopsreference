@@ -4,7 +4,7 @@ resource "azurerm_policy_definition" "deploy_nsg_flowlogs" {
   policy_type  = "Custom"
   mode         = "All"
   display_name = "Deploy-Nsg-FlowLogs"
-  description  = "null"
+  description  = "Deploys NSG flow logs and traffic analytics"
 
   management_group_name = var.management_group_name
   policy_rule           = <<POLICYRULE
@@ -20,11 +20,18 @@ resource "azurerm_policy_definition" "deploy_nsg_flowlogs" {
       "roleDefinitionIds": [
         "/providers/Microsoft.Authorization/roleDefinitions/b24988ac-6180-42a0-ab88-20f7382dd24c"
       ],
-      "name": "[concat('NetworkWatcher_', field('location'), '/', 'Microsoft.Network', resourceGroup().name, field('name'))]",
       "resourceGroupName": "NetworkWatcherRG",
       "existenceCondition": {
-        "field": "Microsoft.Network/networkWatchers/flowLogs/enabled",
-        "equals": "true"
+        "allOf": [
+          {
+            "field": "Microsoft.Network/networkWatchers/flowLogs/enabled",
+            "equals": "true"
+          },
+          {
+            "field": "Microsoft.Network/networkWatchers/flowLogs/flowAnalyticsConfiguration.networkWatcherFlowAnalyticsConfiguration.enabled",
+            "equals": "[parameters('flowAnalyticsEnabled')]"
+          }
+        ]
       },
       "deployment": {
         "properties": {
@@ -44,6 +51,15 @@ resource "azurerm_policy_definition" "deploy_nsg_flowlogs" {
             },
             "retention": {
               "value": "[parameters('retention')]"
+            },
+            "flowAnalyticsEnabled": {
+              "value": "[parameters('flowAnalyticsEnabled')]"
+            },
+            "trafficAnalyticsInterval": {
+              "value": "[parameters('trafficAnalyticsInterval')]"
+            },
+            "logAnalytics": {
+              "value": "[parameters('logAnalytics')]"
             }
           },
           "template": {
@@ -63,16 +79,24 @@ resource "azurerm_policy_definition" "deploy_nsg_flowlogs" {
                 "type": "string"
               },
               "retention": {
-                "type": "int",
-                "defaultValue": 5
+                "type": "int"
+              },
+              "flowAnalyticsEnabled": {
+                "type": "bool"
+              },
+              "trafficAnalyticsInterval": {
+                "type": "int"
+              },
+              "logAnalytics": {
+                "type": "string"
               }
             },
             "variables": {},
             "resources": [
               {
                 "type": "Microsoft.Network/networkWatchers/flowLogs",
-                "apiVersion": "2019-11-01",
-                "name": "[concat('NetworkWatcher_', toLower(parameters('location')), '/', 'flowLogs')]",
+                "apiVersion": "2020-05-01",
+                "name": "[take(concat('NetworkWatcher_', toLower(parameters('location')), '/', parameters('networkSecurityGroupName'), '-', parameters('resourceGroupName'), '-flowlog' ), 80)]",
                 "location": "[parameters('location')]",
                 "properties": {
                   "targetResourceId": "[resourceId(parameters('resourceGroupName'), 'Microsoft.Network/networkSecurityGroups', parameters('networkSecurityGroupName'))]",
@@ -85,6 +109,15 @@ resource "azurerm_policy_definition" "deploy_nsg_flowlogs" {
                   "format": {
                     "type": "JSON",
                     "version": 2
+                  },
+                  "flowAnalyticsConfiguration": {
+                    "networkWatcherFlowAnalyticsConfiguration": {
+                      "enabled": "[bool(parameters('flowAnalyticsEnabled'))]",
+                      "trafficAnalyticsInterval": "[parameters('trafficAnalyticsInterval')]",
+                      "workspaceId": "[if(not(empty(parameters('logAnalytics'))), reference(parameters('logAnalytics'), '2020-03-01-preview', 'Full').properties.customerId, json('null')) ]",
+                      "workspaceRegion": "[if(not(empty(parameters('logAnalytics'))), reference(parameters('logAnalytics'), '2020-03-01-preview', 'Full').location, json('null')) ]",
+                      "workspaceResourceId": "[if(not(empty(parameters('logAnalytics'))), parameters('logAnalytics'), json('null'))]"
+                    }
                   }
                 }
               }
@@ -104,13 +137,37 @@ POLICYRULE
     "type": "Integer",
     "metadata": {
       "displayName": "Retention"
-    }
+    },
+    "defaultValue": 5
   },
   "storageAccountResourceId": {
     "type": "String",
     "metadata": {
-      "displayName": "Storage Account Resource Id"
+      "displayName": "Storage Account Resource Id",
+      "strongType": "Microsoft.Storage/storageAccounts"
     }
+  },
+  "trafficAnalyticsInterval": {
+    "type": "Integer",
+    "metadata": {
+      "displayName": "Traffic Analytics processing interval mins (10/60)"
+    },
+    "defaultValue": 60
+  },
+  "flowAnalyticsEnabled": {
+    "type": "Boolean",
+    "metadata": {
+      "displayName": "Enable Traffic Analytics"
+    },
+    "defaultValue": false
+  },
+  "logAnalytics": {
+    "type": "String",
+    "metadata": {
+      "strongType": "omsWorkspace",
+      "displayName": "Resource ID of Log Analytics workspace"
+    },
+    "defaultValue": ""
   }
 }
 PARAMETERS

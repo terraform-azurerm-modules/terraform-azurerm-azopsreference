@@ -47,7 +47,7 @@ resource "azurerm_policy_definition" "deploy_diagnostics_recoveryvault" {
           },
           {
             "field": "Microsoft.Insights/diagnosticSettings/workspaceId",
-            "notEquals": "[parameters('logAnalytics')]"
+            "equals": "[parameters('logAnalytics')]"
           },
           {
             "field": "Microsoft.Insights/diagnosticSettings/logAnalyticsDestinationType",

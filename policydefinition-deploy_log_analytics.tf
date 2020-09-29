@@ -42,6 +42,9 @@ resource "azurerm_policy_definition" "deploy_log_analytics" {
             "rgName": {
               "value": "[parameters('rgName')]"
             },
+            "retentionInDays": {
+              "value": "[parameters('retentionInDays')]"
+            },
             "workspaceName": {
               "value": "[parameters('workspaceName')]"
             },
@@ -72,6 +75,9 @@ resource "azurerm_policy_definition" "deploy_log_analytics" {
                 "type": "string"
               },
               "automationRegion": {
+                "type": "string"
+              },
+              "retentionInDays": {
                 "type": "string"
               }
             },
@@ -121,7 +127,8 @@ resource "azurerm_policy_definition" "deploy_log_analytics" {
                           "sku": {
                             "name": "pernode"
                           },
-                          "enableLogAccessUsingOnlyResourcePermissions": true
+                          "enableLogAccessUsingOnlyResourcePermissions": true,
+                          "retentionInDays": "[int(parameters('retentionInDays'))]"
                         },
                         "resources": [
                           {
@@ -182,6 +189,14 @@ POLICYRULE
       "displayName": "automationRegion",
       "description": "Select Azure region for Automation account"
     }
+  },
+  "retentionInDays": {
+    "type": "String",
+    "metadata": {
+      "displayName": "Data retention",
+      "description": "Select data retention (days) for Log Analytics."
+    },
+    "defaultValue": "30"
   },
   "rgName": {
     "type": "String",
