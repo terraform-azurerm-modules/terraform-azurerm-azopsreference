@@ -1,25 +1,17 @@
 # This file was auto generated
-resource "azurerm_policy_definition" "deploy_diagnostics_website" {
-  name         = "Deploy-Diagnostics-Website"
+resource "azurerm_policy_definition" "deploy_diagnostics_databricks" {
+  name         = "Deploy-Diagnostics-Databricks"
   policy_type  = "Custom"
   mode         = "All"
-  display_name = "Deploy-Diagnostics-Website"
-  description  = "Apply diagnostic settings for Azure Web Sites"
+  display_name = "Deploy-Diagnostics-Databricks"
+  description  = "Apply diagnostic settings for Databricks - Log Analytics"
 
   management_group_name = var.management_group_name
   policy_rule           = <<POLICYRULE
 {
   "if": {
-    "allOf": [
-      {
-        "field": "type",
-        "equals": "Microsoft.Web/sites"
-      },
-      {
-        "field": "kind",
-        "notEquals": "functionapp"
-      }
-    ]
+    "field": "type",
+    "equals": "Microsoft.Databricks/workspaces"
   },
   "then": {
     "effect": "deployIfNotExists",
@@ -28,6 +20,10 @@ resource "azurerm_policy_definition" "deploy_diagnostics_website" {
       "name": "setByPolicy",
       "existenceCondition": {
         "allOf": [
+          {
+            "field": "Microsoft.Insights/diagnosticSettings/logs.enabled",
+            "equals": "true"
+          },
           {
             "field": "Microsoft.Insights/diagnosticSettings/metrics.enabled",
             "equals": "true"
@@ -61,54 +57,53 @@ resource "azurerm_policy_definition" "deploy_diagnostics_website" {
             "variables": {},
             "resources": [
               {
-                "type": "Microsoft.Web/sites/providers/diagnosticSettings",
+                "type": "Microsoft.Databricks/workspaces/providers/diagnosticSettings",
                 "apiVersion": "2017-05-01-preview",
                 "name": "[concat(parameters('resourceName'), '/', 'Microsoft.Insights/setByPolicy')]",
                 "location": "[parameters('location')]",
                 "dependsOn": [],
                 "properties": {
                   "workspaceId": "[parameters('logAnalytics')]",
-                  "metrics": [
-                    {
-                      "category": "AllMetrics",
-                      "enabled": true,
-                      "retentionPolicy": {
-                        "days": 0,
-                        "enabled": false
-                      }
-                    }
-                  ],
+                  "metrics": [],
                   "logs": [
                     {
-                      "category": "AppServiceAntivirusScanAuditLogs",
+                      "category": "dbfs",
                       "enabled": true
                     },
                     {
-                      "category": "AppServiceHTTPLogs",
+                      "category": "clusters",
                       "enabled": true
                     },
                     {
-                      "category": "AppServiceConsoleLogs",
+                      "category": "accounts",
                       "enabled": true
                     },
                     {
-                      "category": "AppServiceAppLogs",
+                      "category": "jobs",
                       "enabled": true
                     },
                     {
-                      "category": "AppServiceFileAuditLogs",
+                      "category": "notebook",
                       "enabled": true
                     },
                     {
-                      "category": "AppServiceAuditLogs",
+                      "category": "ssh",
                       "enabled": true
                     },
                     {
-                      "category": "AppServiceIPSecAuditLogs",
+                      "category": "workspace",
                       "enabled": true
                     },
                     {
-                      "category": "AppServicePlatformLogs",
+                      "category": "secrets",
+                      "enabled": true
+                    },
+                    {
+                      "category": "sqlPermissions",
+                      "enabled": true
+                    },
+                    {
+                      "category": "instancePools",
                       "enabled": true
                     }
                   ]
@@ -150,7 +145,7 @@ PARAMETERS
 
 }
 
-output "policydefinition_deploy_diagnostics_website" {
-  value = azurerm_policy_definition.deploy_diagnostics_website
+output "policydefinition_deploy_diagnostics_databricks" {
+  value = azurerm_policy_definition.deploy_diagnostics_databricks
 }
 
