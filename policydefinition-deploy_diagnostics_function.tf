@@ -1,10 +1,10 @@
 # This file was auto generated
-resource "azurerm_policy_definition" "deploy_diagnostics_website" {
-  name         = "Deploy-Diagnostics-Website"
+resource "azurerm_policy_definition" "deploy_diagnostics_function" {
+  name         = "Deploy-Diagnostics-Function"
   policy_type  = "Custom"
   mode         = "All"
-  display_name = "Deploy-Diagnostics-Website"
-  description  = "Apply diagnostic settings for Azure Web Sites"
+  display_name = "Deploy-Diagnostics-Function"
+  description  = "Apply diagnostic settings for Azure Function"
 
   management_group_name = var.management_group_name
   policy_rule           = <<POLICYRULE
@@ -17,7 +17,7 @@ resource "azurerm_policy_definition" "deploy_diagnostics_website" {
       },
       {
         "field": "kind",
-        "notEquals": "functionapp"
+        "equals": "functionapp"
       }
     ]
   },
@@ -80,35 +80,7 @@ resource "azurerm_policy_definition" "deploy_diagnostics_website" {
                   ],
                   "logs": [
                     {
-                      "category": "AppServiceAntivirusScanAuditLogs",
-                      "enabled": true
-                    },
-                    {
-                      "category": "AppServiceHTTPLogs",
-                      "enabled": true
-                    },
-                    {
-                      "category": "AppServiceConsoleLogs",
-                      "enabled": true
-                    },
-                    {
-                      "category": "AppServiceAppLogs",
-                      "enabled": true
-                    },
-                    {
-                      "category": "AppServiceFileAuditLogs",
-                      "enabled": true
-                    },
-                    {
-                      "category": "AppServiceAuditLogs",
-                      "enabled": true
-                    },
-                    {
-                      "category": "AppServiceIPSecAuditLogs",
-                      "enabled": true
-                    },
-                    {
-                      "category": "AppServicePlatformLogs",
+                      "category": "FunctionAppLogs",
                       "enabled": true
                     }
                   ]
@@ -150,7 +122,7 @@ PARAMETERS
 
 }
 
-output "policydefinition_deploy_diagnostics_website" {
-  value = azurerm_policy_definition.deploy_diagnostics_website
+output "policydefinition_deploy_diagnostics_function" {
+  value = azurerm_policy_definition.deploy_diagnostics_function
 }
 
