@@ -22,7 +22,7 @@ jobs:
         id: semver
         uses: matt-FFFFFF/simple-semver@v0.1.0
         with:
-          semver_input: ${{ env.latest_release }}
+          semver-input: ${{ env.latest_release }}
           increment: i
       - name: Create tag
         run: |
