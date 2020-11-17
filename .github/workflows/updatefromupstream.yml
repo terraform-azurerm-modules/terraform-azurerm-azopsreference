@@ -17,13 +17,13 @@ jobs:
         shell: bash
     steps:
     - name: Checkout upstream
-      uses: actions/checkout@v2.3.1
+      uses: actions/checkout@v2
       with:
         repository: Azure/Enterprise-Scale
         path: es
 
     - name: Checkout module
-      uses: actions/checkout@v2.3.1
+      uses: actions/checkout@v2
       with:
         persist-credentials: true
         path: module
@@ -33,7 +33,7 @@ jobs:
         env | sort
 
     - name: Setup Terraform
-      uses: hashicorp/setup-terraform@v1.1.0
+      uses: hashicorp/setup-terraform@v1
     
     - name: Download jq 1.6
       run: |
