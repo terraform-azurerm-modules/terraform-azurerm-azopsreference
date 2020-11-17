@@ -5,9 +5,6 @@ on:
       - main
     paths:
       - '**.tf'
-    # Sequence of patterns matched against refs/tags
-    #tags:
-    #  - 'v*' # Push events to matching v*, i.e. v1.0, v20.15.10
 
 name: Create Release
 
@@ -27,8 +24,10 @@ jobs:
         with:
           semver_input: ${{ latest_release }}
           increment: i
-      - name: Display new semver
-        run: echo ${{ steps.semver.outputs.semver }}
+      - name: Create tag
+        run: |
+          git tag -a v${{ steps.semver.outputs.semver }} -m 'Auto generated on push to main'
+          git push --tags
       - name: Create basic CHANGELOG
         run: echo $(git log -1 --oneline) >CHANGELOG.md
       - name: Create Release
@@ -37,8 +36,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ${{ github.ref }}
-          release_name: Release ${{ github.ref }}
+          tag_name: v${{ steps.semver.outputs.semver }}
+          release_name: Release v${{ steps.semver.outputs.semver }}
           body_path: CHANGELOG.md
           draft: false
           prerelease: false
