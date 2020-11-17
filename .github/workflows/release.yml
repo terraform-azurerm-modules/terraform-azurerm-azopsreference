@@ -5,9 +5,6 @@ on:
       - main
     paths:
       - '**.tf'
-    # Sequence of patterns matched against refs/tags
-    #tags:
-    #  - 'v*' # Push events to matching v*, i.e. v1.0, v20.15.10
 
 name: Create Release
 
@@ -18,17 +15,23 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+        with:
+          persist_credentials: true
       - name: Get latest release
         run: |
-          echo "latest_release=$(curl -silent https://api.github.com/repos/terraform-azurerm-modules/terraform-azurerm-azopsreference/releases/latest | jq -r .tag_name | sed s/v// )" >> $GITHUB_ENV
+          echo "latest_release=$(curl --silent https://api.github.com/repos/terraform-azurerm-modules/terraform-azurerm-azopsreference/releases/latest | jq -r .tag_name | sed s/v// )" >> $GITHUB_ENV
       - name: Increment semver
         id: semver
-        uses: matt-FFFFFF/simple-semver
+        uses: matt-FFFFFF/simple-semver@v0.1.0
         with:
-          semver_input: ${{ latest_release }}
+          semver-input: ${{ env.latest_release }}
           increment: i
-      - name: Display new semver
-        run: echo ${{ steps.semver.outputs.semver }}
+      - name: Create tag
+        run: |
+          git config --global user.email "actions.no-reply@github.com"
+          git config --global user.name "GitHub Actions"
+          git tag -a v${{ steps.semver.outputs.semver }} -m 'Auto generated on push to main'
+          git push --tags
       - name: Create basic CHANGELOG
         run: echo $(git log -1 --oneline) >CHANGELOG.md
       - name: Create Release
@@ -37,8 +40,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ${{ github.ref }}
-          release_name: Release ${{ github.ref }}
+          tag_name: v${{ steps.semver.outputs.semver }}
+          release_name: Release v${{ steps.semver.outputs.semver }}
           body_path: CHANGELOG.md
           draft: false
           prerelease: false
