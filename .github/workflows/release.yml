@@ -17,7 +17,7 @@ jobs:
         uses: actions/checkout@v2
       - name: Get latest release
         run: |
-          echo "latest_release=$(curl -silent https://api.github.com/repos/terraform-azurerm-modules/terraform-azurerm-azopsreference/releases/latest | jq -r .tag_name | sed s/v// )" >> $GITHUB_ENV
+          echo "latest_release=$(curl --silent https://api.github.com/repos/terraform-azurerm-modules/terraform-azurerm-azopsreference/releases/latest | jq -r .tag_name | sed s/v// )" >> $GITHUB_ENV
       - name: Increment semver
         id: semver
         uses: matt-FFFFFF/simple-semver@v0.1.0
