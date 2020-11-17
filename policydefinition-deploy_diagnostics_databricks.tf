@@ -2,7 +2,7 @@
 resource "azurerm_policy_definition" "deploy_diagnostics_databricks" {
   name         = "Deploy-Diagnostics-Databricks"
   policy_type  = "Custom"
-  mode         = "All"
+  mode         = "Indexed"
   display_name = "Deploy-Diagnostics-Databricks"
   description  = "Apply diagnostic settings for Databricks - Log Analytics"
 
