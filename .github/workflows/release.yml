@@ -15,6 +15,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+        with:
+          persist_credentials: true
       - name: Get latest release
         run: |
           echo "latest_release=$(curl --silent https://api.github.com/repos/terraform-azurerm-modules/terraform-azurerm-azopsreference/releases/latest | jq -r .tag_name | sed s/v// )" >> $GITHUB_ENV
@@ -26,6 +28,8 @@ jobs:
           increment: i
       - name: Create tag
         run: |
+          git config --global user.email "actions.no-reply@github.com"
+          git config --global user.name "GitHub Actions"
           git tag -a v${{ steps.semver.outputs.semver }} -m 'Auto generated on push to main'
           git push --tags
       - name: Create basic CHANGELOG
