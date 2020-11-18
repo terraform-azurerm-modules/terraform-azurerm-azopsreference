@@ -2,6 +2,9 @@ name: 'Update from upstream'
 
 on:
   workflow_dispatch:
+  # Run every Monday at midnight
+  schedule:
+    - '0 0 * * 1'
 
 env:
   GH_CLI_VER: 0.11.1
