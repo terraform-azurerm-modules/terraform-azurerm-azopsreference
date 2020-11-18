@@ -61,7 +61,7 @@ jobs:
           git add *.tf
           git commit -m 'Updated from upstream'
           git push --force -u origin autoupdate
-          gh pr create --title "Autoupdate from upstream" --body "Auto-generated PR" --label "system"
+          gh pr create --title "Autoupdate from upstream" --body "Auto-generated PR" --label "system" --reviewer matt-FFFFFF
         fi
       working-directory: ${{ github.workspace }}/module
       env:
