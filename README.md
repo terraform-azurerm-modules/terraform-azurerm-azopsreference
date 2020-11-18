@@ -1,6 +1,6 @@
 # terraform-azurerm-azopsreference
 
-|![Update from upstream](https://github.com/terraform-azurerm-modules/terraform-azurerm-azopsreference/workflows/Update%20from%20upstream/badge.svg)
+![Update from upstream](https://github.com/terraform-azurerm-modules/terraform-azurerm-azopsreference/workflows/Update%20from%20upstream/badge.svg)
 
 ![Validation](https://github.com/terraform-azurerm-modules/terraform-azurerm-azopsreference/workflows/Validation/badge.svg)
 
