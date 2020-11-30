@@ -65,188 +65,6 @@ resource "azurerm_policy_set_definition" "deploy_diag_loganalytics" {
     }
   }
   policy_definition_reference {
-    policy_definition_id = "/providers/Microsoft.Management/managementGroups/${var.management_group_name}/providers/Microsoft.Authorization/policyDefinitions/Deploy-Diagnostics-PowerBIEmbedded"
-    reference_id         = "DeployDiagnosticsPowerBIEmbedded"
-    parameters = {
-      logAnalytics = "[parameters('logAnalytics')]"
-    }
-  }
-  policy_definition_reference {
-    policy_definition_id = "/providers/Microsoft.Management/managementGroups/${var.management_group_name}/providers/Microsoft.Authorization/policyDefinitions/Deploy-Diagnostics-StreamAnalytics"
-    reference_id         = "DeployDiagnosticsStreamAnalytics"
-    parameters = {
-      logAnalytics = "[parameters('logAnalytics')]"
-    }
-  }
-  policy_definition_reference {
-    policy_definition_id = "/providers/Microsoft.Management/managementGroups/${var.management_group_name}/providers/Microsoft.Authorization/policyDefinitions/Deploy-Diagnostics-ExpressRoute"
-    reference_id         = "DeployDiagnosticsExpressRoute"
-    parameters = {
-      logAnalytics = "[parameters('logAnalytics')]"
-    }
-  }
-  policy_definition_reference {
-    policy_definition_id = "/providers/Microsoft.Management/managementGroups/${var.management_group_name}/providers/Microsoft.Authorization/policyDefinitions/Deploy-Diagnostics-ACI"
-    reference_id         = "DeployDiagnosticsACI"
-    parameters = {
-      logAnalytics = "[parameters('logAnalytics')]"
-    }
-  }
-  policy_definition_reference {
-    policy_definition_id = "/providers/Microsoft.Management/managementGroups/${var.management_group_name}/providers/Microsoft.Authorization/policyDefinitions/Deploy-Diagnostics-ACR"
-    reference_id         = "DeployDiagnosticsACR"
-    parameters = {
-      logAnalytics = "[parameters('logAnalytics')]"
-    }
-  }
-  policy_definition_reference {
-    policy_definition_id = "/providers/Microsoft.Management/managementGroups/${var.management_group_name}/providers/Microsoft.Authorization/policyDefinitions/Deploy-Diagnostics-VirtualNetwork"
-    reference_id         = "DeployDiagnosticsVirtualNetwork"
-    parameters = {
-      logAnalytics = "[parameters('logAnalytics')]"
-    }
-  }
-  policy_definition_reference {
-    policy_definition_id = "/providers/Microsoft.Management/managementGroups/${var.management_group_name}/providers/Microsoft.Authorization/policyDefinitions/Deploy-Diagnostics-VM"
-    reference_id         = "DeployDiagnosticsVM"
-    parameters = {
-      logAnalytics = "[parameters('logAnalytics')]"
-    }
-  }
-  policy_definition_reference {
-    policy_definition_id = "/providers/Microsoft.Management/managementGroups/${var.management_group_name}/providers/Microsoft.Authorization/policyDefinitions/Deploy-Diagnostics-VMSS"
-    reference_id         = "DeployDiagnosticsVMSS"
-    parameters = {
-      logAnalytics = "[parameters('logAnalytics')]"
-    }
-  }
-  policy_definition_reference {
-    policy_definition_id = "/providers/Microsoft.Management/managementGroups/${var.management_group_name}/providers/Microsoft.Authorization/policyDefinitions/Deploy-Diagnostics-VNetGW"
-    reference_id         = "DeployDiagnosticsVNetGW"
-    parameters = {
-      logAnalytics = "[parameters('logAnalytics')]"
-    }
-  }
-  policy_definition_reference {
-    policy_definition_id = "/providers/Microsoft.Management/managementGroups/${var.management_group_name}/providers/Microsoft.Authorization/policyDefinitions/Deploy-Diagnostics-AKS"
-    reference_id         = "DeployDiagnosticsAKS"
-    parameters = {
-      logAnalytics = "[parameters('logAnalytics')]"
-    }
-  }
-  policy_definition_reference {
-    policy_definition_id = "/providers/Microsoft.Management/managementGroups/${var.management_group_name}/providers/Microsoft.Authorization/policyDefinitions/Deploy-Diagnostics-Website"
-    reference_id         = "DeployDiagnosticsWebsite"
-    parameters = {
-      logAnalytics = "[parameters('logAnalytics')]"
-    }
-  }
-  policy_definition_reference {
-    policy_definition_id = "/providers/Microsoft.Management/managementGroups/${var.management_group_name}/providers/Microsoft.Authorization/policyDefinitions/Deploy-Diagnostics-AnalysisService"
-    reference_id         = "DeployDiagnosticsAnalysisService"
-    parameters = {
-      logAnalytics = "[parameters('logAnalytics')]"
-    }
-  }
-  policy_definition_reference {
-    policy_definition_id = "/providers/Microsoft.Management/managementGroups/${var.management_group_name}/providers/Microsoft.Authorization/policyDefinitions/Deploy-Diagnostics-EventGridTopic"
-    reference_id         = "DeployDiagnosticsEventGridTopic"
-    parameters = {
-      logAnalytics = "[parameters('logAnalytics')]"
-    }
-  }
-  policy_definition_reference {
-    policy_definition_id = "/providers/Microsoft.Management/managementGroups/${var.management_group_name}/providers/Microsoft.Authorization/policyDefinitions/Deploy-Diagnostics-EventGridSub"
-    reference_id         = "DeployDiagnosticsEventGridSub"
-    parameters = {
-      logAnalytics = "[parameters('logAnalytics')]"
-    }
-  }
-  policy_definition_reference {
-    policy_definition_id = "/providers/Microsoft.Management/managementGroups/${var.management_group_name}/providers/Microsoft.Authorization/policyDefinitions/Deploy-Diagnostics-HDInsight"
-    reference_id         = "DeployDiagnosticsHDInsight"
-    parameters = {
-      logAnalytics = "[parameters('logAnalytics')]"
-    }
-  }
-  policy_definition_reference {
-    policy_definition_id = "/providers/Microsoft.Management/managementGroups/${var.management_group_name}/providers/Microsoft.Authorization/policyDefinitions/Deploy-Diagnostics-RedisCache"
-    reference_id         = "DeployDiagnosticsRedisCache"
-    parameters = {
-      logAnalytics = "[parameters('logAnalytics')]"
-    }
-  }
-  policy_definition_reference {
-    policy_definition_id = "/providers/Microsoft.Management/managementGroups/${var.management_group_name}/providers/Microsoft.Authorization/policyDefinitions/Deploy-Diagnostics-Relay"
-    reference_id         = "DeployDiagnosticsRelay"
-    parameters = {
-      logAnalytics = "[parameters('logAnalytics')]"
-    }
-  }
-  policy_definition_reference {
-    policy_definition_id = "/providers/Microsoft.Management/managementGroups/${var.management_group_name}/providers/Microsoft.Authorization/policyDefinitions/Deploy-Diagnostics-SignalR"
-    reference_id         = "DeployDiagnosticsSignalR"
-    parameters = {
-      logAnalytics = "[parameters('logAnalytics')]"
-    }
-  }
-  policy_definition_reference {
-    policy_definition_id = "/providers/Microsoft.Management/managementGroups/${var.management_group_name}/providers/Microsoft.Authorization/policyDefinitions/Deploy-Diagnostics-TrafficManager"
-    reference_id         = "DeployDiagnosticsTrafficManager"
-    parameters = {
-      logAnalytics = "[parameters('logAnalytics')]"
-    }
-  }
-  policy_definition_reference {
-    policy_definition_id = "/providers/Microsoft.Management/managementGroups/${var.management_group_name}/providers/Microsoft.Authorization/policyDefinitions/Deploy-Diagnostics-WebServerFarm"
-    reference_id         = "DeployDiagnosticsWebServerFarm"
-    parameters = {
-      logAnalytics = "[parameters('logAnalytics')]"
-    }
-  }
-  policy_definition_reference {
-    policy_definition_id = "/providers/Microsoft.Management/managementGroups/${var.management_group_name}/providers/Microsoft.Authorization/policyDefinitions/Deploy-Diagnostics-SQLMI"
-    reference_id         = "DeployDiagnosticsSQLMI"
-    parameters = {
-      logAnalytics = "[parameters('logAnalytics')]"
-    }
-  }
-  policy_definition_reference {
-    policy_definition_id = "/providers/Microsoft.Management/managementGroups/${var.management_group_name}/providers/Microsoft.Authorization/policyDefinitions/Deploy-Diagnostics-Firewall"
-    reference_id         = "DeployDiagnosticsFirewall"
-    parameters = {
-      logAnalytics = "[parameters('logAnalytics')]"
-    }
-  }
-  policy_definition_reference {
-    policy_definition_id = "/providers/Microsoft.Management/managementGroups/${var.management_group_name}/providers/Microsoft.Authorization/policyDefinitions/Deploy-Diagnostics-DataFactory"
-    reference_id         = "DeployDiagnosticsDataFactory"
-    parameters = {
-      logAnalytics = "[parameters('logAnalytics')]"
-    }
-  }
-  policy_definition_reference {
-    policy_definition_id = "/providers/Microsoft.Management/managementGroups/${var.management_group_name}/providers/Microsoft.Authorization/policyDefinitions/Deploy-Diagnostics-CosmosDB"
-    reference_id         = "DeployDiagnosticsCosmosDB"
-    parameters = {
-      logAnalytics = "[parameters('logAnalytics')]"
-    }
-  }
-  policy_definition_reference {
-    policy_definition_id = "/providers/Microsoft.Management/managementGroups/${var.management_group_name}/providers/Microsoft.Authorization/policyDefinitions/Deploy-Diagnostics-CDNEndpoints"
-    reference_id         = "DeployDiagnosticsCDNEndpoints"
-    parameters = {
-      logAnalytics = "[parameters('logAnalytics')]"
-    }
-  }
-  policy_definition_reference {
-    policy_definition_id = "/providers/Microsoft.Management/managementGroups/${var.management_group_name}/providers/Microsoft.Authorization/policyDefinitions/Deploy-Diagnostics-AA"
-    reference_id         = "DeployDiagnosticsAA"
-    parameters = {
-      logAnalytics = "[parameters('logAnalytics')]"
-    }
-  }
-  policy_definition_reference {
     policy_definition_id = "/providers/Microsoft.Management/managementGroups/${var.management_group_name}/providers/Microsoft.Authorization/policyDefinitions/Deploy-Diagnostics-PublicIP"
     reference_id         = "DeployDiagnosticsPublicIP"
     parameters = {
@@ -394,8 +212,190 @@ resource "azurerm_policy_set_definition" "deploy_diag_loganalytics" {
     }
   }
   policy_definition_reference {
+    policy_definition_id = "/providers/Microsoft.Management/managementGroups/${var.management_group_name}/providers/Microsoft.Authorization/policyDefinitions/Deploy-Diagnostics-AA"
+    reference_id         = "DeployDiagnosticsAA"
+    parameters = {
+      logAnalytics = "[parameters('logAnalytics')]"
+    }
+  }
+  policy_definition_reference {
+    policy_definition_id = "/providers/Microsoft.Management/managementGroups/${var.management_group_name}/providers/Microsoft.Authorization/policyDefinitions/Deploy-Diagnostics-CDNEndpoints"
+    reference_id         = "DeployDiagnosticsCDNEndpoints"
+    parameters = {
+      logAnalytics = "[parameters('logAnalytics')]"
+    }
+  }
+  policy_definition_reference {
+    policy_definition_id = "/providers/Microsoft.Management/managementGroups/${var.management_group_name}/providers/Microsoft.Authorization/policyDefinitions/Deploy-Diagnostics-CosmosDB"
+    reference_id         = "DeployDiagnosticsCosmosDB"
+    parameters = {
+      logAnalytics = "[parameters('logAnalytics')]"
+    }
+  }
+  policy_definition_reference {
+    policy_definition_id = "/providers/Microsoft.Management/managementGroups/${var.management_group_name}/providers/Microsoft.Authorization/policyDefinitions/Deploy-Diagnostics-DataFactory"
+    reference_id         = "DeployDiagnosticsDataFactory"
+    parameters = {
+      logAnalytics = "[parameters('logAnalytics')]"
+    }
+  }
+  policy_definition_reference {
+    policy_definition_id = "/providers/Microsoft.Management/managementGroups/${var.management_group_name}/providers/Microsoft.Authorization/policyDefinitions/Deploy-Diagnostics-PowerBIEmbedded"
+    reference_id         = "DeployDiagnosticsPowerBIEmbedded"
+    parameters = {
+      logAnalytics = "[parameters('logAnalytics')]"
+    }
+  }
+  policy_definition_reference {
+    policy_definition_id = "/providers/Microsoft.Management/managementGroups/${var.management_group_name}/providers/Microsoft.Authorization/policyDefinitions/Deploy-Diagnostics-StreamAnalytics"
+    reference_id         = "DeployDiagnosticsStreamAnalytics"
+    parameters = {
+      logAnalytics = "[parameters('logAnalytics')]"
+    }
+  }
+  policy_definition_reference {
+    policy_definition_id = "/providers/Microsoft.Management/managementGroups/${var.management_group_name}/providers/Microsoft.Authorization/policyDefinitions/Deploy-Diagnostics-ExpressRoute"
+    reference_id         = "DeployDiagnosticsExpressRoute"
+    parameters = {
+      logAnalytics = "[parameters('logAnalytics')]"
+    }
+  }
+  policy_definition_reference {
+    policy_definition_id = "/providers/Microsoft.Management/managementGroups/${var.management_group_name}/providers/Microsoft.Authorization/policyDefinitions/Deploy-Diagnostics-ACI"
+    reference_id         = "DeployDiagnosticsACI"
+    parameters = {
+      logAnalytics = "[parameters('logAnalytics')]"
+    }
+  }
+  policy_definition_reference {
+    policy_definition_id = "/providers/Microsoft.Management/managementGroups/${var.management_group_name}/providers/Microsoft.Authorization/policyDefinitions/Deploy-Diagnostics-ACR"
+    reference_id         = "DeployDiagnosticsACR"
+    parameters = {
+      logAnalytics = "[parameters('logAnalytics')]"
+    }
+  }
+  policy_definition_reference {
+    policy_definition_id = "/providers/Microsoft.Management/managementGroups/${var.management_group_name}/providers/Microsoft.Authorization/policyDefinitions/Deploy-Diagnostics-VirtualNetwork"
+    reference_id         = "DeployDiagnosticsVirtualNetwork"
+    parameters = {
+      logAnalytics = "[parameters('logAnalytics')]"
+    }
+  }
+  policy_definition_reference {
+    policy_definition_id = "/providers/Microsoft.Management/managementGroups/${var.management_group_name}/providers/Microsoft.Authorization/policyDefinitions/Deploy-Diagnostics-VM"
+    reference_id         = "DeployDiagnosticsVM"
+    parameters = {
+      logAnalytics = "[parameters('logAnalytics')]"
+    }
+  }
+  policy_definition_reference {
+    policy_definition_id = "/providers/Microsoft.Management/managementGroups/${var.management_group_name}/providers/Microsoft.Authorization/policyDefinitions/Deploy-Diagnostics-VMSS"
+    reference_id         = "DeployDiagnosticsVMSS"
+    parameters = {
+      logAnalytics = "[parameters('logAnalytics')]"
+    }
+  }
+  policy_definition_reference {
+    policy_definition_id = "/providers/Microsoft.Management/managementGroups/${var.management_group_name}/providers/Microsoft.Authorization/policyDefinitions/Deploy-Diagnostics-VNetGW"
+    reference_id         = "DeployDiagnosticsVNetGW"
+    parameters = {
+      logAnalytics = "[parameters('logAnalytics')]"
+    }
+  }
+  policy_definition_reference {
+    policy_definition_id = "/providers/Microsoft.Management/managementGroups/${var.management_group_name}/providers/Microsoft.Authorization/policyDefinitions/Deploy-Diagnostics-AKS"
+    reference_id         = "DeployDiagnosticsAKS"
+    parameters = {
+      logAnalytics = "[parameters('logAnalytics')]"
+    }
+  }
+  policy_definition_reference {
     policy_definition_id = "/providers/Microsoft.Management/managementGroups/${var.management_group_name}/providers/Microsoft.Authorization/policyDefinitions/Deploy-Diagnostics-LogicAppsISE"
     reference_id         = "DeployDiagnosticsLogicAppsISE"
+    parameters = {
+      logAnalytics = "[parameters('logAnalytics')]"
+    }
+  }
+  policy_definition_reference {
+    policy_definition_id = "/providers/Microsoft.Management/managementGroups/${var.management_group_name}/providers/Microsoft.Authorization/policyDefinitions/Deploy-Diagnostics-Website"
+    reference_id         = "DeployDiagnosticsWebsite"
+    parameters = {
+      logAnalytics = "[parameters('logAnalytics')]"
+    }
+  }
+  policy_definition_reference {
+    policy_definition_id = "/providers/Microsoft.Management/managementGroups/${var.management_group_name}/providers/Microsoft.Authorization/policyDefinitions/Deploy-Diagnostics-EventGridTopic"
+    reference_id         = "DeployDiagnosticsEventGridTopic"
+    parameters = {
+      logAnalytics = "[parameters('logAnalytics')]"
+    }
+  }
+  policy_definition_reference {
+    policy_definition_id = "/providers/Microsoft.Management/managementGroups/${var.management_group_name}/providers/Microsoft.Authorization/policyDefinitions/Deploy-Diagnostics-EventGridSub"
+    reference_id         = "DeployDiagnosticsEventGridSub"
+    parameters = {
+      logAnalytics = "[parameters('logAnalytics')]"
+    }
+  }
+  policy_definition_reference {
+    policy_definition_id = "/providers/Microsoft.Management/managementGroups/${var.management_group_name}/providers/Microsoft.Authorization/policyDefinitions/Deploy-Diagnostics-HDInsight"
+    reference_id         = "DeployDiagnosticsHDInsight"
+    parameters = {
+      logAnalytics = "[parameters('logAnalytics')]"
+    }
+  }
+  policy_definition_reference {
+    policy_definition_id = "/providers/Microsoft.Management/managementGroups/${var.management_group_name}/providers/Microsoft.Authorization/policyDefinitions/Deploy-Diagnostics-RedisCache"
+    reference_id         = "DeployDiagnosticsRedisCache"
+    parameters = {
+      logAnalytics = "[parameters('logAnalytics')]"
+    }
+  }
+  policy_definition_reference {
+    policy_definition_id = "/providers/Microsoft.Management/managementGroups/${var.management_group_name}/providers/Microsoft.Authorization/policyDefinitions/Deploy-Diagnostics-Relay"
+    reference_id         = "DeployDiagnosticsRelay"
+    parameters = {
+      logAnalytics = "[parameters('logAnalytics')]"
+    }
+  }
+  policy_definition_reference {
+    policy_definition_id = "/providers/Microsoft.Management/managementGroups/${var.management_group_name}/providers/Microsoft.Authorization/policyDefinitions/Deploy-Diagnostics-SignalR"
+    reference_id         = "DeployDiagnosticsSignalR"
+    parameters = {
+      logAnalytics = "[parameters('logAnalytics')]"
+    }
+  }
+  policy_definition_reference {
+    policy_definition_id = "/providers/Microsoft.Management/managementGroups/${var.management_group_name}/providers/Microsoft.Authorization/policyDefinitions/Deploy-Diagnostics-TrafficManager"
+    reference_id         = "DeployDiagnosticsTrafficManager"
+    parameters = {
+      logAnalytics = "[parameters('logAnalytics')]"
+    }
+  }
+  policy_definition_reference {
+    policy_definition_id = "/providers/Microsoft.Management/managementGroups/${var.management_group_name}/providers/Microsoft.Authorization/policyDefinitions/Deploy-Diagnostics-WebServerFarm"
+    reference_id         = "DeployDiagnosticsWebServerFarm"
+    parameters = {
+      logAnalytics = "[parameters('logAnalytics')]"
+    }
+  }
+  policy_definition_reference {
+    policy_definition_id = "/providers/Microsoft.Management/managementGroups/${var.management_group_name}/providers/Microsoft.Authorization/policyDefinitions/Deploy-Diagnostics-SQLMI"
+    reference_id         = "DeployDiagnosticsSQLMI"
+    parameters = {
+      logAnalytics = "[parameters('logAnalytics')]"
+    }
+  }
+  policy_definition_reference {
+    policy_definition_id = "/providers/Microsoft.Management/managementGroups/${var.management_group_name}/providers/Microsoft.Authorization/policyDefinitions/Deploy-Diagnostics-Firewall"
+    reference_id         = "DeployDiagnosticsFirewall"
+    parameters = {
+      logAnalytics = "[parameters('logAnalytics')]"
+    }
+  }
+  policy_definition_reference {
+    policy_definition_id = "/providers/Microsoft.Management/managementGroups/${var.management_group_name}/providers/Microsoft.Authorization/policyDefinitions/Deploy-Diagnostics-AnalysisService"
+    reference_id         = "DeployDiagnosticsAnalysisService"
     parameters = {
       logAnalytics = "[parameters('logAnalytics')]"
     }
