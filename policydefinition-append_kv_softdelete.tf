@@ -19,7 +19,7 @@ resource "azurerm_policy_definition" "append_kv_softdelete" {
           },
           {
             "field": "Microsoft.KeyVault/vaults/enableSoftDelete",
-            "notEquals": false
+            "equals": false
           }
         ]
       }
