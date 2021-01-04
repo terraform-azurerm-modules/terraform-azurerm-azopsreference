@@ -3,8 +3,8 @@ resource "azurerm_policy_definition" "deploy_nsg_flowlogs" {
   name         = "Deploy-Nsg-FlowLogs"
   policy_type  = "Custom"
   mode         = "All"
-  display_name = "Deploy-Nsg-FlowLogs"
-  description  = "Deploys NSG flow logs and traffic analytics"
+  display_name = "Deploys NSG flow logs and traffic analytics"
+  description  = "Deploys NSG flow logs and traffic analytics to a storageaccountid with a specfied retention period."
 
   management_group_name = var.management_group_name
   policy_rule           = <<POLICYRULE
@@ -14,11 +14,12 @@ resource "azurerm_policy_definition" "deploy_nsg_flowlogs" {
     "equals": "Microsoft.Network/networkSecurityGroups"
   },
   "then": {
-    "effect": "deployIfNotExists",
+    "effect": "[parameters('effect')]",
     "details": {
       "type": "Microsoft.Network/networkWatchers/flowLogs",
       "roleDefinitionIds": [
-        "/providers/Microsoft.Authorization/roleDefinitions/b24988ac-6180-42a0-ab88-20f7382dd24c"
+        "/providers/microsoft.authorization/roleDefinitions/749f88d5-cbae-40b8-bcfc-e573ddc772fa",
+        "/providers/microsoft.authorization/roleDefinitions/92aaf0da-9dab-42b6-94a3-d43ce8d16293"
       ],
       "resourceGroupName": "NetworkWatcherRG",
       "existenceCondition": {
@@ -165,9 +166,22 @@ POLICYRULE
     "type": "String",
     "metadata": {
       "strongType": "omsWorkspace",
-      "displayName": "Resource ID of Log Analytics workspace"
+      "displayName": "Resource ID of Log Analytics workspace",
+      "description": "Select Log Analytics workspace from dropdown list. If this workspace is outside of the scope of the assignment you must manually grant 'Log Analytics Contributor' permissions (or similar) to the policy assignment's principal ID."
     },
     "defaultValue": ""
+  },
+  "effect": {
+    "type": "String",
+    "metadata": {
+      "displayName": "Effect",
+      "description": "Enable or disable the execution of the policy"
+    },
+    "allowedValues": [
+      "DeployIfNotExists",
+      "Disabled"
+    ],
+    "defaultValue": "DeployIfNotExists"
   }
 }
 PARAMETERS

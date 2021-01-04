@@ -3,8 +3,8 @@ resource "azurerm_policy_definition" "deploy_vhub" {
   name         = "Deploy-vHUB"
   policy_type  = "Custom"
   mode         = "All"
-  display_name = "Deploy-vHUB"
-  description  = "Deploys Azure Virtual WAN vHUB in desired regions"
+  display_name = "Deploy Virtual Hub network with Virtual Wan and Gateway and Firewall configured."
+  description  = "Deploy Virtual Hub network with Virtual Wan and Gateway and Firewall configured in the desired region. "
 
   management_group_name = var.management_group_name
   policy_rule           = <<POLICYRULE
@@ -18,7 +18,7 @@ resource "azurerm_policy_definition" "deploy_vhub" {
     ]
   },
   "then": {
-    "effect": "deployIfNotExists",
+    "effect": "[parameters('effect')]",
     "details": {
       "type": "Microsoft.Network/virtualHubs",
       "name": "[parameters('vHubName')]",
@@ -26,7 +26,7 @@ resource "azurerm_policy_definition" "deploy_vhub" {
       "existenceScope": "ResourceGroup",
       "ResourceGroupName": "[parameters('rgName')]",
       "roleDefinitionIds": [
-        "/providers/Microsoft.Authorization/roleDefinitions/b24988ac-6180-42a0-ab88-20f7382dd24c"
+        "/providers/Microsoft.Authorization/roleDefinitions/4d97b98b-1d4f-4787-a291-c67834d212e7"
       ],
       "deployment": {
         "location": "northeurope",
@@ -283,6 +283,18 @@ POLICYRULE
       "displayName": "rgName",
       "description": "Provide name for resource group."
     }
+  },
+  "effect": {
+    "type": "String",
+    "metadata": {
+      "displayName": "Effect",
+      "description": "Enable or disable the execution of the policy"
+    },
+    "allowedValues": [
+      "DeployIfNotExists",
+      "Disabled"
+    ],
+    "defaultValue": "DeployIfNotExists"
   }
 }
 PARAMETERS

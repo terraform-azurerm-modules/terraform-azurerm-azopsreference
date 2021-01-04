@@ -3,8 +3,8 @@ resource "azurerm_policy_definition" "deploy_sql_auditingsettings" {
   name         = "Deploy-Sql-AuditingSettings"
   policy_type  = "Custom"
   mode         = "All"
-  display_name = "Deploy-Sql-AuditingSettings"
-  description  = "Configures SQL Server"
+  display_name = "Deploy SQL database auditing settings"
+  description  = "Deploy auditing settings to SQL Database when it not exist in the deployment"
 
   management_group_name = var.management_group_name
   policy_rule           = <<POLICYRULE
@@ -14,7 +14,7 @@ resource "azurerm_policy_definition" "deploy_sql_auditingsettings" {
     "equals": "Microsoft.Sql/servers/databases"
   },
   "then": {
-    "effect": "deployIfNotExists",
+    "effect": "[parameters('effect')]",
     "details": {
       "type": "Microsoft.Sql/servers/databases/auditingSettings",
       "name": "default",
@@ -92,13 +92,29 @@ resource "azurerm_policy_definition" "deploy_sql_auditingsettings" {
         }
       },
       "roleDefinitionIds": [
-        "/providers/Microsoft.Authorization/roleDefinitions/b24988ac-6180-42a0-ab88-20f7382dd24c"
+        "/providers/Microsoft.Authorization/roleDefinitions/056cd41c-7e88-42e1-933e-88ba6a50c9c3"
       ]
     }
   }
 }
 POLICYRULE
 
+  parameters = <<PARAMETERS
+{
+  "effect": {
+    "type": "String",
+    "metadata": {
+      "displayName": "Effect",
+      "description": "Enable or disable the execution of the policy"
+    },
+    "allowedValues": [
+      "DeployIfNotExists",
+      "Disabled"
+    ],
+    "defaultValue": "DeployIfNotExists"
+  }
+}
+PARAMETERS
 
 }
 

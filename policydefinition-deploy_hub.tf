@@ -3,8 +3,8 @@ resource "azurerm_policy_definition" "deploy_hub" {
   name         = "Deploy-HUB"
   policy_type  = "Custom"
   mode         = "All"
-  display_name = "Deploy-HUB"
-  description  = "Deploys Azure VNet to be used as hub virtual network in desired regions"
+  display_name = "Deploy Virtual Network to be used as hub virtual network in desired region"
+  description  = "Deploys Virtual Network to be used as hub virtual network in desired region in the subscription where this policy is assigned."
 
   management_group_name = var.management_group_name
   policy_rule           = <<POLICYRULE
@@ -18,7 +18,7 @@ resource "azurerm_policy_definition" "deploy_hub" {
     ]
   },
   "then": {
-    "effect": "deployIfNotExists",
+    "effect": "[parameters('effect')]",
     "details": {
       "type": "Microsoft.Network/virtualNetworks",
       "name": "[parameters('hubName')]",
@@ -26,7 +26,7 @@ resource "azurerm_policy_definition" "deploy_hub" {
       "existenceScope": "ResourceGroup",
       "ResourceGroupName": "[parameters('rgName')]",
       "roleDefinitionIds": [
-        "/providers/Microsoft.Authorization/roleDefinitions/b24988ac-6180-42a0-ab88-20f7382dd24c"
+        "/providers/Microsoft.Authorization/roleDefinitions/4d97b98b-1d4f-4787-a291-c67834d212e7"
       ],
       "deployment": {
         "location": "northeurope",
@@ -404,6 +404,18 @@ POLICYRULE
       "displayName": "rgName",
       "description": "Provide name for resource group."
     }
+  },
+  "effect": {
+    "type": "String",
+    "metadata": {
+      "displayName": "Effect",
+      "description": "Enable or disable the execution of the policy"
+    },
+    "allowedValues": [
+      "DeployIfNotExists",
+      "Disabled"
+    ],
+    "defaultValue": "DeployIfNotExists"
   }
 }
 PARAMETERS

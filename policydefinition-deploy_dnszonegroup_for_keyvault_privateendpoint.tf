@@ -2,9 +2,9 @@
 resource "azurerm_policy_definition" "deploy_dnszonegroup_for_keyvault_privateendpoint" {
   name         = "Deploy-DNSZoneGroup-For-KeyVault-PrivateEndpoint"
   policy_type  = "Custom"
-  mode         = "Indexed"
-  display_name = "Deploy-DNSZoneGroup-For-KeyVault-PrivateEndpoint"
-  description  = "This policy deploys a DNS Zone Group for Key Vault Private Endpoint"
+  mode         = "All"
+  display_name = "Deploy DNS Zone Group for Key Vault Private Endpoint"
+  description  = "Deploys the configurations of a Private DNS Zone Group by a parameter for Key Vault Private Endpoint. Used enforce the configuration to a single Private DNS Zone. "
 
   management_group_name = var.management_group_name
   policy_rule           = <<POLICYRULE
@@ -28,11 +28,11 @@ resource "azurerm_policy_definition" "deploy_dnszonegroup_for_keyvault_privateen
     ]
   },
   "then": {
-    "effect": "deployIfNotExists",
+    "effect": "[parameters('effect')]",
     "details": {
       "type": "Microsoft.Network/privateEndpoints/privateDnsZoneGroups",
       "roleDefinitionIds": [
-        "/providers/Microsoft.Authorization/roleDefinitions/b24988ac-6180-42a0-ab88-20f7382dd24c"
+        "/providers/Microsoft.Authorization/roleDefinitions/b12aa53e-6015-4669-85d0-8515ebb3ae7f"
       ],
       "deployment": {
         "properties": {
@@ -96,6 +96,18 @@ POLICYRULE
       "displayName": "privateDnsZoneId",
       "strongType": "Microsoft.Network/privateDnsZones"
     }
+  },
+  "effect": {
+    "type": "String",
+    "metadata": {
+      "displayName": "Effect",
+      "description": "Enable or disable the execution of the policy"
+    },
+    "allowedValues": [
+      "DeployIfNotExists",
+      "Disabled"
+    ],
+    "defaultValue": "DeployIfNotExists"
   }
 }
 PARAMETERS

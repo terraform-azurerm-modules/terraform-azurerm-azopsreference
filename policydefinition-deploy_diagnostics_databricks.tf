@@ -2,9 +2,9 @@
 resource "azurerm_policy_definition" "deploy_diagnostics_databricks" {
   name         = "Deploy-Diagnostics-Databricks"
   policy_type  = "Custom"
-  mode         = "Indexed"
-  display_name = "Deploy-Diagnostics-Databricks"
-  description  = "Apply diagnostic settings for Databricks - Log Analytics"
+  mode         = "All"
+  display_name = "Deploy Diagnostic Settings for Databricks to Log Analytics workspace"
+  description  = "Deploys the diagnostic settings for Databricks to stream to a Log Analytics workspace when any Databricks which is missing this diagnostic settings is created or updated. The policy wil set the diagnostic with all metrics and category enabled"
 
   management_group_name = var.management_group_name
   policy_rule           = <<POLICYRULE
@@ -14,7 +14,7 @@ resource "azurerm_policy_definition" "deploy_diagnostics_databricks" {
     "equals": "Microsoft.Databricks/workspaces"
   },
   "then": {
-    "effect": "deployIfNotExists",
+    "effect": "[parameters('effect')]",
     "details": {
       "type": "Microsoft.Insights/diagnosticSettings",
       "name": "setByPolicy",
@@ -25,17 +25,14 @@ resource "azurerm_policy_definition" "deploy_diagnostics_databricks" {
             "equals": "true"
           },
           {
-            "field": "Microsoft.Insights/diagnosticSettings/metrics.enabled",
-            "equals": "true"
-          },
-          {
             "field": "Microsoft.Insights/diagnosticSettings/workspaceId",
             "equals": "[parameters('logAnalytics')]"
           }
         ]
       },
       "roleDefinitionIds": [
-        "/providers/Microsoft.Authorization/roleDefinitions/b24988ac-6180-42a0-ab88-20f7382dd24c"
+        "/providers/microsoft.authorization/roleDefinitions/749f88d5-cbae-40b8-bcfc-e573ddc772fa",
+        "/providers/microsoft.authorization/roleDefinitions/92aaf0da-9dab-42b6-94a3-d43ce8d16293"
       ],
       "deployment": {
         "properties": {
@@ -52,6 +49,12 @@ resource "azurerm_policy_definition" "deploy_diagnostics_databricks" {
               },
               "location": {
                 "type": "string"
+              },
+              "profileName": {
+                "type": "string"
+              },
+              "logsEnabled": {
+                "type": "string"
               }
             },
             "variables": {},
@@ -59,52 +62,51 @@ resource "azurerm_policy_definition" "deploy_diagnostics_databricks" {
               {
                 "type": "Microsoft.Databricks/workspaces/providers/diagnosticSettings",
                 "apiVersion": "2017-05-01-preview",
-                "name": "[concat(parameters('resourceName'), '/', 'Microsoft.Insights/setByPolicy')]",
+                "name": "[concat(parameters('resourceName'), '/', 'Microsoft.Insights/', parameters('profileName'))]",
                 "location": "[parameters('location')]",
                 "dependsOn": [],
                 "properties": {
                   "workspaceId": "[parameters('logAnalytics')]",
-                  "metrics": [],
                   "logs": [
                     {
                       "category": "dbfs",
-                      "enabled": true
+                      "enabled": "[parameters('logsEnabled')]"
                     },
                     {
                       "category": "clusters",
-                      "enabled": true
+                      "enabled": "[parameters('logsEnabled')]"
                     },
                     {
                       "category": "accounts",
-                      "enabled": true
+                      "enabled": "[parameters('logsEnabled')]"
                     },
                     {
                       "category": "jobs",
-                      "enabled": true
+                      "enabled": "[parameters('logsEnabled')]"
                     },
                     {
                       "category": "notebook",
-                      "enabled": true
+                      "enabled": "[parameters('logsEnabled')]"
                     },
                     {
                       "category": "ssh",
-                      "enabled": true
+                      "enabled": "[parameters('logsEnabled')]"
                     },
                     {
                       "category": "workspace",
-                      "enabled": true
+                      "enabled": "[parameters('logsEnabled')]"
                     },
                     {
                       "category": "secrets",
-                      "enabled": true
+                      "enabled": "[parameters('logsEnabled')]"
                     },
                     {
                       "category": "sqlPermissions",
-                      "enabled": true
+                      "enabled": "[parameters('logsEnabled')]"
                     },
                     {
                       "category": "instancePools",
-                      "enabled": true
+                      "enabled": "[parameters('logsEnabled')]"
                     }
                   ]
                 }
@@ -121,6 +123,12 @@ resource "azurerm_policy_definition" "deploy_diagnostics_databricks" {
             },
             "resourceName": {
               "value": "[field('name')]"
+            },
+            "profileName": {
+              "value": "[parameters('profileName')]"
+            },
+            "logsEnabled": {
+              "value": "[parameters('logsEnabled')]"
             }
           }
         }
@@ -136,9 +144,41 @@ POLICYRULE
     "type": "String",
     "metadata": {
       "displayName": "Log Analytics workspace",
-      "description": "Select the Log Analytics workspace from dropdown list",
+      "description": "Select Log Analytics workspace from dropdown list. If this workspace is outside of the scope of the assignment you must manually grant 'Log Analytics Contributor' permissions (or similar) to the policy assignment's principal ID.",
       "strongType": "omsWorkspace"
     }
+  },
+  "effect": {
+    "type": "String",
+    "metadata": {
+      "displayName": "Effect",
+      "description": "Enable or disable the execution of the policy"
+    },
+    "allowedValues": [
+      "DeployIfNotExists",
+      "Disabled"
+    ],
+    "defaultValue": "DeployIfNotExists"
+  },
+  "profileName": {
+    "type": "String",
+    "metadata": {
+      "displayName": "Profile name",
+      "description": "The diagnostic settings profile name"
+    },
+    "defaultValue": "setbypolicy"
+  },
+  "logsEnabled": {
+    "type": "String",
+    "metadata": {
+      "displayName": "Enable logs",
+      "description": "Whether to enable logs stream to the Log Analytics workspace - True or False"
+    },
+    "allowedValues": [
+      "True",
+      "False"
+    ],
+    "defaultValue": "True"
   }
 }
 PARAMETERS

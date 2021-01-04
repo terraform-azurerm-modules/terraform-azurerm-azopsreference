@@ -3,8 +3,8 @@ resource "azurerm_policy_definition" "append_kv_softdelete" {
   name         = "Append-KV-SoftDelete"
   policy_type  = "Custom"
   mode         = "All"
-  display_name = "Append-KV-SoftDelete"
-  description  = "When a Key Vault is created with out soft delete enabled then this will add it."
+  display_name = "KeyVault SoftDelete should be enabled"
+  description  = "This policy enables you to ensure when a Key Vault is created with out soft delete enabled it will be added."
 
   management_group_name = var.management_group_name
   policy_rule           = <<POLICYRULE

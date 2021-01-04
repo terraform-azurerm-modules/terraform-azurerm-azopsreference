@@ -3,8 +3,8 @@ resource "azurerm_policy_definition" "deploy_asc_standard" {
   name         = "Deploy-ASC-Standard"
   policy_type  = "Custom"
   mode         = "All"
-  display_name = "Deploy-ASC-Standard"
-  description  = "Ensures that subscriptions have Security Center Standard enabled."
+  display_name = "Deploy Azure Defender settings in Azure Security Center."
+  description  = "Deploys the Azure Defender settings in Azure Security Center for the specific services."
 
   management_group_name = var.management_group_name
   policy_rule           = <<POLICYRULE
@@ -18,13 +18,13 @@ resource "azurerm_policy_definition" "deploy_asc_standard" {
     ]
   },
   "then": {
-    "effect": "deployIfNotExists",
+    "effect": "[parameters('effect')]",
     "details": {
       "type": "Microsoft.Security/pricings",
       "deploymentScope": "subscription",
       "existenceScope": "subscription",
       "roleDefinitionIds": [
-        "/providers/Microsoft.Authorization/roleDefinitions/8e3af657-a8ff-443c-a75c-2fe8c4bcb635"
+        "/providers/Microsoft.Authorization/roleDefinitions/fb1c8493-542b-48eb-b624-b4c8fea62acd"
       ],
       "existenceCondition": {
         "allOf": [
@@ -276,6 +276,18 @@ POLICYRULE
       "Free"
     ],
     "defaultValue": "Standard"
+  },
+  "effect": {
+    "type": "String",
+    "metadata": {
+      "displayName": "Effect",
+      "description": "Enable or disable the execution of the policy"
+    },
+    "allowedValues": [
+      "DeployIfNotExists",
+      "Disabled"
+    ],
+    "defaultValue": "DeployIfNotExists"
   }
 }
 PARAMETERS

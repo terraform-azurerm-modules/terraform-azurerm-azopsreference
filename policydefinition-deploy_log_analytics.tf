@@ -3,8 +3,8 @@ resource "azurerm_policy_definition" "deploy_log_analytics" {
   name         = "Deploy-Log-Analytics"
   policy_type  = "Custom"
   mode         = "All"
-  display_name = "Deploy-LogAnalytics"
-  description  = "null"
+  display_name = "Deploy the Log Analytics in the subscription"
+  description  = "Deploys Log Analytics and Automation account to the subscription where the policy is assigned."
 
   management_group_name = var.management_group_name
   policy_rule           = <<POLICYRULE
@@ -18,13 +18,14 @@ resource "azurerm_policy_definition" "deploy_log_analytics" {
     ]
   },
   "then": {
-    "effect": "deployIfNotExists",
+    "effect": "[parameters('effect')]",
     "details": {
       "type": "Microsoft.OperationalInsights/workspaces",
       "deploymentScope": "Subscription",
       "existenceScope": "Subscription",
       "roleDefinitionIds": [
-        "/providers/Microsoft.Authorization/roleDefinitions/b24988ac-6180-42a0-ab88-20f7382dd24c"
+        "/providers/microsoft.authorization/roleDefinitions/749f88d5-cbae-40b8-bcfc-e573ddc772fa",
+        "/providers/microsoft.authorization/roleDefinitions/92aaf0da-9dab-42b6-94a3-d43ce8d16293"
       ],
       "existenceCondition": {
         "allOf": [
@@ -204,6 +205,18 @@ POLICYRULE
       "displayName": "rgName",
       "description": "Provide name for resource group."
     }
+  },
+  "effect": {
+    "type": "String",
+    "metadata": {
+      "displayName": "Effect",
+      "description": "Enable or disable the execution of the policy"
+    },
+    "allowedValues": [
+      "DeployIfNotExists",
+      "Disabled"
+    ],
+    "defaultValue": "DeployIfNotExists"
   }
 }
 PARAMETERS

@@ -3,8 +3,8 @@ resource "azurerm_policy_definition" "deploy_vnet" {
   name         = "Deploy-vNet"
   policy_type  = "Custom"
   mode         = "All"
-  display_name = "Deploy-vNet"
-  description  = "Deploy-vNet"
+  display_name = "Deploy spoke network with configuration to hub network based on ipam configuration object"
+  description  = "Deploy spoke network with configuration to hub network based on ipam configuration object"
 
   management_group_name = var.management_group_name
   policy_rule           = <<POLICYRULE
@@ -18,13 +18,13 @@ resource "azurerm_policy_definition" "deploy_vnet" {
     ]
   },
   "then": {
-    "effect": "deployIfNotExists",
+    "effect": "[parameters('effect')]",
     "details": {
       "type": "Microsoft.Resources/resourceGroups",
       "deploymentScope": "Subscription",
       "existenceScope": "Subscription",
       "roleDefinitionIds": [
-        "/providers/Microsoft.Authorization/roleDefinitions/8e3af657-a8ff-443c-a75c-2fe8c4bcb635"
+        "/providers/Microsoft.Authorization/roleDefinitions/4d97b98b-1d4f-4787-a291-c67834d212e7"
       ],
       "existenceCondition": {
         "allOf": [
@@ -354,6 +354,18 @@ POLICYRULE
       "displayName": "ipam"
     },
     "defaultValue": []
+  },
+  "effect": {
+    "type": "String",
+    "metadata": {
+      "displayName": "Effect",
+      "description": "Enable or disable the execution of the policy"
+    },
+    "allowedValues": [
+      "DeployIfNotExists",
+      "Disabled"
+    ],
+    "defaultValue": "DeployIfNotExists"
   }
 }
 PARAMETERS

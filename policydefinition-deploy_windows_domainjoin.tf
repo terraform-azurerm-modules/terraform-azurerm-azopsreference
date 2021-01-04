@@ -3,8 +3,8 @@ resource "azurerm_policy_definition" "deploy_windows_domainjoin" {
   name         = "Deploy-Windows-DomainJoin"
   policy_type  = "Custom"
   mode         = "All"
-  display_name = "Deploy-Windows-DomainJoin"
-  description  = "null"
+  display_name = "Deploy Windows Domain Join Extension with keyvault configuration"
+  description  = "Deploy Windows Domain Join Extension with keyvault configuration when the extension does not exist on a given windows Virtual Machine"
 
   management_group_name = var.management_group_name
   policy_rule           = <<POLICYRULE
@@ -88,11 +88,11 @@ resource "azurerm_policy_definition" "deploy_windows_domainjoin" {
     ]
   },
   "then": {
-    "effect": "deployIfNotExists",
+    "effect": "[parameters('effect')]",
     "details": {
       "type": "Microsoft.Compute/virtualMachines/extensions",
       "roleDefinitionIds": [
-        "/providers/Microsoft.Authorization/roleDefinitions/b24988ac-6180-42a0-ab88-20f7382dd24c"
+        "/providers/Microsoft.Authorization/roleDefinitions/9980e02c-c2be-4d73-94e8-173b1dc7cf3c"
       ],
       "existenceCondition": {
         "allOf": [
@@ -236,6 +236,18 @@ POLICYRULE
     "metadata": {
       "displayName": "keyVaultResourceId"
     }
+  },
+  "effect": {
+    "type": "String",
+    "metadata": {
+      "displayName": "Effect",
+      "description": "Enable or disable the execution of the policy"
+    },
+    "allowedValues": [
+      "DeployIfNotExists",
+      "Disabled"
+    ],
+    "defaultValue": "DeployIfNotExists"
   }
 }
 PARAMETERS

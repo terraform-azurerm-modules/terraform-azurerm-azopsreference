@@ -3,8 +3,8 @@ resource "azurerm_policy_definition" "deploy_diagnostics_website" {
   name         = "Deploy-Diagnostics-Website"
   policy_type  = "Custom"
   mode         = "All"
-  display_name = "Deploy-Diagnostics-Website"
-  description  = "Apply diagnostic settings for Azure Web Sites"
+  display_name = "Deploy Diagnostic Settings for App Service to Log Analytics workspace"
+  description  = "Deploys the diagnostic settings for Web App to stream to a Log Analytics workspace when any Web App which is missing this diagnostic settings is created or updated. The policy wil set the diagnostic with all metrics and category enabled"
 
   management_group_name = var.management_group_name
   policy_rule           = <<POLICYRULE
@@ -16,18 +16,22 @@ resource "azurerm_policy_definition" "deploy_diagnostics_website" {
         "equals": "Microsoft.Web/sites"
       },
       {
-        "field": "kind",
-        "notEquals": "functionapp"
+        "value": "[field('kind')]",
+        "notContains": "functionapp"
       }
     ]
   },
   "then": {
-    "effect": "deployIfNotExists",
+    "effect": "[parameters('effect')]",
     "details": {
       "type": "Microsoft.Insights/diagnosticSettings",
       "name": "setByPolicy",
       "existenceCondition": {
         "allOf": [
+          {
+            "field": "Microsoft.Insights/diagnosticSettings/logs.enabled",
+            "equals": "true"
+          },
           {
             "field": "Microsoft.Insights/diagnosticSettings/metrics.enabled",
             "equals": "true"
@@ -39,7 +43,8 @@ resource "azurerm_policy_definition" "deploy_diagnostics_website" {
         ]
       },
       "roleDefinitionIds": [
-        "/providers/Microsoft.Authorization/roleDefinitions/b24988ac-6180-42a0-ab88-20f7382dd24c"
+        "/providers/microsoft.authorization/roleDefinitions/749f88d5-cbae-40b8-bcfc-e573ddc772fa",
+        "/providers/microsoft.authorization/roleDefinitions/92aaf0da-9dab-42b6-94a3-d43ce8d16293"
       ],
       "deployment": {
         "properties": {
@@ -56,6 +61,15 @@ resource "azurerm_policy_definition" "deploy_diagnostics_website" {
               },
               "location": {
                 "type": "string"
+              },
+              "profileName": {
+                "type": "string"
+              },
+              "metricsEnabled": {
+                "type": "string"
+              },
+              "logsEnabled": {
+                "type": "string"
               }
             },
             "variables": {},
@@ -63,7 +77,7 @@ resource "azurerm_policy_definition" "deploy_diagnostics_website" {
               {
                 "type": "Microsoft.Web/sites/providers/diagnosticSettings",
                 "apiVersion": "2017-05-01-preview",
-                "name": "[concat(parameters('resourceName'), '/', 'Microsoft.Insights/setByPolicy')]",
+                "name": "[concat(parameters('resourceName'), '/', 'Microsoft.Insights/', parameters('profileName'))]",
                 "location": "[parameters('location')]",
                 "dependsOn": [],
                 "properties": {
@@ -71,7 +85,7 @@ resource "azurerm_policy_definition" "deploy_diagnostics_website" {
                   "metrics": [
                     {
                       "category": "AllMetrics",
-                      "enabled": true,
+                      "enabled": "[parameters('metricsEnabled')]",
                       "retentionPolicy": {
                         "days": 0,
                         "enabled": false
@@ -81,35 +95,39 @@ resource "azurerm_policy_definition" "deploy_diagnostics_website" {
                   "logs": [
                     {
                       "category": "AppServiceAntivirusScanAuditLogs",
-                      "enabled": true
+                      "enabled": "[parameters('logsEnabled')]"
                     },
                     {
                       "category": "AppServiceHTTPLogs",
-                      "enabled": true
+                      "enabled": "[parameters('logsEnabled')]"
                     },
                     {
                       "category": "AppServiceConsoleLogs",
-                      "enabled": true
+                      "enabled": "[parameters('logsEnabled')]"
+                    },
+                    {
+                      "category": "AppServiceHTTPLogs",
+                      "enabled": "[parameters('logsEnabled')]"
                     },
                     {
                       "category": "AppServiceAppLogs",
-                      "enabled": true
+                      "enabled": "[parameters('logsEnabled')]"
                     },
                     {
                       "category": "AppServiceFileAuditLogs",
-                      "enabled": true
+                      "enabled": "[parameters('logsEnabled')]"
                     },
                     {
                       "category": "AppServiceAuditLogs",
-                      "enabled": true
+                      "enabled": "[parameters('logsEnabled')]"
                     },
                     {
                       "category": "AppServiceIPSecAuditLogs",
-                      "enabled": true
+                      "enabled": "[parameters('logsEnabled')]"
                     },
                     {
                       "category": "AppServicePlatformLogs",
-                      "enabled": true
+                      "enabled": "[parameters('logsEnabled')]"
                     }
                   ]
                 }
@@ -126,6 +144,15 @@ resource "azurerm_policy_definition" "deploy_diagnostics_website" {
             },
             "resourceName": {
               "value": "[field('name')]"
+            },
+            "profileName": {
+              "value": "[parameters('profileName')]"
+            },
+            "metricsEnabled": {
+              "value": "[parameters('metricsEnabled')]"
+            },
+            "logsEnabled": {
+              "value": "[parameters('logsEnabled')]"
             }
           }
         }
@@ -141,9 +168,53 @@ POLICYRULE
     "type": "String",
     "metadata": {
       "displayName": "Log Analytics workspace",
-      "description": "Select the Log Analytics workspace from dropdown list",
+      "description": "Select Log Analytics workspace from dropdown list. If this workspace is outside of the scope of the assignment you must manually grant 'Log Analytics Contributor' permissions (or similar) to the policy assignment's principal ID.",
       "strongType": "omsWorkspace"
     }
+  },
+  "effect": {
+    "type": "String",
+    "metadata": {
+      "displayName": "Effect",
+      "description": "Enable or disable the execution of the policy"
+    },
+    "allowedValues": [
+      "DeployIfNotExists",
+      "Disabled"
+    ],
+    "defaultValue": "DeployIfNotExists"
+  },
+  "profileName": {
+    "type": "String",
+    "metadata": {
+      "displayName": "Profile name",
+      "description": "The diagnostic settings profile name"
+    },
+    "defaultValue": "setbypolicy"
+  },
+  "metricsEnabled": {
+    "type": "String",
+    "metadata": {
+      "displayName": "Enable metrics",
+      "description": "Whether to enable metrics stream to the Log Analytics workspace - True or False"
+    },
+    "allowedValues": [
+      "True",
+      "False"
+    ],
+    "defaultValue": "True"
+  },
+  "logsEnabled": {
+    "type": "String",
+    "metadata": {
+      "displayName": "Enable logs",
+      "description": "Whether to enable logs stream to the Log Analytics workspace - True or False"
+    },
+    "allowedValues": [
+      "True",
+      "False"
+    ],
+    "defaultValue": "True"
   }
 }
 PARAMETERS

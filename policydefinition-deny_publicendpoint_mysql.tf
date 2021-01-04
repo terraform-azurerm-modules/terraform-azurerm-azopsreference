@@ -3,8 +3,8 @@ resource "azurerm_policy_definition" "deny_publicendpoint_mysql" {
   name         = "Deny-PublicEndpoint-MySQL"
   policy_type  = "Custom"
   mode         = "All"
-  display_name = "Deny-PublicEndpoint-MySQL"
-  description  = "This policy restrict creation of MySql DB accounts with exposed public endpoints"
+  display_name = "Public network access should be disabled for MySQL"
+  description  = "This policy denies creation of MySql DB accounts with exposed public endpoints"
 
   management_group_name = var.management_group_name
   policy_rule           = <<POLICYRULE
@@ -22,11 +22,28 @@ resource "azurerm_policy_definition" "deny_publicendpoint_mysql" {
     ]
   },
   "then": {
-    "effect": "Deny"
+    "effect": "[parameters('effect')]"
   }
 }
 POLICYRULE
 
+  parameters = <<PARAMETERS
+{
+  "effect": {
+    "type": "String",
+    "metadata": {
+      "displayName": "Effect",
+      "description": "Enable or disable the execution of the policy"
+    },
+    "allowedValues": [
+      "Audit",
+      "Deny",
+      "Disabled"
+    ],
+    "defaultValue": "Deny"
+  }
+}
+PARAMETERS
 
 }
 

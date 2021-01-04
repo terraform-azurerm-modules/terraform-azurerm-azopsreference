@@ -3,8 +3,8 @@ resource "azurerm_policy_definition" "deploy_sql_securityalertpolicies" {
   name         = "Deploy-Sql-SecurityAlertPolicies"
   policy_type  = "Custom"
   mode         = "All"
-  display_name = "Deploy-Sql-SecurityAlertPolicies"
-  description  = "Configures SQL DataBases"
+  display_name = "Deploy SQL Database security Alert Policies configuration with email admin accounts"
+  description  = "Deploy the security Alert Policies configuration with email admin accounts when it not exist in current configuration"
 
   management_group_name = var.management_group_name
   policy_rule           = <<POLICYRULE
@@ -14,7 +14,7 @@ resource "azurerm_policy_definition" "deploy_sql_securityalertpolicies" {
     "equals": "Microsoft.Sql/servers/databases"
   },
   "then": {
-    "effect": "deployIfNotExists",
+    "effect": "[parameters('effect')]",
     "details": {
       "type": "Microsoft.Sql/servers/databases/securityAlertPolicies",
       "existenceCondition": {
@@ -78,13 +78,29 @@ resource "azurerm_policy_definition" "deploy_sql_securityalertpolicies" {
         }
       },
       "roleDefinitionIds": [
-        "/providers/Microsoft.Authorization/roleDefinitions/b24988ac-6180-42a0-ab88-20f7382dd24c"
+        "/providers/Microsoft.Authorization/roleDefinitions/056cd41c-7e88-42e1-933e-88ba6a50c9c3"
       ]
     }
   }
 }
 POLICYRULE
 
+  parameters = <<PARAMETERS
+{
+  "effect": {
+    "type": "String",
+    "metadata": {
+      "displayName": "Effect",
+      "description": "Enable or disable the execution of the policy"
+    },
+    "allowedValues": [
+      "DeployIfNotExists",
+      "Disabled"
+    ],
+    "defaultValue": "DeployIfNotExists"
+  }
+}
+PARAMETERS
 
 }
 
