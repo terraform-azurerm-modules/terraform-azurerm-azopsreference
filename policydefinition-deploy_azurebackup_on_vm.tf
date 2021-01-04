@@ -3,8 +3,8 @@ resource "azurerm_policy_definition" "deploy_azurebackup_on_vm" {
   name         = "Deploy-AzureBackup-on-VM"
   policy_type  = "Custom"
   mode         = "All"
-  display_name = "Deploy-AzureBackup-on-VMs"
-  description  = "null"
+  display_name = "Deploy Azure Backup on virtual machines"
+  description  = "Deploys if not exist a backup vault in the resourcegroup of the virtual machine and enabled the backup for the virtual machine with defaultPolicy enabled."
 
   management_group_name = var.management_group_name
   policy_rule           = <<POLICYRULE
@@ -340,12 +340,12 @@ resource "azurerm_policy_definition" "deploy_azurebackup_on_vm" {
     ]
   },
   "then": {
-    "effect": "deployIfNotExists",
+    "effect": "[parameters('effect')]",
     "details": {
       "resourceGroupName": "[resourceGroup().name]",
       "type": "Microsoft.RecoveryServices/backupprotecteditems",
       "roleDefinitionIds": [
-        "/providers/Microsoft.Authorization/roleDefinitions/b24988ac-6180-42a0-ab88-20f7382dd24c"
+        "/providers/Microsoft.Authorization/roleDefinitions/f9980e02c-c2be-4d73-94e8-173b1dc7cf3c"
       ],
       "existenceCondition": {
         "field": "name",
@@ -436,6 +436,22 @@ resource "azurerm_policy_definition" "deploy_azurebackup_on_vm" {
 }
 POLICYRULE
 
+  parameters = <<PARAMETERS
+{
+  "effect": {
+    "type": "String",
+    "metadata": {
+      "displayName": "Effect",
+      "description": "Enable or disable the execution of the policy"
+    },
+    "allowedValues": [
+      "DeployIfNotExists",
+      "Disabled"
+    ],
+    "defaultValue": "DeployIfNotExists"
+  }
+}
+PARAMETERS
 
 }
 

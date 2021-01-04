@@ -3,8 +3,8 @@ resource "azurerm_policy_definition" "deny_publicendpoint_keyvault" {
   name         = "Deny-PublicEndpoint-KeyVault"
   policy_type  = "Custom"
   mode         = "All"
-  display_name = "Deny-PublicEndpoint-KeyVault"
-  description  = "This policy restrict creation of Key Vaults with IP Firewall exposed to all public endpoints"
+  display_name = "Public network access should be disabled for KeyVault"
+  description  = "This policy denies creation of Key Vaults with IP Firewall exposed to all public endpoints"
 
   management_group_name = var.management_group_name
   policy_rule           = <<POLICYRULE
@@ -22,11 +22,28 @@ resource "azurerm_policy_definition" "deny_publicendpoint_keyvault" {
     ]
   },
   "then": {
-    "effect": "Deny"
+    "effect": "[parameters('effect')]"
   }
 }
 POLICYRULE
 
+  parameters = <<PARAMETERS
+{
+  "effect": {
+    "type": "String",
+    "metadata": {
+      "displayName": "Effect",
+      "description": "Enable or disable the execution of the policy"
+    },
+    "allowedValues": [
+      "Audit",
+      "Deny",
+      "Disabled"
+    ],
+    "defaultValue": "Deny"
+  }
+}
+PARAMETERS
 
 }
 

@@ -3,8 +3,8 @@ resource "azurerm_policy_definition" "deploy_diagnostics_recoveryvault" {
   name         = "Deploy-Diagnostics-RecoveryVault"
   policy_type  = "Custom"
   mode         = "All"
-  display_name = "Deploy-Diagnostics-RecoveryVault"
-  description  = "Apply diagnostic settings for Recovery Vaults - Log Analytics"
+  display_name = "Deploy Diagnostic Settings for Recovery Services vaults to Log Analytics workspace"
+  description  = "Deploys the diagnostic settings for Recovery Services vaults to stream to a Log Analytics workspace when any Recovery Services vaults which is missing this diagnostic settings is created or updated. The policy wil set the diagnostic with all metrics and category enabled"
 
   management_group_name = var.management_group_name
   policy_rule           = <<POLICYRULE
@@ -14,7 +14,7 @@ resource "azurerm_policy_definition" "deploy_diagnostics_recoveryvault" {
     "equals": "Microsoft.RecoveryServices/vaults"
   },
   "then": {
-    "effect": "deployIfNotExists",
+    "effect": "[parameters('effect')]",
     "details": {
       "type": "Microsoft.Insights/diagnosticSettings",
       "name": "setByPolicy",
@@ -33,7 +33,8 @@ resource "azurerm_policy_definition" "deploy_diagnostics_recoveryvault" {
                       "AddonAzureBackupAlerts",
                       "AddonAzureBackupPolicy",
                       "AddonAzureBackupStorage",
-                      "AddonAzureBackupProtectedInstance"
+                      "AddonAzureBackupProtectedInstance",
+                      "AzureBackupReport"
                     ]
                   },
                   {
@@ -43,7 +44,7 @@ resource "azurerm_policy_definition" "deploy_diagnostics_recoveryvault" {
                 ]
               }
             },
-            "Equals": 6
+            "Equals": 7
           },
           {
             "field": "Microsoft.Insights/diagnosticSettings/workspaceId",
@@ -56,7 +57,8 @@ resource "azurerm_policy_definition" "deploy_diagnostics_recoveryvault" {
         ]
       },
       "roleDefinitionIds": [
-        "/providers/Microsoft.Authorization/roleDefinitions/b24988ac-6180-42a0-ab88-20f7382dd24c"
+        "/providers/microsoft.authorization/roleDefinitions/749f88d5-cbae-40b8-bcfc-e573ddc772fa",
+        "/providers/microsoft.authorization/roleDefinitions/92aaf0da-9dab-42b6-94a3-d43ce8d16293"
       ],
       "deployment": {
         "properties": {
@@ -73,6 +75,12 @@ resource "azurerm_policy_definition" "deploy_diagnostics_recoveryvault" {
               },
               "location": {
                 "type": "string"
+              },
+              "profileName": {
+                "type": "string"
+              },
+              "logsEnabled": {
+                "type": "string"
               }
             },
             "variables": {},
@@ -80,7 +88,7 @@ resource "azurerm_policy_definition" "deploy_diagnostics_recoveryvault" {
               {
                 "type": "Microsoft.RecoveryServices/vaults/providers/diagnosticSettings",
                 "apiVersion": "2017-05-01-preview",
-                "name": "[concat(parameters('resourceName'), '/', 'Microsoft.Insights/', 'setByPolicy')]",
+                "name": "[concat(parameters('resourceName'), '/', 'Microsoft.Insights/', parameters('profileName'))]",
                 "dependsOn": [],
                 "properties": {
                   "workspaceId": "[parameters('logAnalytics')]",
@@ -89,27 +97,31 @@ resource "azurerm_policy_definition" "deploy_diagnostics_recoveryvault" {
                   "logs": [
                     {
                       "category": "CoreAzureBackup",
-                      "enabled": "true"
+                      "enabled": "[parameters('logsEnabled')]"
                     },
                     {
                       "category": "AddonAzureBackupAlerts",
-                      "enabled": "true"
+                      "enabled": "[parameters('logsEnabled')]"
                     },
                     {
                       "category": "AddonAzureBackupJobs",
-                      "enabled": "true"
+                      "enabled": "[parameters('logsEnabled')]"
                     },
                     {
                       "category": "AddonAzureBackupPolicy",
-                      "enabled": "true"
+                      "enabled": "[parameters('logsEnabled')]"
                     },
                     {
                       "category": "AddonAzureBackupProtectedInstance",
-                      "enabled": "true"
+                      "enabled": "[parameters('logsEnabled')]"
                     },
                     {
                       "category": "AddonAzureBackupStorage",
-                      "enabled": "true"
+                      "enabled": "[parameters('logsEnabled')]"
+                    },
+                    {
+                      "category": "AzureBackupReport",
+                      "enabled": "[parameters('logsEnabled')]"
                     }
                   ]
                 }
@@ -126,6 +138,12 @@ resource "azurerm_policy_definition" "deploy_diagnostics_recoveryvault" {
             },
             "resourceName": {
               "value": "[field('name')]"
+            },
+            "profileName": {
+              "value": "[parameters('profileName')]"
+            },
+            "logsEnabled": {
+              "value": "[parameters('logsEnabled')]"
             }
           }
         }
@@ -141,9 +159,41 @@ POLICYRULE
     "type": "String",
     "metadata": {
       "displayName": "Log Analytics workspace",
-      "description": "Select the Log Analytics workspace from dropdown list",
+      "description": "Select Log Analytics workspace from dropdown list. If this workspace is outside of the scope of the assignment you must manually grant 'Log Analytics Contributor' permissions (or similar) to the policy assignment's principal ID.",
       "strongType": "omsWorkspace"
     }
+  },
+  "effect": {
+    "type": "String",
+    "metadata": {
+      "displayName": "Effect",
+      "description": "Enable or disable the execution of the policy"
+    },
+    "allowedValues": [
+      "DeployIfNotExists",
+      "Disabled"
+    ],
+    "defaultValue": "DeployIfNotExists"
+  },
+  "profileName": {
+    "type": "String",
+    "metadata": {
+      "displayName": "Profile name",
+      "description": "The diagnostic settings profile name"
+    },
+    "defaultValue": "setbypolicy"
+  },
+  "logsEnabled": {
+    "type": "String",
+    "metadata": {
+      "displayName": "Enable logs",
+      "description": "Whether to enable logs stream to the Log Analytics workspace - True or False"
+    },
+    "allowedValues": [
+      "True",
+      "False"
+    ],
+    "defaultValue": "True"
   }
 }
 PARAMETERS

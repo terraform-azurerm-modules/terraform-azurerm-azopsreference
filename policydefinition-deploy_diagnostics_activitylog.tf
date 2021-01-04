@@ -3,8 +3,8 @@ resource "azurerm_policy_definition" "deploy_diagnostics_activitylog" {
   name         = "Deploy-Diagnostics-ActivityLog"
   policy_type  = "Custom"
   mode         = "All"
-  display_name = "Deploy-Diagnostics-ActivityLog"
-  description  = "Ensures that Activity Log Diagnostics settings are set to push logs into Log Analytics"
+  display_name = "Deploy Diagnostic Settings for Activity Log to Log Analytics workspace"
+  description  = "Deploys the diagnostic settings for Activity Log to stream to a Log Analytics workspace when any Activity Log which is missing this diagnostic settings is created or updated. The policy wil set the diagnostic with category enabled."
 
   management_group_name = var.management_group_name
   policy_rule           = <<POLICYRULE
@@ -18,7 +18,7 @@ resource "azurerm_policy_definition" "deploy_diagnostics_activitylog" {
     ]
   },
   "then": {
-    "effect": "deployIfNotExists",
+    "effect": "[parameters('effect')]",
     "details": {
       "type": "Microsoft.Insights/diagnosticSettings",
       "deploymentScope": "Subscription",
@@ -45,12 +45,15 @@ resource "azurerm_policy_definition" "deploy_diagnostics_activitylog" {
             "parameters": {
               "logAnalytics": {
                 "type": "string"
+              },
+              "logsEnabled": {
+                "type": "string"
               }
             },
             "variables": {},
             "resources": [
               {
-                "name": "subscriptionLogsToLogAnalytics",
+                "name": "subscriptionToLa",
                 "type": "Microsoft.Insights/diagnosticSettings",
                 "apiVersion": "2017-05-01-preview",
                 "location": "Global",
@@ -59,35 +62,35 @@ resource "azurerm_policy_definition" "deploy_diagnostics_activitylog" {
                   "logs": [
                     {
                       "category": "Administrative",
-                      "enabled": true
+                      "enabled": "[parameters('logsEnabled')]"
                     },
                     {
                       "category": "Security",
-                      "enabled": true
+                      "enabled": "[parameters('logsEnabled')]"
                     },
                     {
                       "category": "ServiceHealth",
-                      "enabled": true
+                      "enabled": "[parameters('logsEnabled')]"
                     },
                     {
                       "category": "Alert",
-                      "enabled": true
+                      "enabled": "[parameters('logsEnabled')]"
                     },
                     {
                       "category": "Recommendation",
-                      "enabled": true
+                      "enabled": "[parameters('logsEnabled')]"
                     },
                     {
                       "category": "Policy",
-                      "enabled": true
+                      "enabled": "[parameters('logsEnabled')]"
                     },
                     {
                       "category": "Autoscale",
-                      "enabled": true
+                      "enabled": "[parameters('logsEnabled')]"
                     },
                     {
                       "category": "ResourceHealth",
-                      "enabled": true
+                      "enabled": "[parameters('logsEnabled')]"
                     }
                   ]
                 }
@@ -98,12 +101,16 @@ resource "azurerm_policy_definition" "deploy_diagnostics_activitylog" {
           "parameters": {
             "logAnalytics": {
               "value": "[parameters('logAnalytics')]"
+            },
+            "logsEnabled": {
+              "value": "[parameters('logsEnabled')]"
             }
           }
         }
       },
       "roleDefinitionIds": [
-        "/providers/Microsoft.Authorization/roleDefinitions/8e3af657-a8ff-443c-a75c-2fe8c4bcb635"
+        "/providers/microsoft.authorization/roleDefinitions/749f88d5-cbae-40b8-bcfc-e573ddc772fa",
+        "/providers/microsoft.authorization/roleDefinitions/92aaf0da-9dab-42b6-94a3-d43ce8d16293"
       ]
     }
   }
@@ -116,9 +123,33 @@ POLICYRULE
     "type": "String",
     "metadata": {
       "displayName": "Primary Log Analytics workspace",
-      "description": "Select Log Analytics workspace from dropdown list",
+      "description": "Select Log Analytics workspace from dropdown list. If this workspace is outside of the scope of the assignment you must manually grant 'Log Analytics Contributor' permissions (or similar) to the policy assignment's principal ID.",
       "strongType": "omsWorkspace"
     }
+  },
+  "effect": {
+    "type": "String",
+    "metadata": {
+      "displayName": "Effect",
+      "description": "Enable or disable the execution of the policy"
+    },
+    "allowedValues": [
+      "DeployIfNotExists",
+      "Disabled"
+    ],
+    "defaultValue": "DeployIfNotExists"
+  },
+  "logsEnabled": {
+    "type": "String",
+    "metadata": {
+      "displayName": "Enable logs",
+      "description": "Whether to enable logs stream to the Log Analytics workspace - True or False"
+    },
+    "allowedValues": [
+      "True",
+      "False"
+    ],
+    "defaultValue": "True"
   }
 }
 PARAMETERS

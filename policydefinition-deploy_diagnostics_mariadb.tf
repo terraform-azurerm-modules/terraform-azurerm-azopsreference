@@ -1,17 +1,17 @@
 # This file was auto generated
-resource "azurerm_policy_definition" "deploy_diagnostics_aks" {
-  name         = "Deploy-Diagnostics-AKS"
+resource "azurerm_policy_definition" "deploy_diagnostics_mariadb" {
+  name         = "Deploy-Diagnostics-MariaDB"
   policy_type  = "Custom"
   mode         = "All"
-  display_name = "Deploy Diagnostic Settings for Kubernetes Service to Log Analytics workspace"
-  description  = "Deploys the diagnostic settings for Kubernetes Service to stream to a Log Analytics workspace when any Kubernetes Service which is missing this diagnostic settings is created or updated. The policy wil set the diagnostic with all metrics and category enabled."
+  display_name = "Deploy Diagnostic Settings for MariaDB to Log Analytics workspace"
+  description  = "Deploys the diagnostic settings for MariaDB to stream to a Log Analytics workspace when any MariaDB which is missing this diagnostic settings is created or updated. The policy wil set the diagnostic with all metrics and category enabled"
 
   management_group_name = var.management_group_name
   policy_rule           = <<POLICYRULE
 {
   "if": {
     "field": "type",
-    "equals": "Microsoft.ContainerService/managedClusters"
+    "equals": "Microsoft.DBforMariaDB/servers"
   },
   "then": {
     "effect": "[parameters('effect')]",
@@ -67,7 +67,7 @@ resource "azurerm_policy_definition" "deploy_diagnostics_aks" {
             "variables": {},
             "resources": [
               {
-                "type": "Microsoft.ContainerService/managedClusters/providers/diagnosticSettings",
+                "type": "Microsoft.DBforMariaDB/servers/providers/diagnosticSettings",
                 "apiVersion": "2017-05-01-preview",
                 "name": "[concat(parameters('resourceName'), '/', 'Microsoft.Insights/', parameters('profileName'))]",
                 "location": "[parameters('location')]",
@@ -86,31 +86,11 @@ resource "azurerm_policy_definition" "deploy_diagnostics_aks" {
                   ],
                   "logs": [
                     {
-                      "category": "kube-audit",
+                      "category": "MySqlSlowLogs",
                       "enabled": "[parameters('logsEnabled')]"
                     },
                     {
-                      "category": "kube-apiserver",
-                      "enabled": "[parameters('logsEnabled')]"
-                    },
-                    {
-                      "category": "kube-controller-manager",
-                      "enabled": "[parameters('logsEnabled')]"
-                    },
-                    {
-                      "category": "kube-scheduler",
-                      "enabled": "[parameters('logsEnabled')]"
-                    },
-                    {
-                      "category": "cluster-autoscaler",
-                      "enabled": "[parameters('logsEnabled')]"
-                    },
-                    {
-                      "category": "guard",
-                      "enabled": "[parameters('logsEnabled')]"
-                    },
-                    {
-                      "category": "kube-audit-admin",
+                      "category": "MySqlAuditLogs",
                       "enabled": "[parameters('logsEnabled')]"
                     }
                   ]
@@ -205,7 +185,7 @@ PARAMETERS
 
 }
 
-output "policydefinition_deploy_diagnostics_aks" {
-  value = azurerm_policy_definition.deploy_diagnostics_aks
+output "policydefinition_deploy_diagnostics_mariadb" {
+  value = azurerm_policy_definition.deploy_diagnostics_mariadb
 }
 

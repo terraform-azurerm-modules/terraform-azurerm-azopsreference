@@ -3,8 +3,8 @@ resource "azurerm_policy_definition" "deploy_diagnostics_eventhub" {
   name         = "Deploy-Diagnostics-EventHub"
   policy_type  = "Custom"
   mode         = "All"
-  display_name = "Deploy-Diagnostics-EventHub"
-  description  = "Apply diagnostic settings for Event Hub Namespaces - Log Analytics"
+  display_name = "Deploy Diagnostic Settings for Event Hubs to Log Analytics workspace"
+  description  = "Deploys the diagnostic settings for Event Hubs to stream to a Log Analytics workspace when any Event Hubs which is missing this diagnostic settings is created or updated. The policy wil set the diagnostic with all metrics and category enabled"
 
   management_group_name = var.management_group_name
   policy_rule           = <<POLICYRULE
@@ -14,7 +14,7 @@ resource "azurerm_policy_definition" "deploy_diagnostics_eventhub" {
     "equals": "Microsoft.EventHub/namespaces"
   },
   "then": {
-    "effect": "deployIfNotExists",
+    "effect": "[parameters('effect')]",
     "details": {
       "type": "Microsoft.Insights/diagnosticSettings",
       "name": "setByPolicy",
@@ -35,7 +35,8 @@ resource "azurerm_policy_definition" "deploy_diagnostics_eventhub" {
         ]
       },
       "roleDefinitionIds": [
-        "/providers/Microsoft.Authorization/roleDefinitions/b24988ac-6180-42a0-ab88-20f7382dd24c"
+        "/providers/microsoft.authorization/roleDefinitions/749f88d5-cbae-40b8-bcfc-e573ddc772fa",
+        "/providers/microsoft.authorization/roleDefinitions/92aaf0da-9dab-42b6-94a3-d43ce8d16293"
       ],
       "deployment": {
         "properties": {
@@ -52,6 +53,15 @@ resource "azurerm_policy_definition" "deploy_diagnostics_eventhub" {
               },
               "location": {
                 "type": "string"
+              },
+              "profileName": {
+                "type": "string"
+              },
+              "metricsEnabled": {
+                "type": "string"
+              },
+              "logsEnabled": {
+                "type": "string"
               }
             },
             "variables": {},
@@ -59,7 +69,7 @@ resource "azurerm_policy_definition" "deploy_diagnostics_eventhub" {
               {
                 "type": "Microsoft.EventHub/namespaces/providers/diagnosticSettings",
                 "apiVersion": "2017-05-01-preview",
-                "name": "[concat(parameters('resourceName'), '/', 'Microsoft.Insights/setByPolicy')]",
+                "name": "[concat(parameters('resourceName'), '/', 'Microsoft.Insights/', parameters('profileName'))]",
                 "location": "[parameters('location')]",
                 "dependsOn": [],
                 "properties": {
@@ -67,7 +77,7 @@ resource "azurerm_policy_definition" "deploy_diagnostics_eventhub" {
                   "metrics": [
                     {
                       "category": "AllMetrics",
-                      "enabled": true,
+                      "enabled": "[parameters('metricsEnabled')]",
                       "retentionPolicy": {
                         "days": 0,
                         "enabled": false
@@ -77,15 +87,31 @@ resource "azurerm_policy_definition" "deploy_diagnostics_eventhub" {
                   "logs": [
                     {
                       "category": "ArchiveLogs",
-                      "enabled": true
+                      "enabled": "[parameters('logsEnabled')]"
                     },
                     {
                       "category": "OperationalLogs",
-                      "enabled": true
+                      "enabled": "[parameters('logsEnabled')]"
                     },
                     {
                       "category": "AutoScaleLogs",
-                      "enabled": true
+                      "enabled": "[parameters('logsEnabled')]"
+                    },
+                    {
+                      "category": "KafkaCoordinatorLogs",
+                      "enabled": "[parameters('logsEnabled')]"
+                    },
+                    {
+                      "category": "KafkaUserErrorLogs",
+                      "enabled": "[parameters('logsEnabled')]"
+                    },
+                    {
+                      "category": "EventHubVNetConnectionEvent",
+                      "enabled": "[parameters('logsEnabled')]"
+                    },
+                    {
+                      "category": "CustomerManagedKeyUserLogs",
+                      "enabled": "[parameters('logsEnabled')]"
                     }
                   ]
                 }
@@ -102,6 +128,15 @@ resource "azurerm_policy_definition" "deploy_diagnostics_eventhub" {
             },
             "resourceName": {
               "value": "[field('name')]"
+            },
+            "profileName": {
+              "value": "[parameters('profileName')]"
+            },
+            "metricsEnabled": {
+              "value": "[parameters('metricsEnabled')]"
+            },
+            "logsEnabled": {
+              "value": "[parameters('logsEnabled')]"
             }
           }
         }
@@ -117,9 +152,53 @@ POLICYRULE
     "type": "String",
     "metadata": {
       "displayName": "Log Analytics workspace",
-      "description": "Select the Log Analytics workspace from dropdown list",
+      "description": "Select Log Analytics workspace from dropdown list. If this workspace is outside of the scope of the assignment you must manually grant 'Log Analytics Contributor' permissions (or similar) to the policy assignment's principal ID.",
       "strongType": "omsWorkspace"
     }
+  },
+  "effect": {
+    "type": "String",
+    "metadata": {
+      "displayName": "Effect",
+      "description": "Enable or disable the execution of the policy"
+    },
+    "allowedValues": [
+      "DeployIfNotExists",
+      "Disabled"
+    ],
+    "defaultValue": "DeployIfNotExists"
+  },
+  "profileName": {
+    "type": "String",
+    "metadata": {
+      "displayName": "Profile name",
+      "description": "The diagnostic settings profile name"
+    },
+    "defaultValue": "setbypolicy"
+  },
+  "metricsEnabled": {
+    "type": "String",
+    "metadata": {
+      "displayName": "Enable metrics",
+      "description": "Whether to enable metrics stream to the Log Analytics workspace - True or False"
+    },
+    "allowedValues": [
+      "True",
+      "False"
+    ],
+    "defaultValue": "True"
+  },
+  "logsEnabled": {
+    "type": "String",
+    "metadata": {
+      "displayName": "Enable logs",
+      "description": "Whether to enable logs stream to the Log Analytics workspace - True or False"
+    },
+    "allowedValues": [
+      "True",
+      "False"
+    ],
+    "defaultValue": "True"
   }
 }
 PARAMETERS

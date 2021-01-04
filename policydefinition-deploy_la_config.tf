@@ -3,8 +3,8 @@ resource "azurerm_policy_definition" "deploy_la_config" {
   name         = "Deploy-LA-Config"
   policy_type  = "Custom"
   mode         = "All"
-  display_name = "Deploy-LA-Config"
-  description  = "null"
+  display_name = "Deploy the configurations to the Log Analytics in the subscription"
+  description  = "Deploy the configurations to the Log Analytics in the subscription. This includes a list of solutions like update, automation etc and enables the vminsight counters. "
 
   management_group_name = var.management_group_name
   policy_rule           = <<POLICYRULE
@@ -18,13 +18,14 @@ resource "azurerm_policy_definition" "deploy_la_config" {
     ]
   },
   "then": {
-    "effect": "deployIfNotExists",
+    "effect": "[parameters('effect')]",
     "details": {
       "type": "Microsoft.OperationalInsights/workspaces",
       "deploymentScope": "resourceGroup",
       "existenceScope": "Subscription",
       "roleDefinitionIds": [
-        "/providers/Microsoft.Authorization/roleDefinitions/8e3af657-a8ff-443c-a75c-2fe8c4bcb635"
+        "/providers/microsoft.authorization/roleDefinitions/749f88d5-cbae-40b8-bcfc-e573ddc772fa",
+        "/providers/microsoft.authorization/roleDefinitions/92aaf0da-9dab-42b6-94a3-d43ce8d16293"
       ],
       "existenceCondition": {
         "allOf": [
@@ -392,6 +393,18 @@ POLICYRULE
       "displayName": "workspaceRegion",
       "description": "Select region of existing Log Analytics workspace"
     }
+  },
+  "effect": {
+    "type": "String",
+    "metadata": {
+      "displayName": "Effect",
+      "description": "Enable or disable the execution of the policy"
+    },
+    "allowedValues": [
+      "DeployIfNotExists",
+      "Disabled"
+    ],
+    "defaultValue": "DeployIfNotExists"
   }
 }
 PARAMETERS

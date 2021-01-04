@@ -3,8 +3,8 @@ resource "azurerm_policy_definition" "deny_aa_child_resources" {
   name         = "Deny-AA-child-resources"
   policy_type  = "Custom"
   mode         = "All"
-  display_name = "Deny-AA-child-resources"
-  description  = "Denies creation of child resources on the Automation Account"
+  display_name = "No child resources in Automation Account"
+  description  = "This policy denies the creation of child resources on the Automation Account"
 
   management_group_name = var.management_group_name
   policy_rule           = <<POLICYRULE
@@ -25,11 +25,28 @@ resource "azurerm_policy_definition" "deny_aa_child_resources" {
     ]
   },
   "then": {
-    "effect": "deny"
+    "effect": "[parameters('effect')]"
   }
 }
 POLICYRULE
 
+  parameters = <<PARAMETERS
+{
+  "effect": {
+    "type": "String",
+    "metadata": {
+      "displayName": "Effect",
+      "description": "Enable or disable the execution of the policy"
+    },
+    "allowedValues": [
+      "Audit",
+      "Deny",
+      "Disabled"
+    ],
+    "defaultValue": "Deny"
+  }
+}
+PARAMETERS
 
 }
 
