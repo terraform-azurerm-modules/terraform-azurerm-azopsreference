@@ -62,501 +62,997 @@ resource "azurerm_policy_set_definition" "deploy_diag_loganalytics" {
     azurerm_policy_definition.deploy_diagnostics_webserverfarm,
     azurerm_policy_definition.deploy_diagnostics_website,
   ]
+
   policy_definition_reference {
-    policy_definition_id = "/providers/Microsoft.Management/managementGroups/ESLZ/providers/Microsoft.Authorization/policyDefinitions/Deploy-Diagnostics-ACI"
+    policy_definition_id = "/providers/Microsoft.Management/managementGroups/${var.management_group_name}/providers/Microsoft.Authorization/policyDefinitions/Deploy-Diagnostics-ACI"
     reference_id         = "DeployDiagnosticsACI"
-    parameters = {
-      logAnalytics = "[parameters('logAnalytics')]"
-      effect       = "[parameters('ACILogAnalyticsEffect')]"
-      profileName  = "[parameters('profileName')]"
-    }
+    parameter_values     = <<VALUES
+{
+  "logAnalytics": {
+    "value": "[parameters('logAnalytics')]"
+  },
+  "effect": {
+    "value": "[parameters('ACILogAnalyticsEffect')]"
+  },
+  "profileName": {
+    "value": "[parameters('profileName')]"
   }
+}
+VALUES
+  }
+
   policy_definition_reference {
-    policy_definition_id = "/providers/Microsoft.Management/managementGroups/ESLZ/providers/Microsoft.Authorization/policyDefinitions/Deploy-Diagnostics-MariaDB"
+    policy_definition_id = "/providers/Microsoft.Management/managementGroups/${var.management_group_name}/providers/Microsoft.Authorization/policyDefinitions/Deploy-Diagnostics-MariaDB"
     reference_id         = "DeployDiagnosticsMariaDB"
-    parameters = {
-      logAnalytics = "[parameters('logAnalytics')]"
-      effect       = "[parameters('MariaDBLogAnalyticsEffect')]"
-      profileName  = "[parameters('profileName')]"
-    }
+    parameter_values     = <<VALUES
+{
+  "logAnalytics": {
+    "value": "[parameters('logAnalytics')]"
+  },
+  "effect": {
+    "value": "[parameters('MariaDBLogAnalyticsEffect')]"
+  },
+  "profileName": {
+    "value": "[parameters('profileName')]"
   }
+}
+VALUES
+  }
+
   policy_definition_reference {
-    policy_definition_id = "/providers/Microsoft.Management/managementGroups/ESLZ/providers/Microsoft.Authorization/policyDefinitions/Deploy-Diagnostics-MlWorkspace"
+    policy_definition_id = "/providers/Microsoft.Management/managementGroups/${var.management_group_name}/providers/Microsoft.Authorization/policyDefinitions/Deploy-Diagnostics-MlWorkspace"
     reference_id         = "DeployDiagnosticsMlWorkspace"
-    parameters = {
-      logAnalytics = "[parameters('logAnalytics')]"
-      effect       = "[parameters('MlWorkspaceLogAnalyticsEffect')]"
-      profileName  = "[parameters('profileName')]"
-    }
+    parameter_values     = <<VALUES
+{
+  "logAnalytics": {
+    "value": "[parameters('logAnalytics')]"
+  },
+  "effect": {
+    "value": "[parameters('MlWorkspaceLogAnalyticsEffect')]"
+  },
+  "profileName": {
+    "value": "[parameters('profileName')]"
   }
+}
+VALUES
+  }
+
   policy_definition_reference {
-    policy_definition_id = "/providers/Microsoft.Management/managementGroups/ESLZ/providers/Microsoft.Authorization/policyDefinitions/Deploy-Diagnostics-MySQL"
+    policy_definition_id = "/providers/Microsoft.Management/managementGroups/${var.management_group_name}/providers/Microsoft.Authorization/policyDefinitions/Deploy-Diagnostics-MySQL"
     reference_id         = "DeployDiagnosticsMySQL"
-    parameters = {
-      logAnalytics = "[parameters('logAnalytics')]"
-      effect       = "[parameters('MySQLLogAnalyticsEffect')]"
-      profileName  = "[parameters('profileName')]"
-    }
+    parameter_values     = <<VALUES
+{
+  "logAnalytics": {
+    "value": "[parameters('logAnalytics')]"
+  },
+  "effect": {
+    "value": "[parameters('MySQLLogAnalyticsEffect')]"
+  },
+  "profileName": {
+    "value": "[parameters('profileName')]"
   }
+}
+VALUES
+  }
+
   policy_definition_reference {
-    policy_definition_id = "/providers/Microsoft.Management/managementGroups/ESLZ/providers/Microsoft.Authorization/policyDefinitions/Deploy-Diagnostics-NetworkSecurityGroups"
+    policy_definition_id = "/providers/Microsoft.Management/managementGroups/${var.management_group_name}/providers/Microsoft.Authorization/policyDefinitions/Deploy-Diagnostics-NetworkSecurityGroups"
     reference_id         = "DeployDiagnosticsNetworkSecurityGroups"
-    parameters = {
-      logAnalytics = "[parameters('logAnalytics')]"
-      effect       = "[parameters('NetworkSecurityGroupsLogAnalyticsEffect')]"
-      profileName  = "[parameters('profileName')]"
-    }
+    parameter_values     = <<VALUES
+{
+  "logAnalytics": {
+    "value": "[parameters('logAnalytics')]"
+  },
+  "effect": {
+    "value": "[parameters('NetworkSecurityGroupsLogAnalyticsEffect')]"
+  },
+  "profileName": {
+    "value": "[parameters('profileName')]"
   }
+}
+VALUES
+  }
+
   policy_definition_reference {
-    policy_definition_id = "/providers/Microsoft.Management/managementGroups/ESLZ/providers/Microsoft.Authorization/policyDefinitions/Deploy-Diagnostics-NIC"
+    policy_definition_id = "/providers/Microsoft.Management/managementGroups/${var.management_group_name}/providers/Microsoft.Authorization/policyDefinitions/Deploy-Diagnostics-NIC"
     reference_id         = "DeployDiagnosticsNIC"
-    parameters = {
-      logAnalytics = "[parameters('logAnalytics')]"
-      effect       = "[parameters('NetworkNICLogAnalyticsEffect')]"
-      profileName  = "[parameters('profileName')]"
-    }
+    parameter_values     = <<VALUES
+{
+  "logAnalytics": {
+    "value": "[parameters('logAnalytics')]"
+  },
+  "effect": {
+    "value": "[parameters('NetworkNICLogAnalyticsEffect')]"
+  },
+  "profileName": {
+    "value": "[parameters('profileName')]"
   }
+}
+VALUES
+  }
+
   policy_definition_reference {
-    policy_definition_id = "/providers/Microsoft.Management/managementGroups/ESLZ/providers/Microsoft.Authorization/policyDefinitions/Deploy-Diagnostics-PostgreSQL"
+    policy_definition_id = "/providers/Microsoft.Management/managementGroups/${var.management_group_name}/providers/Microsoft.Authorization/policyDefinitions/Deploy-Diagnostics-PostgreSQL"
     reference_id         = "DeployDiagnosticsPostgreSQL"
-    parameters = {
-      logAnalytics = "[parameters('logAnalytics')]"
-      effect       = "[parameters('PostgreSQLLogAnalyticsEffect')]"
-      profileName  = "[parameters('profileName')]"
-    }
+    parameter_values     = <<VALUES
+{
+  "logAnalytics": {
+    "value": "[parameters('logAnalytics')]"
+  },
+  "effect": {
+    "value": "[parameters('PostgreSQLLogAnalyticsEffect')]"
+  },
+  "profileName": {
+    "value": "[parameters('profileName')]"
   }
+}
+VALUES
+  }
+
   policy_definition_reference {
-    policy_definition_id = "/providers/Microsoft.Management/managementGroups/ESLZ/providers/Microsoft.Authorization/policyDefinitions/Deploy-Diagnostics-PowerBIEmbedded"
+    policy_definition_id = "/providers/Microsoft.Management/managementGroups/${var.management_group_name}/providers/Microsoft.Authorization/policyDefinitions/Deploy-Diagnostics-PowerBIEmbedded"
     reference_id         = "DeployDiagnosticsPowerBIEmbedded"
-    parameters = {
-      logAnalytics = "[parameters('logAnalytics')]"
-      effect       = "[parameters('PowerBIEmbeddedLogAnalyticsEffect')]"
-      profileName  = "[parameters('profileName')]"
-    }
+    parameter_values     = <<VALUES
+{
+  "logAnalytics": {
+    "value": "[parameters('logAnalytics')]"
+  },
+  "effect": {
+    "value": "[parameters('PowerBIEmbeddedLogAnalyticsEffect')]"
+  },
+  "profileName": {
+    "value": "[parameters('profileName')]"
   }
+}
+VALUES
+  }
+
   policy_definition_reference {
-    policy_definition_id = "/providers/Microsoft.Management/managementGroups/ESLZ/providers/Microsoft.Authorization/policyDefinitions/Deploy-Diagnostics-PublicIP"
+    policy_definition_id = "/providers/Microsoft.Management/managementGroups/${var.management_group_name}/providers/Microsoft.Authorization/policyDefinitions/Deploy-Diagnostics-PublicIP"
     reference_id         = "DeployDiagnosticsPublicIP"
-    parameters = {
-      logAnalytics = "[parameters('logAnalytics')]"
-      effect       = "[parameters('NetworkPublicIPNicLogAnalyticsEffect')]"
-      profileName  = "[parameters('profileName')]"
-    }
+    parameter_values     = <<VALUES
+{
+  "logAnalytics": {
+    "value": "[parameters('logAnalytics')]"
+  },
+  "effect": {
+    "value": "[parameters('NetworkPublicIPNicLogAnalyticsEffect')]"
+  },
+  "profileName": {
+    "value": "[parameters('profileName')]"
   }
+}
+VALUES
+  }
+
   policy_definition_reference {
-    policy_definition_id = "/providers/Microsoft.Management/managementGroups/ESLZ/providers/Microsoft.Authorization/policyDefinitions/Deploy-Diagnostics-RecoveryVault"
+    policy_definition_id = "/providers/Microsoft.Management/managementGroups/${var.management_group_name}/providers/Microsoft.Authorization/policyDefinitions/Deploy-Diagnostics-RecoveryVault"
     reference_id         = "DeployDiagnosticsRecoveryVault"
-    parameters = {
-      logAnalytics = "[parameters('logAnalytics')]"
-      effect       = "[parameters('RecoveryVaultLogAnalyticsEffect')]"
-      profileName  = "[parameters('profileName')]"
-    }
+    parameter_values     = <<VALUES
+{
+  "logAnalytics": {
+    "value": "[parameters('logAnalytics')]"
+  },
+  "effect": {
+    "value": "[parameters('RecoveryVaultLogAnalyticsEffect')]"
+  },
+  "profileName": {
+    "value": "[parameters('profileName')]"
   }
+}
+VALUES
+  }
+
   policy_definition_reference {
-    policy_definition_id = "/providers/Microsoft.Management/managementGroups/ESLZ/providers/Microsoft.Authorization/policyDefinitions/Deploy-Diagnostics-RedisCache"
+    policy_definition_id = "/providers/Microsoft.Management/managementGroups/${var.management_group_name}/providers/Microsoft.Authorization/policyDefinitions/Deploy-Diagnostics-RedisCache"
     reference_id         = "DeployDiagnosticsRedisCache"
-    parameters = {
-      logAnalytics = "[parameters('logAnalytics')]"
-      effect       = "[parameters('RedisCacheLogAnalyticsEffect')]"
-      profileName  = "[parameters('profileName')]"
-    }
+    parameter_values     = <<VALUES
+{
+  "logAnalytics": {
+    "value": "[parameters('logAnalytics')]"
+  },
+  "effect": {
+    "value": "[parameters('RedisCacheLogAnalyticsEffect')]"
+  },
+  "profileName": {
+    "value": "[parameters('profileName')]"
   }
+}
+VALUES
+  }
+
   policy_definition_reference {
-    policy_definition_id = "/providers/Microsoft.Management/managementGroups/ESLZ/providers/Microsoft.Authorization/policyDefinitions/Deploy-Diagnostics-Relay"
+    policy_definition_id = "/providers/Microsoft.Management/managementGroups/${var.management_group_name}/providers/Microsoft.Authorization/policyDefinitions/Deploy-Diagnostics-Relay"
     reference_id         = "DeployDiagnosticsRelay"
-    parameters = {
-      logAnalytics = "[parameters('logAnalytics')]"
-      effect       = "[parameters('RelayLogAnalyticsEffect')]"
-      profileName  = "[parameters('profileName')]"
-    }
+    parameter_values     = <<VALUES
+{
+  "logAnalytics": {
+    "value": "[parameters('logAnalytics')]"
+  },
+  "effect": {
+    "value": "[parameters('RelayLogAnalyticsEffect')]"
+  },
+  "profileName": {
+    "value": "[parameters('profileName')]"
   }
+}
+VALUES
+  }
+
   policy_definition_reference {
-    policy_definition_id = "/providers/Microsoft.Management/managementGroups/ESLZ/providers/Microsoft.Authorization/policyDefinitions/Deploy-Diagnostics-LogicAppsWF"
+    policy_definition_id = "/providers/Microsoft.Management/managementGroups/${var.management_group_name}/providers/Microsoft.Authorization/policyDefinitions/Deploy-Diagnostics-LogicAppsWF"
     reference_id         = "DeployDiagnosticsLogicAppsWF"
-    parameters = {
-      logAnalytics = "[parameters('logAnalytics')]"
-      effect       = "[parameters('LogicAppsWFLogAnalyticsEffect')]"
-      profileName  = "[parameters('profileName')]"
-    }
+    parameter_values     = <<VALUES
+{
+  "logAnalytics": {
+    "value": "[parameters('logAnalytics')]"
+  },
+  "effect": {
+    "value": "[parameters('LogicAppsWFLogAnalyticsEffect')]"
+  },
+  "profileName": {
+    "value": "[parameters('profileName')]"
   }
+}
+VALUES
+  }
+
   policy_definition_reference {
-    policy_definition_id = "/providers/Microsoft.Management/managementGroups/ESLZ/providers/Microsoft.Authorization/policyDefinitions/Deploy-Diagnostics-SearchServices"
+    policy_definition_id = "/providers/Microsoft.Management/managementGroups/${var.management_group_name}/providers/Microsoft.Authorization/policyDefinitions/Deploy-Diagnostics-SearchServices"
     reference_id         = "DeployDiagnosticsSearchServices"
-    parameters = {
-      logAnalytics = "[parameters('logAnalytics')]"
-      effect       = "[parameters('SearchServicesLogAnalyticsEffect')]"
-      profileName  = "[parameters('profileName')]"
-    }
+    parameter_values     = <<VALUES
+{
+  "logAnalytics": {
+    "value": "[parameters('logAnalytics')]"
+  },
+  "effect": {
+    "value": "[parameters('SearchServicesLogAnalyticsEffect')]"
+  },
+  "profileName": {
+    "value": "[parameters('profileName')]"
   }
+}
+VALUES
+  }
+
   policy_definition_reference {
-    policy_definition_id = "/providers/Microsoft.Management/managementGroups/ESLZ/providers/Microsoft.Authorization/policyDefinitions/Deploy-Diagnostics-SignalR"
+    policy_definition_id = "/providers/Microsoft.Management/managementGroups/${var.management_group_name}/providers/Microsoft.Authorization/policyDefinitions/Deploy-Diagnostics-SignalR"
     reference_id         = "DeployDiagnosticsSignalR"
-    parameters = {
-      logAnalytics = "[parameters('logAnalytics')]"
-      effect       = "[parameters('SignalRLogAnalyticsEffect')]"
-      profileName  = "[parameters('profileName')]"
-    }
+    parameter_values     = <<VALUES
+{
+  "logAnalytics": {
+    "value": "[parameters('logAnalytics')]"
+  },
+  "effect": {
+    "value": "[parameters('SignalRLogAnalyticsEffect')]"
+  },
+  "profileName": {
+    "value": "[parameters('profileName')]"
   }
+}
+VALUES
+  }
+
   policy_definition_reference {
-    policy_definition_id = "/providers/Microsoft.Management/managementGroups/ESLZ/providers/Microsoft.Authorization/policyDefinitions/Deploy-Diagnostics-SQLDBs"
+    policy_definition_id = "/providers/Microsoft.Management/managementGroups/${var.management_group_name}/providers/Microsoft.Authorization/policyDefinitions/Deploy-Diagnostics-SQLDBs"
     reference_id         = "DeployDiagnosticsSQLDBs"
-    parameters = {
-      logAnalytics = "[parameters('logAnalytics')]"
-      effect       = "[parameters('SQLDBsLogAnalyticsEffect')]"
-      profileName  = "[parameters('profileName')]"
-    }
+    parameter_values     = <<VALUES
+{
+  "logAnalytics": {
+    "value": "[parameters('logAnalytics')]"
+  },
+  "effect": {
+    "value": "[parameters('SQLDBsLogAnalyticsEffect')]"
+  },
+  "profileName": {
+    "value": "[parameters('profileName')]"
   }
+}
+VALUES
+  }
+
   policy_definition_reference {
-    policy_definition_id = "/providers/Microsoft.Management/managementGroups/ESLZ/providers/Microsoft.Authorization/policyDefinitions/Deploy-Diagnostics-SQLElasticPools"
+    policy_definition_id = "/providers/Microsoft.Management/managementGroups/${var.management_group_name}/providers/Microsoft.Authorization/policyDefinitions/Deploy-Diagnostics-SQLElasticPools"
     reference_id         = "DeployDiagnosticsSQLElasticPools"
-    parameters = {
-      logAnalytics = "[parameters('logAnalytics')]"
-      effect       = "[parameters('SQLElasticPoolsLogAnalyticsEffect')]"
-      profileName  = "[parameters('profileName')]"
-    }
+    parameter_values     = <<VALUES
+{
+  "logAnalytics": {
+    "value": "[parameters('logAnalytics')]"
+  },
+  "effect": {
+    "value": "[parameters('SQLElasticPoolsLogAnalyticsEffect')]"
+  },
+  "profileName": {
+    "value": "[parameters('profileName')]"
   }
+}
+VALUES
+  }
+
   policy_definition_reference {
-    policy_definition_id = "/providers/Microsoft.Management/managementGroups/ESLZ/providers/Microsoft.Authorization/policyDefinitions/Deploy-Diagnostics-SQLMI"
+    policy_definition_id = "/providers/Microsoft.Management/managementGroups/${var.management_group_name}/providers/Microsoft.Authorization/policyDefinitions/Deploy-Diagnostics-SQLMI"
     reference_id         = "DeployDiagnosticsSQLMI"
-    parameters = {
-      logAnalytics = "[parameters('logAnalytics')]"
-      effect       = "[parameters('SQLMLogAnalyticsEffect')]"
-      profileName  = "[parameters('profileName')]"
-    }
+    parameter_values     = <<VALUES
+{
+  "logAnalytics": {
+    "value": "[parameters('logAnalytics')]"
+  },
+  "effect": {
+    "value": "[parameters('SQLMLogAnalyticsEffect')]"
+  },
+  "profileName": {
+    "value": "[parameters('profileName')]"
   }
+}
+VALUES
+  }
+
   policy_definition_reference {
-    policy_definition_id = "/providers/Microsoft.Management/managementGroups/ESLZ/providers/Microsoft.Authorization/policyDefinitions/Deploy-Diagnostics-StreamAnalytics"
+    policy_definition_id = "/providers/Microsoft.Management/managementGroups/${var.management_group_name}/providers/Microsoft.Authorization/policyDefinitions/Deploy-Diagnostics-StreamAnalytics"
     reference_id         = "DeployDiagnosticsStreamAnalytics"
-    parameters = {
-      logAnalytics = "[parameters('logAnalytics')]"
-      effect       = "[parameters('StreamAnalyticsLogAnalyticsEffect')]"
-      profileName  = "[parameters('profileName')]"
-    }
+    parameter_values     = <<VALUES
+{
+  "logAnalytics": {
+    "value": "[parameters('logAnalytics')]"
+  },
+  "effect": {
+    "value": "[parameters('StreamAnalyticsLogAnalyticsEffect')]"
+  },
+  "profileName": {
+    "value": "[parameters('profileName')]"
   }
+}
+VALUES
+  }
+
   policy_definition_reference {
-    policy_definition_id = "/providers/Microsoft.Management/managementGroups/ESLZ/providers/Microsoft.Authorization/policyDefinitions/Deploy-Diagnostics-TimeSeriesInsights"
+    policy_definition_id = "/providers/Microsoft.Management/managementGroups/${var.management_group_name}/providers/Microsoft.Authorization/policyDefinitions/Deploy-Diagnostics-TimeSeriesInsights"
     reference_id         = "DeployDiagnosticsTimeSeriesInsights"
-    parameters = {
-      logAnalytics = "[parameters('logAnalytics')]"
-      effect       = "[parameters('TimeSeriesInsightsLogAnalyticsEffect')]"
-      profileName  = "[parameters('profileName')]"
-    }
+    parameter_values     = <<VALUES
+{
+  "logAnalytics": {
+    "value": "[parameters('logAnalytics')]"
+  },
+  "effect": {
+    "value": "[parameters('TimeSeriesInsightsLogAnalyticsEffect')]"
+  },
+  "profileName": {
+    "value": "[parameters('profileName')]"
   }
+}
+VALUES
+  }
+
   policy_definition_reference {
-    policy_definition_id = "/providers/Microsoft.Management/managementGroups/ESLZ/providers/Microsoft.Authorization/policyDefinitions/Deploy-Diagnostics-TrafficManager"
+    policy_definition_id = "/providers/Microsoft.Management/managementGroups/${var.management_group_name}/providers/Microsoft.Authorization/policyDefinitions/Deploy-Diagnostics-TrafficManager"
     reference_id         = "DeployDiagnosticsTrafficManager"
-    parameters = {
-      logAnalytics = "[parameters('logAnalytics')]"
-      effect       = "[parameters('TrafficManagerLogAnalyticsEffect')]"
-      profileName  = "[parameters('profileName')]"
-    }
+    parameter_values     = <<VALUES
+{
+  "logAnalytics": {
+    "value": "[parameters('logAnalytics')]"
+  },
+  "effect": {
+    "value": "[parameters('TrafficManagerLogAnalyticsEffect')]"
+  },
+  "profileName": {
+    "value": "[parameters('profileName')]"
   }
+}
+VALUES
+  }
+
   policy_definition_reference {
-    policy_definition_id = "/providers/Microsoft.Management/managementGroups/ESLZ/providers/Microsoft.Authorization/policyDefinitions/Deploy-Diagnostics-VirtualNetwork"
+    policy_definition_id = "/providers/Microsoft.Management/managementGroups/${var.management_group_name}/providers/Microsoft.Authorization/policyDefinitions/Deploy-Diagnostics-VirtualNetwork"
     reference_id         = "DeployDiagnosticsVirtualNetwork"
-    parameters = {
-      logAnalytics = "[parameters('logAnalytics')]"
-      effect       = "[parameters('VirtualNetworkLogAnalyticsEffect')]"
-      profileName  = "[parameters('profileName')]"
-    }
+    parameter_values     = <<VALUES
+{
+  "logAnalytics": {
+    "value": "[parameters('logAnalytics')]"
+  },
+  "effect": {
+    "value": "[parameters('VirtualNetworkLogAnalyticsEffect')]"
+  },
+  "profileName": {
+    "value": "[parameters('profileName')]"
   }
+}
+VALUES
+  }
+
   policy_definition_reference {
-    policy_definition_id = "/providers/Microsoft.Management/managementGroups/ESLZ/providers/Microsoft.Authorization/policyDefinitions/Deploy-Diagnostics-VM"
+    policy_definition_id = "/providers/Microsoft.Management/managementGroups/${var.management_group_name}/providers/Microsoft.Authorization/policyDefinitions/Deploy-Diagnostics-VM"
     reference_id         = "DeployDiagnosticsVM"
-    parameters = {
-      logAnalytics = "[parameters('logAnalytics')]"
-      effect       = "[parameters('VirtualMachinesLogAnalyticsEffect')]"
-      profileName  = "[parameters('profileName')]"
-    }
+    parameter_values     = <<VALUES
+{
+  "logAnalytics": {
+    "value": "[parameters('logAnalytics')]"
+  },
+  "effect": {
+    "value": "[parameters('VirtualMachinesLogAnalyticsEffect')]"
+  },
+  "profileName": {
+    "value": "[parameters('profileName')]"
   }
+}
+VALUES
+  }
+
   policy_definition_reference {
-    policy_definition_id = "/providers/Microsoft.Management/managementGroups/ESLZ/providers/Microsoft.Authorization/policyDefinitions/Deploy-Diagnostics-VMSS"
+    policy_definition_id = "/providers/Microsoft.Management/managementGroups/${var.management_group_name}/providers/Microsoft.Authorization/policyDefinitions/Deploy-Diagnostics-VMSS"
     reference_id         = "DeployDiagnosticsVMSS"
-    parameters = {
-      logAnalytics = "[parameters('logAnalytics')]"
-      effect       = "[parameters('VMSSLogAnalyticsEffect')]"
-      profileName  = "[parameters('profileName')]"
-    }
+    parameter_values     = <<VALUES
+{
+  "logAnalytics": {
+    "value": "[parameters('logAnalytics')]"
+  },
+  "effect": {
+    "value": "[parameters('VMSSLogAnalyticsEffect')]"
+  },
+  "profileName": {
+    "value": "[parameters('profileName')]"
   }
+}
+VALUES
+  }
+
   policy_definition_reference {
-    policy_definition_id = "/providers/Microsoft.Management/managementGroups/ESLZ/providers/Microsoft.Authorization/policyDefinitions/Deploy-Diagnostics-VNetGW"
+    policy_definition_id = "/providers/Microsoft.Management/managementGroups/${var.management_group_name}/providers/Microsoft.Authorization/policyDefinitions/Deploy-Diagnostics-VNetGW"
     reference_id         = "DeployDiagnosticsVNetGW"
-    parameters = {
-      logAnalytics = "[parameters('logAnalytics')]"
-      effect       = "[parameters('VNetGWLogAnalyticsEffect')]"
-      profileName  = "[parameters('profileName')]"
-    }
+    parameter_values     = <<VALUES
+{
+  "logAnalytics": {
+    "value": "[parameters('logAnalytics')]"
+  },
+  "effect": {
+    "value": "[parameters('VNetGWLogAnalyticsEffect')]"
+  },
+  "profileName": {
+    "value": "[parameters('profileName')]"
   }
+}
+VALUES
+  }
+
   policy_definition_reference {
-    policy_definition_id = "/providers/Microsoft.Management/managementGroups/ESLZ/providers/Microsoft.Authorization/policyDefinitions/Deploy-Diagnostics-ServiceBus"
+    policy_definition_id = "/providers/Microsoft.Management/managementGroups/${var.management_group_name}/providers/Microsoft.Authorization/policyDefinitions/Deploy-Diagnostics-ServiceBus"
     reference_id         = "DeployDiagnosticsServiceBus"
-    parameters = {
-      logAnalytics = "[parameters('logAnalytics')]"
-      effect       = "[parameters('ServiceBusLogAnalyticsEffect')]"
-      profileName  = "[parameters('profileName')]"
-    }
+    parameter_values     = <<VALUES
+{
+  "logAnalytics": {
+    "value": "[parameters('logAnalytics')]"
+  },
+  "effect": {
+    "value": "[parameters('ServiceBusLogAnalyticsEffect')]"
+  },
+  "profileName": {
+    "value": "[parameters('profileName')]"
   }
+}
+VALUES
+  }
+
   policy_definition_reference {
-    policy_definition_id = "/providers/Microsoft.Management/managementGroups/ESLZ/providers/Microsoft.Authorization/policyDefinitions/Deploy-Diagnostics-WebServerFarm"
+    policy_definition_id = "/providers/Microsoft.Management/managementGroups/${var.management_group_name}/providers/Microsoft.Authorization/policyDefinitions/Deploy-Diagnostics-WebServerFarm"
     reference_id         = "DeployDiagnosticsWebServerFarm"
-    parameters = {
-      logAnalytics = "[parameters('logAnalytics')]"
-      effect       = "[parameters('AppServiceLogAnalyticsEffect')]"
-      profileName  = "[parameters('profileName')]"
-    }
+    parameter_values     = <<VALUES
+{
+  "logAnalytics": {
+    "value": "[parameters('logAnalytics')]"
+  },
+  "effect": {
+    "value": "[parameters('AppServiceLogAnalyticsEffect')]"
+  },
+  "profileName": {
+    "value": "[parameters('profileName')]"
   }
+}
+VALUES
+  }
+
   policy_definition_reference {
-    policy_definition_id = "/providers/Microsoft.Management/managementGroups/ESLZ/providers/Microsoft.Authorization/policyDefinitions/Deploy-Diagnostics-LogicAppsISE"
+    policy_definition_id = "/providers/Microsoft.Management/managementGroups/${var.management_group_name}/providers/Microsoft.Authorization/policyDefinitions/Deploy-Diagnostics-LogicAppsISE"
     reference_id         = "DeployDiagnosticsLogicAppsISE"
-    parameters = {
-      logAnalytics = "[parameters('logAnalytics')]"
-      effect       = "[parameters('LogicAppsISELogAnalyticsEffect')]"
-      profileName  = "[parameters('profileName')]"
-    }
+    parameter_values     = <<VALUES
+{
+  "logAnalytics": {
+    "value": "[parameters('logAnalytics')]"
+  },
+  "effect": {
+    "value": "[parameters('LogicAppsISELogAnalyticsEffect')]"
+  },
+  "profileName": {
+    "value": "[parameters('profileName')]"
   }
+}
+VALUES
+  }
+
   policy_definition_reference {
-    policy_definition_id = "/providers/Microsoft.Management/managementGroups/ESLZ/providers/Microsoft.Authorization/policyDefinitions/Deploy-Diagnostics-KeyVault"
+    policy_definition_id = "/providers/Microsoft.Management/managementGroups/${var.management_group_name}/providers/Microsoft.Authorization/policyDefinitions/Deploy-Diagnostics-KeyVault"
     reference_id         = "DeployDiagnosticsKeyVault"
-    parameters = {
-      logAnalytics = "[parameters('logAnalytics')]"
-      effect       = "[parameters('KeyVaultLogAnalyticsEffect')]"
-      profileName  = "[parameters('profileName')]"
-    }
+    parameter_values     = <<VALUES
+{
+  "logAnalytics": {
+    "value": "[parameters('logAnalytics')]"
+  },
+  "effect": {
+    "value": "[parameters('KeyVaultLogAnalyticsEffect')]"
+  },
+  "profileName": {
+    "value": "[parameters('profileName')]"
   }
+}
+VALUES
+  }
+
   policy_definition_reference {
-    policy_definition_id = "/providers/Microsoft.Management/managementGroups/ESLZ/providers/Microsoft.Authorization/policyDefinitions/Deploy-Diagnostics-ACR"
+    policy_definition_id = "/providers/Microsoft.Management/managementGroups/${var.management_group_name}/providers/Microsoft.Authorization/policyDefinitions/Deploy-Diagnostics-ACR"
     reference_id         = "DeployDiagnosticsACR"
-    parameters = {
-      logAnalytics = "[parameters('logAnalytics')]"
-      effect       = "[parameters('ACRLogAnalyticsEffect')]"
-      profileName  = "[parameters('profileName')]"
-    }
+    parameter_values     = <<VALUES
+{
+  "logAnalytics": {
+    "value": "[parameters('logAnalytics')]"
+  },
+  "effect": {
+    "value": "[parameters('ACRLogAnalyticsEffect')]"
+  },
+  "profileName": {
+    "value": "[parameters('profileName')]"
   }
+}
+VALUES
+  }
+
   policy_definition_reference {
-    policy_definition_id = "/providers/Microsoft.Management/managementGroups/ESLZ/providers/Microsoft.Authorization/policyDefinitions/Deploy-Diagnostics-AKS"
+    policy_definition_id = "/providers/Microsoft.Management/managementGroups/${var.management_group_name}/providers/Microsoft.Authorization/policyDefinitions/Deploy-Diagnostics-AKS"
     reference_id         = "DeployDiagnosticsAKS"
-    parameters = {
-      logAnalytics = "[parameters('logAnalytics')]"
-      effect       = "[parameters('AKSLogAnalyticsEffect')]"
-      profileName  = "[parameters('profileName')]"
-    }
+    parameter_values     = <<VALUES
+{
+  "logAnalytics": {
+    "value": "[parameters('logAnalytics')]"
+  },
+  "effect": {
+    "value": "[parameters('AKSLogAnalyticsEffect')]"
+  },
+  "profileName": {
+    "value": "[parameters('profileName')]"
   }
+}
+VALUES
+  }
+
   policy_definition_reference {
-    policy_definition_id = "/providers/Microsoft.Management/managementGroups/ESLZ/providers/Microsoft.Authorization/policyDefinitions/Deploy-Diagnostics-AnalysisService"
+    policy_definition_id = "/providers/Microsoft.Management/managementGroups/${var.management_group_name}/providers/Microsoft.Authorization/policyDefinitions/Deploy-Diagnostics-AnalysisService"
     reference_id         = "DeployDiagnosticsAnalysisService"
-    parameters = {
-      logAnalytics = "[parameters('logAnalytics')]"
-      effect       = "[parameters('AnalysisServiceLogAnalyticsEffect')]"
-      profileName  = "[parameters('profileName')]"
-    }
+    parameter_values     = <<VALUES
+{
+  "logAnalytics": {
+    "value": "[parameters('logAnalytics')]"
+  },
+  "effect": {
+    "value": "[parameters('AnalysisServiceLogAnalyticsEffect')]"
+  },
+  "profileName": {
+    "value": "[parameters('profileName')]"
   }
+}
+VALUES
+  }
+
   policy_definition_reference {
-    policy_definition_id = "/providers/Microsoft.Management/managementGroups/ESLZ/providers/Microsoft.Authorization/policyDefinitions/Deploy-Diagnostics-APIMgmt"
+    policy_definition_id = "/providers/Microsoft.Management/managementGroups/${var.management_group_name}/providers/Microsoft.Authorization/policyDefinitions/Deploy-Diagnostics-APIMgmt"
     reference_id         = "DeployDiagnosticsAPIMgmt"
-    parameters = {
-      logAnalytics = "[parameters('logAnalytics')]"
-      effect       = "[parameters('APIMgmtLogAnalyticsEffect')]"
-      profileName  = "[parameters('profileName')]"
-    }
+    parameter_values     = <<VALUES
+{
+  "logAnalytics": {
+    "value": "[parameters('logAnalytics')]"
+  },
+  "effect": {
+    "value": "[parameters('APIMgmtLogAnalyticsEffect')]"
+  },
+  "profileName": {
+    "value": "[parameters('profileName')]"
   }
+}
+VALUES
+  }
+
   policy_definition_reference {
-    policy_definition_id = "/providers/Microsoft.Management/managementGroups/ESLZ/providers/Microsoft.Authorization/policyDefinitions/Deploy-Diagnostics-ApplicationGateway"
+    policy_definition_id = "/providers/Microsoft.Management/managementGroups/${var.management_group_name}/providers/Microsoft.Authorization/policyDefinitions/Deploy-Diagnostics-ApplicationGateway"
     reference_id         = "DeployDiagnosticsApplicationGateway"
-    parameters = {
-      logAnalytics = "[parameters('logAnalytics')]"
-      effect       = "[parameters('ApplicationGatewayLogAnalyticsEffect')]"
-      profileName  = "[parameters('profileName')]"
-    }
+    parameter_values     = <<VALUES
+{
+  "logAnalytics": {
+    "value": "[parameters('logAnalytics')]"
+  },
+  "effect": {
+    "value": "[parameters('ApplicationGatewayLogAnalyticsEffect')]"
+  },
+  "profileName": {
+    "value": "[parameters('profileName')]"
   }
+}
+VALUES
+  }
+
   policy_definition_reference {
-    policy_definition_id = "/providers/Microsoft.Management/managementGroups/ESLZ/providers/Microsoft.Authorization/policyDefinitions/Deploy-Diagnostics-AA"
+    policy_definition_id = "/providers/Microsoft.Management/managementGroups/${var.management_group_name}/providers/Microsoft.Authorization/policyDefinitions/Deploy-Diagnostics-AA"
     reference_id         = "DeployDiagnosticsAA"
-    parameters = {
-      logAnalytics = "[parameters('logAnalytics')]"
-      effect       = "[parameters('AutomationLogAnalyticsEffect')]"
-      profileName  = "[parameters('profileName')]"
-    }
+    parameter_values     = <<VALUES
+{
+  "logAnalytics": {
+    "value": "[parameters('logAnalytics')]"
+  },
+  "effect": {
+    "value": "[parameters('AutomationLogAnalyticsEffect')]"
+  },
+  "profileName": {
+    "value": "[parameters('profileName')]"
   }
+}
+VALUES
+  }
+
   policy_definition_reference {
-    policy_definition_id = "/providers/Microsoft.Management/managementGroups/ESLZ/providers/Microsoft.Authorization/policyDefinitions/Deploy-Diagnostics-Batch"
+    policy_definition_id = "/providers/Microsoft.Management/managementGroups/${var.management_group_name}/providers/Microsoft.Authorization/policyDefinitions/Deploy-Diagnostics-Batch"
     reference_id         = "DeployDiagnosticsBatch"
-    parameters = {
-      logAnalytics = "[parameters('logAnalytics')]"
-      effect       = "[parameters('BatchLogAnalyticsEffect')]"
-      profileName  = "[parameters('profileName')]"
-    }
+    parameter_values     = <<VALUES
+{
+  "logAnalytics": {
+    "value": "[parameters('logAnalytics')]"
+  },
+  "effect": {
+    "value": "[parameters('BatchLogAnalyticsEffect')]"
+  },
+  "profileName": {
+    "value": "[parameters('profileName')]"
   }
+}
+VALUES
+  }
+
   policy_definition_reference {
-    policy_definition_id = "/providers/Microsoft.Management/managementGroups/ESLZ/providers/Microsoft.Authorization/policyDefinitions/Deploy-Diagnostics-CDNEndpoints"
+    policy_definition_id = "/providers/Microsoft.Management/managementGroups/${var.management_group_name}/providers/Microsoft.Authorization/policyDefinitions/Deploy-Diagnostics-CDNEndpoints"
     reference_id         = "DeployDiagnosticsCDNEndpoints"
-    parameters = {
-      logAnalytics = "[parameters('logAnalytics')]"
-      effect       = "[parameters('CDNEndpointsLogAnalyticsEffect')]"
-      profileName  = "[parameters('profileName')]"
-    }
+    parameter_values     = <<VALUES
+{
+  "logAnalytics": {
+    "value": "[parameters('logAnalytics')]"
+  },
+  "effect": {
+    "value": "[parameters('CDNEndpointsLogAnalyticsEffect')]"
+  },
+  "profileName": {
+    "value": "[parameters('profileName')]"
   }
+}
+VALUES
+  }
+
   policy_definition_reference {
-    policy_definition_id = "/providers/Microsoft.Management/managementGroups/ESLZ/providers/Microsoft.Authorization/policyDefinitions/Deploy-Diagnostics-CognitiveServices"
+    policy_definition_id = "/providers/Microsoft.Management/managementGroups/${var.management_group_name}/providers/Microsoft.Authorization/policyDefinitions/Deploy-Diagnostics-CognitiveServices"
     reference_id         = "DeployDiagnosticsCognitiveServices"
-    parameters = {
-      logAnalytics = "[parameters('logAnalytics')]"
-      effect       = "[parameters('CognitiveServicesLogAnalyticsEffect')]"
-      profileName  = "[parameters('profileName')]"
-    }
+    parameter_values     = <<VALUES
+{
+  "logAnalytics": {
+    "value": "[parameters('logAnalytics')]"
+  },
+  "effect": {
+    "value": "[parameters('CognitiveServicesLogAnalyticsEffect')]"
+  },
+  "profileName": {
+    "value": "[parameters('profileName')]"
   }
+}
+VALUES
+  }
+
   policy_definition_reference {
-    policy_definition_id = "/providers/Microsoft.Management/managementGroups/ESLZ/providers/Microsoft.Authorization/policyDefinitions/Deploy-Diagnostics-CosmosDB"
+    policy_definition_id = "/providers/Microsoft.Management/managementGroups/${var.management_group_name}/providers/Microsoft.Authorization/policyDefinitions/Deploy-Diagnostics-CosmosDB"
     reference_id         = "DeployDiagnosticsCosmosDB"
-    parameters = {
-      logAnalytics = "[parameters('logAnalytics')]"
-      effect       = "[parameters('CosmosLogAnalyticsEffect')]"
-      profileName  = "[parameters('profileName')]"
-    }
+    parameter_values     = <<VALUES
+{
+  "logAnalytics": {
+    "value": "[parameters('logAnalytics')]"
+  },
+  "effect": {
+    "value": "[parameters('CosmosLogAnalyticsEffect')]"
+  },
+  "profileName": {
+    "value": "[parameters('profileName')]"
   }
+}
+VALUES
+  }
+
   policy_definition_reference {
-    policy_definition_id = "/providers/Microsoft.Management/managementGroups/ESLZ/providers/Microsoft.Authorization/policyDefinitions/Deploy-Diagnostics-Databricks"
+    policy_definition_id = "/providers/Microsoft.Management/managementGroups/${var.management_group_name}/providers/Microsoft.Authorization/policyDefinitions/Deploy-Diagnostics-Databricks"
     reference_id         = "DeployDiagnosticsDatabricks"
-    parameters = {
-      logAnalytics = "[parameters('logAnalytics')]"
-      effect       = "[parameters('DatabricksLogAnalyticsEffect')]"
-      profileName  = "[parameters('profileName')]"
-    }
+    parameter_values     = <<VALUES
+{
+  "logAnalytics": {
+    "value": "[parameters('logAnalytics')]"
+  },
+  "effect": {
+    "value": "[parameters('DatabricksLogAnalyticsEffect')]"
+  },
+  "profileName": {
+    "value": "[parameters('profileName')]"
   }
+}
+VALUES
+  }
+
   policy_definition_reference {
-    policy_definition_id = "/providers/Microsoft.Management/managementGroups/ESLZ/providers/Microsoft.Authorization/policyDefinitions/Deploy-Diagnostics-LoadBalancer"
+    policy_definition_id = "/providers/Microsoft.Management/managementGroups/${var.management_group_name}/providers/Microsoft.Authorization/policyDefinitions/Deploy-Diagnostics-LoadBalancer"
     reference_id         = "DeployDiagnosticsLoadBalancer"
-    parameters = {
-      logAnalytics = "[parameters('logAnalytics')]"
-      effect       = "[parameters('LoadBalancerLogAnalyticsEffect')]"
-      profileName  = "[parameters('profileName')]"
-    }
+    parameter_values     = <<VALUES
+{
+  "logAnalytics": {
+    "value": "[parameters('logAnalytics')]"
+  },
+  "effect": {
+    "value": "[parameters('LoadBalancerLogAnalyticsEffect')]"
+  },
+  "profileName": {
+    "value": "[parameters('profileName')]"
   }
+}
+VALUES
+  }
+
   policy_definition_reference {
-    policy_definition_id = "/providers/Microsoft.Management/managementGroups/ESLZ/providers/Microsoft.Authorization/policyDefinitions/Deploy-Diagnostics-DataFactory"
+    policy_definition_id = "/providers/Microsoft.Management/managementGroups/${var.management_group_name}/providers/Microsoft.Authorization/policyDefinitions/Deploy-Diagnostics-DataFactory"
     reference_id         = "DeployDiagnosticsDataFactory"
-    parameters = {
-      logAnalytics = "[parameters('logAnalytics')]"
-      effect       = "[parameters('DataFactoryLogAnalyticsEffect')]"
-      profileName  = "[parameters('profileName')]"
-    }
+    parameter_values     = <<VALUES
+{
+  "logAnalytics": {
+    "value": "[parameters('logAnalytics')]"
+  },
+  "effect": {
+    "value": "[parameters('DataFactoryLogAnalyticsEffect')]"
+  },
+  "profileName": {
+    "value": "[parameters('profileName')]"
   }
+}
+VALUES
+  }
+
   policy_definition_reference {
-    policy_definition_id = "/providers/Microsoft.Management/managementGroups/ESLZ/providers/Microsoft.Authorization/policyDefinitions/Deploy-Diagnostics-DLAnalytics"
+    policy_definition_id = "/providers/Microsoft.Management/managementGroups/${var.management_group_name}/providers/Microsoft.Authorization/policyDefinitions/Deploy-Diagnostics-DLAnalytics"
     reference_id         = "DeployDiagnosticsDLAnalytics"
-    parameters = {
-      logAnalytics = "[parameters('logAnalytics')]"
-      effect       = "[parameters('DataLakeAnalyticsLogAnalyticsEffect')]"
-      profileName  = "[parameters('profileName')]"
-    }
+    parameter_values     = <<VALUES
+{
+  "logAnalytics": {
+    "value": "[parameters('logAnalytics')]"
+  },
+  "effect": {
+    "value": "[parameters('DataLakeAnalyticsLogAnalyticsEffect')]"
+  },
+  "profileName": {
+    "value": "[parameters('profileName')]"
   }
+}
+VALUES
+  }
+
   policy_definition_reference {
-    policy_definition_id = "/providers/Microsoft.Management/managementGroups/ESLZ/providers/Microsoft.Authorization/policyDefinitions/Deploy-Diagnostics-EventGridSub"
+    policy_definition_id = "/providers/Microsoft.Management/managementGroups/${var.management_group_name}/providers/Microsoft.Authorization/policyDefinitions/Deploy-Diagnostics-EventGridSub"
     reference_id         = "DeployDiagnosticsEventGridSub"
-    parameters = {
-      logAnalytics = "[parameters('logAnalytics')]"
-      effect       = "[parameters('EventGridSubLogAnalyticsEffect')]"
-      profileName  = "[parameters('profileName')]"
-    }
+    parameter_values     = <<VALUES
+{
+  "logAnalytics": {
+    "value": "[parameters('logAnalytics')]"
+  },
+  "effect": {
+    "value": "[parameters('EventGridSubLogAnalyticsEffect')]"
+  },
+  "profileName": {
+    "value": "[parameters('profileName')]"
   }
+}
+VALUES
+  }
+
   policy_definition_reference {
-    policy_definition_id = "/providers/Microsoft.Management/managementGroups/ESLZ/providers/Microsoft.Authorization/policyDefinitions/Deploy-Diagnostics-EventGridTopic"
+    policy_definition_id = "/providers/Microsoft.Management/managementGroups/${var.management_group_name}/providers/Microsoft.Authorization/policyDefinitions/Deploy-Diagnostics-EventGridTopic"
     reference_id         = "DeployDiagnosticsEventGridTopic"
-    parameters = {
-      logAnalytics = "[parameters('logAnalytics')]"
-      effect       = "[parameters('EventGridTopicLogAnalyticsEffect')]"
-      profileName  = "[parameters('profileName')]"
-    }
+    parameter_values     = <<VALUES
+{
+  "logAnalytics": {
+    "value": "[parameters('logAnalytics')]"
+  },
+  "effect": {
+    "value": "[parameters('EventGridTopicLogAnalyticsEffect')]"
+  },
+  "profileName": {
+    "value": "[parameters('profileName')]"
   }
+}
+VALUES
+  }
+
   policy_definition_reference {
-    policy_definition_id = "/providers/Microsoft.Management/managementGroups/ESLZ/providers/Microsoft.Authorization/policyDefinitions/Deploy-Diagnostics-EventHub"
+    policy_definition_id = "/providers/Microsoft.Management/managementGroups/${var.management_group_name}/providers/Microsoft.Authorization/policyDefinitions/Deploy-Diagnostics-EventHub"
     reference_id         = "DeployDiagnosticsEventHub"
-    parameters = {
-      logAnalytics = "[parameters('logAnalytics')]"
-      effect       = "[parameters('EventHubLogAnalyticsEffect')]"
-      profileName  = "[parameters('profileName')]"
-    }
+    parameter_values     = <<VALUES
+{
+  "logAnalytics": {
+    "value": "[parameters('logAnalytics')]"
+  },
+  "effect": {
+    "value": "[parameters('EventHubLogAnalyticsEffect')]"
+  },
+  "profileName": {
+    "value": "[parameters('profileName')]"
   }
+}
+VALUES
+  }
+
   policy_definition_reference {
-    policy_definition_id = "/providers/Microsoft.Management/managementGroups/ESLZ/providers/Microsoft.Authorization/policyDefinitions/Deploy-Diagnostics-EventGridSystemTopic"
+    policy_definition_id = "/providers/Microsoft.Management/managementGroups/${var.management_group_name}/providers/Microsoft.Authorization/policyDefinitions/Deploy-Diagnostics-EventGridSystemTopic"
     reference_id         = "DeployDiagnosticsEventGridSystemTopic"
-    parameters = {
-      logAnalytics = "[parameters('logAnalytics')]"
-      effect       = "[parameters('EventSystemTopicLogAnalyticsEffect')]"
-      profileName  = "[parameters('profileName')]"
-    }
+    parameter_values     = <<VALUES
+{
+  "logAnalytics": {
+    "value": "[parameters('logAnalytics')]"
+  },
+  "effect": {
+    "value": "[parameters('EventSystemTopicLogAnalyticsEffect')]"
+  },
+  "profileName": {
+    "value": "[parameters('profileName')]"
   }
+}
+VALUES
+  }
+
   policy_definition_reference {
-    policy_definition_id = "/providers/Microsoft.Management/managementGroups/ESLZ/providers/Microsoft.Authorization/policyDefinitions/Deploy-Diagnostics-ExpressRoute"
+    policy_definition_id = "/providers/Microsoft.Management/managementGroups/${var.management_group_name}/providers/Microsoft.Authorization/policyDefinitions/Deploy-Diagnostics-ExpressRoute"
     reference_id         = "DeployDiagnosticsExpressRoute"
-    parameters = {
-      logAnalytics = "[parameters('logAnalytics')]"
-      effect       = "[parameters('ExpressRouteLogAnalyticsEffect')]"
-      profileName  = "[parameters('profileName')]"
-    }
+    parameter_values     = <<VALUES
+{
+  "logAnalytics": {
+    "value": "[parameters('logAnalytics')]"
+  },
+  "effect": {
+    "value": "[parameters('ExpressRouteLogAnalyticsEffect')]"
+  },
+  "profileName": {
+    "value": "[parameters('profileName')]"
   }
+}
+VALUES
+  }
+
   policy_definition_reference {
-    policy_definition_id = "/providers/Microsoft.Management/managementGroups/ESLZ/providers/Microsoft.Authorization/policyDefinitions/Deploy-Diagnostics-Firewall"
+    policy_definition_id = "/providers/Microsoft.Management/managementGroups/${var.management_group_name}/providers/Microsoft.Authorization/policyDefinitions/Deploy-Diagnostics-Firewall"
     reference_id         = "DeployDiagnosticsFirewall"
-    parameters = {
-      logAnalytics = "[parameters('logAnalytics')]"
-      effect       = "[parameters('FirewallLogAnalyticsEffect')]"
-      profileName  = "[parameters('profileName')]"
-    }
+    parameter_values     = <<VALUES
+{
+  "logAnalytics": {
+    "value": "[parameters('logAnalytics')]"
+  },
+  "effect": {
+    "value": "[parameters('FirewallLogAnalyticsEffect')]"
+  },
+  "profileName": {
+    "value": "[parameters('profileName')]"
   }
+}
+VALUES
+  }
+
   policy_definition_reference {
-    policy_definition_id = "/providers/Microsoft.Management/managementGroups/ESLZ/providers/Microsoft.Authorization/policyDefinitions/Deploy-Diagnostics-FrontDoor"
+    policy_definition_id = "/providers/Microsoft.Management/managementGroups/${var.management_group_name}/providers/Microsoft.Authorization/policyDefinitions/Deploy-Diagnostics-FrontDoor"
     reference_id         = "DeployDiagnosticsFrontDoor"
-    parameters = {
-      logAnalytics = "[parameters('logAnalytics')]"
-      effect       = "[parameters('FrontDoorLogAnalyticsEffect')]"
-      profileName  = "[parameters('profileName')]"
-    }
+    parameter_values     = <<VALUES
+{
+  "logAnalytics": {
+    "value": "[parameters('logAnalytics')]"
+  },
+  "effect": {
+    "value": "[parameters('FrontDoorLogAnalyticsEffect')]"
+  },
+  "profileName": {
+    "value": "[parameters('profileName')]"
   }
+}
+VALUES
+  }
+
   policy_definition_reference {
-    policy_definition_id = "/providers/Microsoft.Management/managementGroups/ESLZ/providers/Microsoft.Authorization/policyDefinitions/Deploy-Diagnostics-Function"
+    policy_definition_id = "/providers/Microsoft.Management/managementGroups/${var.management_group_name}/providers/Microsoft.Authorization/policyDefinitions/Deploy-Diagnostics-Function"
     reference_id         = "DeployDiagnosticsFunction"
-    parameters = {
-      logAnalytics = "[parameters('logAnalytics')]"
-      effect       = "[parameters('FunctionAppLogAnalyticsEffect')]"
-      profileName  = "[parameters('profileName')]"
-    }
+    parameter_values     = <<VALUES
+{
+  "logAnalytics": {
+    "value": "[parameters('logAnalytics')]"
+  },
+  "effect": {
+    "value": "[parameters('FunctionAppLogAnalyticsEffect')]"
+  },
+  "profileName": {
+    "value": "[parameters('profileName')]"
   }
+}
+VALUES
+  }
+
   policy_definition_reference {
-    policy_definition_id = "/providers/Microsoft.Management/managementGroups/ESLZ/providers/Microsoft.Authorization/policyDefinitions/Deploy-Diagnostics-HDInsight"
+    policy_definition_id = "/providers/Microsoft.Management/managementGroups/${var.management_group_name}/providers/Microsoft.Authorization/policyDefinitions/Deploy-Diagnostics-HDInsight"
     reference_id         = "DeployDiagnosticsHDInsight"
-    parameters = {
-      logAnalytics = "[parameters('logAnalytics')]"
-      effect       = "[parameters('HDInsightLogAnalyticsEffect')]"
-      profileName  = "[parameters('profileName')]"
-    }
+    parameter_values     = <<VALUES
+{
+  "logAnalytics": {
+    "value": "[parameters('logAnalytics')]"
+  },
+  "effect": {
+    "value": "[parameters('HDInsightLogAnalyticsEffect')]"
+  },
+  "profileName": {
+    "value": "[parameters('profileName')]"
   }
+}
+VALUES
+  }
+
   policy_definition_reference {
-    policy_definition_id = "/providers/Microsoft.Management/managementGroups/ESLZ/providers/Microsoft.Authorization/policyDefinitions/Deploy-Diagnostics-iotHub"
+    policy_definition_id = "/providers/Microsoft.Management/managementGroups/${var.management_group_name}/providers/Microsoft.Authorization/policyDefinitions/Deploy-Diagnostics-iotHub"
     reference_id         = "DeployDiagnosticsiotHub"
-    parameters = {
-      logAnalytics = "[parameters('logAnalytics')]"
-      effect       = "[parameters('IotHubLogAnalyticsEffect')]"
-      profileName  = "[parameters('profileName')]"
-    }
+    parameter_values     = <<VALUES
+{
+  "logAnalytics": {
+    "value": "[parameters('logAnalytics')]"
+  },
+  "effect": {
+    "value": "[parameters('IotHubLogAnalyticsEffect')]"
+  },
+  "profileName": {
+    "value": "[parameters('profileName')]"
   }
+}
+VALUES
+  }
+
   policy_definition_reference {
-    policy_definition_id = "/providers/Microsoft.Management/managementGroups/ESLZ/providers/Microsoft.Authorization/policyDefinitions/Deploy-Diagnostics-DataLakeStore"
+    policy_definition_id = "/providers/Microsoft.Management/managementGroups/${var.management_group_name}/providers/Microsoft.Authorization/policyDefinitions/Deploy-Diagnostics-DataLakeStore"
     reference_id         = "DeployDiagnosticsDataLakeStore"
-    parameters = {
-      logAnalytics = "[parameters('logAnalytics')]"
-      effect       = "[parameters('DataLakeStoreLogAnalyticsEffect')]"
-      profileName  = "[parameters('profileName')]"
-    }
+    parameter_values     = <<VALUES
+{
+  "logAnalytics": {
+    "value": "[parameters('logAnalytics')]"
+  },
+  "effect": {
+    "value": "[parameters('DataLakeStoreLogAnalyticsEffect')]"
+  },
+  "profileName": {
+    "value": "[parameters('profileName')]"
   }
+}
+VALUES
+  }
+
   policy_definition_reference {
-    policy_definition_id = "/providers/Microsoft.Management/managementGroups/ESLZ/providers/Microsoft.Authorization/policyDefinitions/Deploy-Diagnostics-Website"
+    policy_definition_id = "/providers/Microsoft.Management/managementGroups/${var.management_group_name}/providers/Microsoft.Authorization/policyDefinitions/Deploy-Diagnostics-Website"
     reference_id         = "DeployDiagnosticsWebsite"
-    parameters = {
-      logAnalytics = "[parameters('logAnalytics')]"
-      effect       = "[parameters('AppServiceWebappLogAnalyticsEffect')]"
-      profileName  = "[parameters('profileName')]"
-    }
+    parameter_values     = <<VALUES
+{
+  "logAnalytics": {
+    "value": "[parameters('logAnalytics')]"
+  },
+  "effect": {
+    "value": "[parameters('AppServiceWebappLogAnalyticsEffect')]"
+  },
+  "profileName": {
+    "value": "[parameters('profileName')]"
   }
+}
+VALUES
+  }
+
   parameters = <<PARAMETERS
 {
   "ACILogAnalyticsEffect": {

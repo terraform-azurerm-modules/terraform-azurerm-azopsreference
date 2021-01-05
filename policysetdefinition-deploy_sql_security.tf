@@ -11,36 +11,61 @@ resource "azurerm_policy_set_definition" "deploy_sql_security" {
     azurerm_policy_definition.deploy_sql_tde,
     azurerm_policy_definition.deploy_sql_vulnerabilityassessments,
   ]
+
   policy_definition_reference {
-    policy_definition_id = "/providers/Microsoft.Management/managementGroups/ESLZ/providers/Microsoft.Authorization/policyDefinitions/Deploy-Sql-Tde"
+    policy_definition_id = "/providers/Microsoft.Management/managementGroups/${var.management_group_name}/providers/Microsoft.Authorization/policyDefinitions/Deploy-Sql-Tde"
     reference_id         = "DeploySqlTde"
-    parameters = {
-      effect = "[parameters('SqlDbTdeDeploySqlSecurityEffect')]"
-    }
+    parameter_values     = <<VALUES
+{
+  "effect": {
+    "value": "[parameters('SqlDbTdeDeploySqlSecurityEffect')]"
   }
+}
+VALUES
+  }
+
   policy_definition_reference {
-    policy_definition_id = "/providers/Microsoft.Management/managementGroups/ESLZ/providers/Microsoft.Authorization/policyDefinitions/Deploy-Sql-SecurityAlertPolicies"
+    policy_definition_id = "/providers/Microsoft.Management/managementGroups/${var.management_group_name}/providers/Microsoft.Authorization/policyDefinitions/Deploy-Sql-SecurityAlertPolicies"
     reference_id         = "DeploySqlSecurityAlertPolicies"
-    parameters = {
-      effect = "[parameters('SqlDbSecurityAlertPoliciesDeploySqlSecurityEffect')]"
-    }
+    parameter_values     = <<VALUES
+{
+  "effect": {
+    "value": "[parameters('SqlDbSecurityAlertPoliciesDeploySqlSecurityEffect')]"
   }
+}
+VALUES
+  }
+
   policy_definition_reference {
-    policy_definition_id = "/providers/Microsoft.Management/managementGroups/ESLZ/providers/Microsoft.Authorization/policyDefinitions/Deploy-Sql-AuditingSettings"
+    policy_definition_id = "/providers/Microsoft.Management/managementGroups/${var.management_group_name}/providers/Microsoft.Authorization/policyDefinitions/Deploy-Sql-AuditingSettings"
     reference_id         = "DeploySqlAuditingSettings"
-    parameters = {
-      effect = "[parameters('SqlDbAuditingSettingsDeploySqlSecurityEffect')]"
-    }
+    parameter_values     = <<VALUES
+{
+  "effect": {
+    "value": "[parameters('SqlDbAuditingSettingsDeploySqlSecurityEffect')]"
   }
+}
+VALUES
+  }
+
   policy_definition_reference {
-    policy_definition_id = "/providers/Microsoft.Management/managementGroups/ESLZ/providers/Microsoft.Authorization/policyDefinitions/Deploy-Sql-vulnerabilityAssessments"
+    policy_definition_id = "/providers/Microsoft.Management/managementGroups/${var.management_group_name}/providers/Microsoft.Authorization/policyDefinitions/Deploy-Sql-vulnerabilityAssessments"
     reference_id         = "DeploySqlvulnerabilityAssessments"
-    parameters = {
-      effect                            = "[parameters('SqlDbVulnerabilityAssessmentsDeploySqlSecurityEffect')]"
-      vulnerabilityAssessmentsEmail     = "[parameters('vulnerabilityAssessmentsEmail')]"
-      vulnerabilityAssessmentsStorageID = "[parameters('vulnerabilityAssessmentsStorageID')]"
-    }
+    parameter_values     = <<VALUES
+{
+  "effect": {
+    "value": "[parameters('SqlDbVulnerabilityAssessmentsDeploySqlSecurityEffect')]"
+  },
+  "vulnerabilityAssessmentsEmail": {
+    "value": "[parameters('vulnerabilityAssessmentsEmail')]"
+  },
+  "vulnerabilityAssessmentsStorageID": {
+    "value": "[parameters('vulnerabilityAssessmentsStorageID')]"
   }
+}
+VALUES
+  }
+
   parameters = <<PARAMETERS
 {
   "SqlDbAuditingSettingsDeploySqlSecurityEffect": {

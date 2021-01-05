@@ -15,62 +15,103 @@ resource "azurerm_policy_set_definition" "deny_publicendpoints" {
     azurerm_policy_definition.deny_publicendpoint_sql,
     azurerm_policy_definition.deny_publicendpoint_storage,
   ]
+
   policy_definition_reference {
-    policy_definition_id = "/providers/Microsoft.Management/managementGroups/ESLZ/providers/Microsoft.Authorization/policyDefinitions/Deny-PublicEndpoint-CosmosDB"
+    policy_definition_id = "/providers/Microsoft.Management/managementGroups/${var.management_group_name}/providers/Microsoft.Authorization/policyDefinitions/Deny-PublicEndpoint-CosmosDB"
     reference_id         = "DenyPublicEndpointCosmosDB"
-    parameters = {
-      effect = "[parameters('CosmosPublicIpDenyEffect')]"
-    }
+    parameter_values     = <<VALUES
+{
+  "effect": {
+    "value": "[parameters('CosmosPublicIpDenyEffect')]"
   }
+}
+VALUES
+  }
+
   policy_definition_reference {
-    policy_definition_id = "/providers/Microsoft.Management/managementGroups/ESLZ/providers/Microsoft.Authorization/policyDefinitions/Deny-PublicEndpoint-MariaDB"
+    policy_definition_id = "/providers/Microsoft.Management/managementGroups/${var.management_group_name}/providers/Microsoft.Authorization/policyDefinitions/Deny-PublicEndpoint-MariaDB"
     reference_id         = "DenyPublicEndpointMariaDB"
-    parameters = {
-      effect = "[parameters('MariaDBPublicIpDenyEffect')]"
-    }
+    parameter_values     = <<VALUES
+{
+  "effect": {
+    "value": "[parameters('MariaDBPublicIpDenyEffect')]"
   }
+}
+VALUES
+  }
+
   policy_definition_reference {
-    policy_definition_id = "/providers/Microsoft.Management/managementGroups/ESLZ/providers/Microsoft.Authorization/policyDefinitions/Deny-PublicEndpoint-MySQL"
+    policy_definition_id = "/providers/Microsoft.Management/managementGroups/${var.management_group_name}/providers/Microsoft.Authorization/policyDefinitions/Deny-PublicEndpoint-MySQL"
     reference_id         = "DenyPublicEndpointMySQL"
-    parameters = {
-      effect = "[parameters('MySQLPublicIpDenyEffect')]"
-    }
+    parameter_values     = <<VALUES
+{
+  "effect": {
+    "value": "[parameters('MySQLPublicIpDenyEffect')]"
   }
+}
+VALUES
+  }
+
   policy_definition_reference {
-    policy_definition_id = "/providers/Microsoft.Management/managementGroups/ESLZ/providers/Microsoft.Authorization/policyDefinitions/Deny-PublicEndpoint-PostgreSql"
+    policy_definition_id = "/providers/Microsoft.Management/managementGroups/${var.management_group_name}/providers/Microsoft.Authorization/policyDefinitions/Deny-PublicEndpoint-PostgreSql"
     reference_id         = "DenyPublicEndpointPostgreSql"
-    parameters = {
-      effect = "[parameters('PostgreSQLPublicIpDenyEffect')]"
-    }
+    parameter_values     = <<VALUES
+{
+  "effect": {
+    "value": "[parameters('PostgreSQLPublicIpDenyEffect')]"
   }
+}
+VALUES
+  }
+
   policy_definition_reference {
-    policy_definition_id = "/providers/Microsoft.Management/managementGroups/ESLZ/providers/Microsoft.Authorization/policyDefinitions/Deny-PublicEndpoint-KeyVault"
+    policy_definition_id = "/providers/Microsoft.Management/managementGroups/${var.management_group_name}/providers/Microsoft.Authorization/policyDefinitions/Deny-PublicEndpoint-KeyVault"
     reference_id         = "DenyPublicEndpointKeyVault"
-    parameters = {
-      effect = "[parameters('KeyVaultPublicIpDenyEffect')]"
-    }
+    parameter_values     = <<VALUES
+{
+  "effect": {
+    "value": "[parameters('KeyVaultPublicIpDenyEffect')]"
   }
+}
+VALUES
+  }
+
   policy_definition_reference {
-    policy_definition_id = "/providers/Microsoft.Management/managementGroups/ESLZ/providers/Microsoft.Authorization/policyDefinitions/Deny-PublicEndpoint-Sql"
+    policy_definition_id = "/providers/Microsoft.Management/managementGroups/${var.management_group_name}/providers/Microsoft.Authorization/policyDefinitions/Deny-PublicEndpoint-Sql"
     reference_id         = "DenyPublicEndpointSql"
-    parameters = {
-      effect = "[parameters('SqlServerPublicIpDenyEffect')]"
-    }
+    parameter_values     = <<VALUES
+{
+  "effect": {
+    "value": "[parameters('SqlServerPublicIpDenyEffect')]"
   }
+}
+VALUES
+  }
+
   policy_definition_reference {
-    policy_definition_id = "/providers/Microsoft.Management/managementGroups/ESLZ/providers/Microsoft.Authorization/policyDefinitions/Deny-PublicEndpoint-Storage"
+    policy_definition_id = "/providers/Microsoft.Management/managementGroups/${var.management_group_name}/providers/Microsoft.Authorization/policyDefinitions/Deny-PublicEndpoint-Storage"
     reference_id         = "DenyPublicEndpointStorage"
-    parameters = {
-      effect = "[parameters('StoragePublicIpDenyEffect')]"
-    }
+    parameter_values     = <<VALUES
+{
+  "effect": {
+    "value": "[parameters('StoragePublicIpDenyEffect')]"
   }
+}
+VALUES
+  }
+
   policy_definition_reference {
-    policy_definition_id = "/providers/Microsoft.Management/managementGroups/ESLZ/providers/Microsoft.Authorization/policyDefinitions/Deny-PublicEndpoint-Aks"
+    policy_definition_id = "/providers/Microsoft.Management/managementGroups/${var.management_group_name}/providers/Microsoft.Authorization/policyDefinitions/Deny-PublicEndpoint-Aks"
     reference_id         = "DenyPublicEndpointAks"
-    parameters = {
-      effect = "[parameters('AKSPublicIpDenyEffect')]"
-    }
+    parameter_values     = <<VALUES
+{
+  "effect": {
+    "value": "[parameters('AKSPublicIpDenyEffect')]"
   }
+}
+VALUES
+  }
+
   parameters = <<PARAMETERS
 {
   "AKSPublicIpDenyEffect": {
