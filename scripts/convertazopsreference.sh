@@ -96,10 +96,11 @@ process_policysetdef() {
                             echo "  policy_definition_reference {"
                             echo $dep | jq -r '"    policy_definition_id = \"\(.policyDefinitionId)\""'
                             echo $dep | jq -r '"    reference_id = \"\(.policyDefinitionReferenceId)\""'
-                            echo "    parameters = {"
-                            echo $dep | jq -r '.parameters | to_entries | .[] | "      \(.key) = \"\(.value.value)\""'
-                            echo "    }"
+                            echo "    parameter_values = <<VALUES"
+                            echo $dep | jq -r '.parameters'
+                            echo "VALUES"
                             echo "  }"
+                            echo
                         done)
   if [ ! "$POLICYSETPARAMETERS" == "{}" ] && [ ! "$POLICYSETPARAMETERS" == "null" ]; then
     local POLICYSETPARAMETERLINE="  parameters            = <<PARAMETERS
@@ -119,7 +120,9 @@ resource "azurerm_policy_set_definition" "${TFNAME}" {
   depends_on            = [
 $POLICYSETDEPS
   ]
+
 $POLICYDEFREFERENCE
+
 $POLICYSETPARAMETERLINE
 }
 
@@ -191,7 +194,7 @@ find $REFDIR -iname *policySetDefinitions* -print0 | xargs -0 -I % -n 1 -P 8 bas
 
 # Replace MG prefix if specified
 echo "Changing policyDefinitions refs in policysets"
-find $OUTDIR -iname \*policyset\*.tf | xargs -n 1 -P 8 sed -i 's/\/contoso\//\/${var.management_group_name}\//g'
+find $OUTDIR -iname \*policyset\*.tf | xargs -n 1 -P 8 sed -i 's/\/ESLZ\//\/${var.management_group_name}\//g'
 
 # Terraform fmt
 if [ $(command -v terraform) ]; then
