@@ -1,12 +1,6 @@
+![Update from upstream](https://github.com/terraform-azurerm-modules/terraform-azurerm-azopsreference/workflows/Update%20from%20upstream/badge.svg)![Validation](https://github.com/terraform-azurerm-modules/terraform-azurerm-azopsreference/workflows/Validation/badge.svg)![Create Release](https://github.com/terraform-azurerm-modules/terraform-azurerm-azopsreference/workflows/Create%20Release/badge.svg)
+
 # terraform-azurerm-azopsreference
-
-![Update from upstream](https://github.com/terraform-azurerm-modules/terraform-azurerm-azopsreference/workflows/Update%20from%20upstream/badge.svg)
-
-![Validation](https://github.com/terraform-azurerm-modules/terraform-azurerm-azopsreference/workflows/Validation/badge.svg)
-
-![Create Release](https://github.com/terraform-azurerm-modules/terraform-azurerm-azopsreference/workflows/Create%20Release/badge.svg)
-
-> Now Terraform 0.13 compatible
 
 This module contains the reference Azure policy & initiative (policySet) definitions from [Enterprise-Scale](https://github.com/Azure/Enterprise-Scale).
 
@@ -24,6 +18,8 @@ module "azopsreference" {
   management_group_name = azurerm_management_group.mymg.name
 }
 ```
+
+> **Note:** Update the reference to match the version you want to use
 
 ### Using the Outputs
 
