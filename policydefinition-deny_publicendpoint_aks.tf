@@ -5,6 +5,12 @@ resource "azurerm_policy_definition" "deny_publicendpoint_aks" {
   mode         = "All"
   display_name = "Public network access on AKS API should be disabled"
   description  = "This policy denies the creation of Azure Kubernetes Service non-private clusters"
+  metadata     = <<METADATA
+{
+  "version": "1.0.0",
+  "category": "Kubernetes"
+}
+METADATA
 
   management_group_name = var.management_group_name
   policy_rule           = <<POLICYRULE
@@ -31,16 +37,16 @@ POLICYRULE
 {
   "effect": {
     "type": "String",
-    "metadata": {
-      "displayName": "Effect",
-      "description": "Enable or disable the execution of the policy"
-    },
     "allowedValues": [
       "Audit",
       "Deny",
       "Disabled"
     ],
-    "defaultValue": "Deny"
+    "defaultValue": "Deny",
+    "metadata": {
+      "displayName": "Effect",
+      "description": "Enable or disable the execution of the policy"
+    }
   }
 }
 PARAMETERS
