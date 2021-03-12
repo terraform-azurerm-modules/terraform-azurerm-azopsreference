@@ -5,6 +5,12 @@ resource "azurerm_policy_definition" "deploy_diagnostics_networksecuritygroups" 
   mode         = "All"
   display_name = "Deploy Diagnostic Settings for Network Security Groups to Log Analytics workspace"
   description  = "Deploys the diagnostic settings for Network Security Groups to stream to a Log Analytics workspace when any Network Security Groups which is missing this diagnostic settings is created or updated. The policy wil set the diagnostic with all metrics and category enabled"
+  metadata     = <<METADATA
+{
+  "version": "1.0.0",
+  "category": "Monitoring"
+}
+METADATA
 
   management_group_name = var.management_group_name
   policy_rule           = <<POLICYRULE
@@ -118,36 +124,36 @@ POLICYRULE
     }
   },
   "effect": {
-    "type": "String",
-    "metadata": {
-      "displayName": "Effect",
-      "description": "Enable or disable the execution of the policy"
-    },
+    "type": "string",
+    "defaultValue": "DeployIfNotExists",
     "allowedValues": [
       "DeployIfNotExists",
       "Disabled"
     ],
-    "defaultValue": "DeployIfNotExists"
+    "metadata": {
+      "displayName": "Effect",
+      "description": "Enable or disable the execution of the policy"
+    }
   },
   "profileName": {
-    "type": "String",
+    "type": "string",
+    "defaultValue": "setbypolicy",
     "metadata": {
       "displayName": "Profile name",
       "description": "The diagnostic settings profile name"
-    },
-    "defaultValue": "setbypolicy"
+    }
   },
   "logsEnabled": {
-    "type": "String",
-    "metadata": {
-      "displayName": "Enable logs",
-      "description": "Whether to enable logs stream to the Log Analytics workspace - True or False"
-    },
+    "type": "string",
+    "defaultValue": "True",
     "allowedValues": [
       "True",
       "False"
     ],
-    "defaultValue": "True"
+    "metadata": {
+      "displayName": "Enable logs",
+      "description": "Whether to enable logs stream to the Log Analytics workspace - True or False"
+    }
   }
 }
 PARAMETERS

@@ -1,10 +1,10 @@
 # This file was auto generated
-resource "azurerm_policy_definition" "deploy_diagnostics_sqldbs" {
-  name         = "Deploy-Diagnostics-SQLDBs"
+resource "azurerm_policy_definition" "deploy_diagnostics_wvdappgroup" {
+  name         = "Deploy-Diagnostics-WVDAppGroup"
   policy_type  = "Custom"
   mode         = "All"
-  display_name = "Deploy Diagnostic Settings for SQL Databases to Log Analytics workspace"
-  description  = "Deploys the diagnostic settings for SQL Databases to stream to a Log Analytics workspace when any SQL Databases which is missing this diagnostic settings is created or updated. The policy wil set the diagnostic with all metrics and category enabled"
+  display_name = "Deploy Diagnostic Settings for WVD Application group to Log Analytics workspace"
+  description  = "Deploys the diagnostic settings for WVD Application group to stream to a Log Analytics workspace when any application group which is missing this diagnostic settings is created or updated. The policy wil set the diagnostic with all and categorys enabled."
   metadata     = <<METADATA
 {
   "version": "1.0.0",
@@ -17,7 +17,7 @@ METADATA
 {
   "if": {
     "field": "type",
-    "equals": "Microsoft.Sql/servers/databases"
+    "equals": "Microsoft.DesktopVirtualization/applicationGroups"
   },
   "then": {
     "effect": "[parameters('effect')]",
@@ -28,10 +28,6 @@ METADATA
         "allOf": [
           {
             "field": "Microsoft.Insights/diagnosticSettings/logs.enabled",
-            "equals": "true"
-          },
-          {
-            "field": "Microsoft.Insights/diagnosticSettings/metrics.enabled",
             "equals": "true"
           },
           {
@@ -63,9 +59,6 @@ METADATA
               "profileName": {
                 "type": "string"
               },
-              "metricsEnabled": {
-                "type": "string"
-              },
               "logsEnabled": {
                 "type": "string"
               }
@@ -73,66 +66,24 @@ METADATA
             "variables": {},
             "resources": [
               {
-                "type": "Microsoft.Sql/servers/databases/providers/diagnosticSettings",
+                "type": "Microsoft.DesktopVirtualization/applicationGroups/providers/diagnosticSettings",
                 "apiVersion": "2017-05-01-preview",
                 "name": "[concat(parameters('resourceName'), '/', 'Microsoft.Insights/', parameters('profileName'))]",
                 "location": "[parameters('location')]",
                 "dependsOn": [],
                 "properties": {
                   "workspaceId": "[parameters('logAnalytics')]",
-                  "metrics": [
-                    {
-                      "category": "AllMetrics",
-                      "enabled": "[parameters('metricsEnabled')]",
-                      "retentionPolicy": {
-                        "days": 0,
-                        "enabled": false
-                      }
-                    }
-                  ],
                   "logs": [
                     {
-                      "category": "SQLInsights",
+                      "category": "Checkpoint",
                       "enabled": "[parameters('logsEnabled')]"
                     },
                     {
-                      "category": "AutomaticTuning",
+                      "category": "Error",
                       "enabled": "[parameters('logsEnabled')]"
                     },
                     {
-                      "category": "DevOpsOperationsAudit",
-                      "enabled": "[parameters('logsEnabled')]"
-                    },
-                    {
-                      "category": "QueryStoreRuntimeStatistics",
-                      "enabled": "[parameters('logsEnabled')]"
-                    },
-                    {
-                      "category": "QueryStoreWaitStatistics",
-                      "enabled": "[parameters('logsEnabled')]"
-                    },
-                    {
-                      "category": "Errors",
-                      "enabled": "[parameters('logsEnabled')]"
-                    },
-                    {
-                      "category": "DatabaseWaitStatistics",
-                      "enabled": "[parameters('logsEnabled')]"
-                    },
-                    {
-                      "category": "Timeouts",
-                      "enabled": "[parameters('logsEnabled')]"
-                    },
-                    {
-                      "category": "Blocks",
-                      "enabled": "[parameters('logsEnabled')]"
-                    },
-                    {
-                      "category": "Deadlocks",
-                      "enabled": "[parameters('logsEnabled')]"
-                    },
-                    {
-                      "category": "SQLSecurityAuditEvents",
+                      "category": "Management",
                       "enabled": "[parameters('logsEnabled')]"
                     }
                   ]
@@ -149,13 +100,10 @@ METADATA
               "value": "[field('location')]"
             },
             "resourceName": {
-              "value": "[field('fullName')]"
+              "value": "[field('name')]"
             },
             "profileName": {
               "value": "[parameters('profileName')]"
-            },
-            "metricsEnabled": {
-              "value": "[parameters('metricsEnabled')]"
             },
             "logsEnabled": {
               "value": "[parameters('logsEnabled')]"
@@ -198,18 +146,6 @@ POLICYRULE
       "description": "The diagnostic settings profile name"
     }
   },
-  "metricsEnabled": {
-    "type": "string",
-    "defaultValue": "True",
-    "allowedValues": [
-      "True",
-      "False"
-    ],
-    "metadata": {
-      "displayName": "Enable metrics",
-      "description": "Whether to enable metrics stream to the Log Analytics workspace - True or False"
-    }
-  },
   "logsEnabled": {
     "type": "string",
     "defaultValue": "True",
@@ -227,7 +163,7 @@ PARAMETERS
 
 }
 
-output "policydefinition_deploy_diagnostics_sqldbs" {
-  value = azurerm_policy_definition.deploy_diagnostics_sqldbs
+output "policydefinition_deploy_diagnostics_wvdappgroup" {
+  value = azurerm_policy_definition.deploy_diagnostics_wvdappgroup
 }
 

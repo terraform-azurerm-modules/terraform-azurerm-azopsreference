@@ -5,6 +5,12 @@ resource "azurerm_policy_definition" "deploy_sql_auditingsettings" {
   mode         = "All"
   display_name = "Deploy SQL database auditing settings"
   description  = "Deploy auditing settings to SQL Database when it not exist in the deployment"
+  metadata     = <<METADATA
+{
+  "version": "1.0.0",
+  "category": "SQL"
+}
+METADATA
 
   management_group_name = var.management_group_name
   policy_rule           = <<POLICYRULE
@@ -102,16 +108,16 @@ POLICYRULE
   parameters = <<PARAMETERS
 {
   "effect": {
-    "type": "String",
-    "metadata": {
-      "displayName": "Effect",
-      "description": "Enable or disable the execution of the policy"
-    },
+    "type": "string",
+    "defaultValue": "DeployIfNotExists",
     "allowedValues": [
       "DeployIfNotExists",
       "Disabled"
     ],
-    "defaultValue": "DeployIfNotExists"
+    "metadata": {
+      "displayName": "Effect",
+      "description": "Enable or disable the execution of the policy"
+    }
   }
 }
 PARAMETERS

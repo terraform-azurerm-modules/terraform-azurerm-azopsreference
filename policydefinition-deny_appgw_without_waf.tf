@@ -5,6 +5,12 @@ resource "azurerm_policy_definition" "deny_appgw_without_waf" {
   mode         = "All"
   display_name = "Application Gateway should be deployed with WAF enabled"
   description  = "This policy enables you to restrict that Application Gateways is always deployed with WAF enabled"
+  metadata     = <<METADATA
+{
+  "version": "1.0.0",
+  "category": "Network"
+}
+METADATA
 
   management_group_name = var.management_group_name
   policy_rule           = <<POLICYRULE
@@ -31,16 +37,16 @@ POLICYRULE
 {
   "effect": {
     "type": "String",
-    "metadata": {
-      "displayName": "Effect",
-      "description": "Enable or disable the execution of the policy"
-    },
     "allowedValues": [
       "Audit",
       "Deny",
       "Disabled"
     ],
-    "defaultValue": "Deny"
+    "defaultValue": "Deny",
+    "metadata": {
+      "displayName": "Effect",
+      "description": "Enable or disable the execution of the policy"
+    }
   }
 }
 PARAMETERS

@@ -13,8 +13,8 @@ resource "azurerm_policy_set_definition" "deploy_sql_security" {
   ]
 
   policy_definition_reference {
-    policy_definition_id = "/providers/Microsoft.Management/managementGroups/${var.management_group_name}/providers/Microsoft.Authorization/policyDefinitions/Deploy-Sql-Tde"
-    reference_id         = "DeploySqlTde"
+    policy_definition_id = "/providers/Microsoft.Management/${var.management_group_name}/providers/Microsoft.Authorization/policyDefinitions/Deploy-Sql-Tde"
+    reference_id         = "SqlDbTdeDeploySqlSecurity"
     parameter_values     = <<VALUES
 {
   "effect": {
@@ -25,8 +25,8 @@ VALUES
   }
 
   policy_definition_reference {
-    policy_definition_id = "/providers/Microsoft.Management/managementGroups/${var.management_group_name}/providers/Microsoft.Authorization/policyDefinitions/Deploy-Sql-SecurityAlertPolicies"
-    reference_id         = "DeploySqlSecurityAlertPolicies"
+    policy_definition_id = "/providers/Microsoft.Management/${var.management_group_name}/providers/Microsoft.Authorization/policyDefinitions/Deploy-Sql-SecurityAlertPolicies"
+    reference_id         = "SqlDbSecurityAlertPoliciesDeploySqlSecurity"
     parameter_values     = <<VALUES
 {
   "effect": {
@@ -37,8 +37,8 @@ VALUES
   }
 
   policy_definition_reference {
-    policy_definition_id = "/providers/Microsoft.Management/managementGroups/${var.management_group_name}/providers/Microsoft.Authorization/policyDefinitions/Deploy-Sql-AuditingSettings"
-    reference_id         = "DeploySqlAuditingSettings"
+    policy_definition_id = "/providers/Microsoft.Management/${var.management_group_name}/providers/Microsoft.Authorization/policyDefinitions/Deploy-Sql-AuditingSettings"
+    reference_id         = "SqlDbAuditingSettingsDeploySqlSecurity"
     parameter_values     = <<VALUES
 {
   "effect": {
@@ -49,8 +49,8 @@ VALUES
   }
 
   policy_definition_reference {
-    policy_definition_id = "/providers/Microsoft.Management/managementGroups/${var.management_group_name}/providers/Microsoft.Authorization/policyDefinitions/Deploy-Sql-vulnerabilityAssessments"
-    reference_id         = "DeploySqlvulnerabilityAssessments"
+    policy_definition_id = "/providers/Microsoft.Management/${var.management_group_name}/providers/Microsoft.Authorization/policyDefinitions/Deploy-Sql-vulnerabilityAssessments"
+    reference_id         = "SqlDbVulnerabilityAssessmentsDeploySqlSecurity"
     parameter_values     = <<VALUES
 {
   "effect": {
@@ -68,54 +68,6 @@ VALUES
 
   parameters = <<PARAMETERS
 {
-  "SqlDbAuditingSettingsDeploySqlSecurityEffect": {
-    "allowedValues": [
-      "DeployIfNotExists",
-      "Disabled"
-    ],
-    "defaultValue": "DeployIfNotExists",
-    "metadata": {
-      "description": "Deploy auditing settings to SQL Database when it not exist in the deployment",
-      "displayName": "Deploy SQL database auditing settings"
-    },
-    "type": "String"
-  },
-  "SqlDbSecurityAlertPoliciesDeploySqlSecurityEffect": {
-    "allowedValues": [
-      "DeployIfNotExists",
-      "Disabled"
-    ],
-    "defaultValue": "DeployIfNotExists",
-    "metadata": {
-      "description": "Deploy the security Alert Policies configuration with email admin accounts when it not exist in current configuration",
-      "displayName": "Deploy SQL Database security Alert Policies configuration with email admin accounts"
-    },
-    "type": "String"
-  },
-  "SqlDbTdeDeploySqlSecurityEffect": {
-    "allowedValues": [
-      "DeployIfNotExists",
-      "Disabled"
-    ],
-    "defaultValue": "DeployIfNotExists",
-    "metadata": {
-      "description": "Deploy the Transparent Data Encryption when it is not enabled in the deployment",
-      "displayName": "Deploy SQL Database Transparent Data Encryption "
-    },
-    "type": "String"
-  },
-  "SqlDbVulnerabilityAssessmentsDeploySqlSecurityEffect": {
-    "allowedValues": [
-      "DeployIfNotExists",
-      "Disabled"
-    ],
-    "defaultValue": "DeployIfNotExists",
-    "metadata": {
-      "description": "Deploy SQL Database vulnerability Assessments when it not exist in the deployment. To the specific storage account in the parameters",
-      "displayName": "Deploy SQL Database vulnerability Assessments"
-    },
-    "type": "String"
-  },
   "vulnerabilityAssessmentsEmail": {
     "metadata": {
       "description": "The email address to send alerts",
@@ -129,6 +81,54 @@ VALUES
       "displayName": "The storage account ID to store assessments"
     },
     "type": "String"
+  },
+  "SqlDbTdeDeploySqlSecurityEffect": {
+    "type": "string",
+    "defaultValue": "DeployIfNotExists",
+    "allowedValues": [
+      "DeployIfNotExists",
+      "Disabled"
+    ],
+    "metadata": {
+      "displayName": "Deploy SQL Database Transparent Data Encryption ",
+      "description": "Deploy the Transparent Data Encryption when it is not enabled in the deployment"
+    }
+  },
+  "SqlDbSecurityAlertPoliciesDeploySqlSecurityEffect": {
+    "type": "string",
+    "defaultValue": "DeployIfNotExists",
+    "allowedValues": [
+      "DeployIfNotExists",
+      "Disabled"
+    ],
+    "metadata": {
+      "displayName": "Deploy SQL Database security Alert Policies configuration with email admin accounts",
+      "description": "Deploy the security Alert Policies configuration with email admin accounts when it not exist in current configuration"
+    }
+  },
+  "SqlDbAuditingSettingsDeploySqlSecurityEffect": {
+    "type": "string",
+    "defaultValue": "DeployIfNotExists",
+    "allowedValues": [
+      "DeployIfNotExists",
+      "Disabled"
+    ],
+    "metadata": {
+      "displayName": "Deploy SQL database auditing settings",
+      "description": "Deploy auditing settings to SQL Database when it not exist in the deployment"
+    }
+  },
+  "SqlDbVulnerabilityAssessmentsDeploySqlSecurityEffect": {
+    "type": "string",
+    "defaultValue": "DeployIfNotExists",
+    "allowedValues": [
+      "DeployIfNotExists",
+      "Disabled"
+    ],
+    "metadata": {
+      "displayName": "Deploy SQL Database vulnerability Assessments",
+      "description": "Deploy SQL Database vulnerability Assessments when it not exist in the deployment. To the specific storage account in the parameters"
+    }
   }
 }
 PARAMETERS

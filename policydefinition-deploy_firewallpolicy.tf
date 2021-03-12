@@ -5,6 +5,12 @@ resource "azurerm_policy_definition" "deploy_firewallpolicy" {
   mode         = "All"
   display_name = "Deploy Azure Firewall Manager policy in the subscription"
   description  = "Deploys Azure Firewall Manager policy in subscription where the policy is assigned."
+  metadata     = <<METADATA
+{
+  "version": "1.0.0",
+  "category": "Network"
+}
+METADATA
 
   management_group_name = var.management_group_name
   policy_rule           = <<POLICYRULE
@@ -25,7 +31,7 @@ resource "azurerm_policy_definition" "deploy_firewallpolicy" {
       "existenceScope": "ResourceGroup",
       "resourceGroupName": "[parameters('rgName')]",
       "roleDefinitionIds": [
-        "/providers/Microsoft.Authorization/roleDefinitions/4d97b98b-1d4f-4787-a291-c67834d212e7"
+        "/providers/Microsoft.Authorization/roleDefinitions/b24988ac-6180-42a0-ab88-20f7382dd24c"
       ],
       "deployment": {
         "location": "northeurope",
@@ -144,16 +150,16 @@ POLICYRULE
     }
   },
   "effect": {
-    "type": "String",
-    "metadata": {
-      "displayName": "Effect",
-      "description": "Enable or disable the execution of the policy"
-    },
+    "type": "string",
+    "defaultValue": "DeployIfNotExists",
     "allowedValues": [
       "DeployIfNotExists",
       "Disabled"
     ],
-    "defaultValue": "DeployIfNotExists"
+    "metadata": {
+      "displayName": "Effect",
+      "description": "Enable or disable the execution of the policy"
+    }
   }
 }
 PARAMETERS
