@@ -69,7 +69,6 @@ jobs:
         git checkout -b autoupdate
         git fetch origin
         git reset --hard origin/main
-        rm -f ${{ github.workspace }}/module/*.tf
         cp -f ${{ github.workspace }}/policyconverted/*.tf ${{ github.workspace }}/module
       working-directory: ${{ github.workspace }}/module
         
