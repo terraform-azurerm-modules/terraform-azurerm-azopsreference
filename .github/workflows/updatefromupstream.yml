@@ -60,7 +60,7 @@ jobs:
         Install-Module -Name "Az.Accounts" -MinimumVersion "${{ env.az_accounts_minimum_version }}" -Force
         Write-Host "==> Running script..."
         New-Item -Path ${{ github.workspace }} -ItemType directory -Name policyconvert
-        ${{ github.workspace }}/module/scripts/Invoke-LibraryUpdate.ps1 `
+        ${{ github.workspace }}/scripts/Invoke-LibraryUpdate.ps1 `
           -TargetModulePath ${{ github.workspace }}/policyconvert `
           -SourceModulePath ${{ github.workspace }}/es `
           -UseCacheFromModule
