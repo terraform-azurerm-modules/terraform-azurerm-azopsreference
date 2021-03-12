@@ -15,6 +15,10 @@ jobs:
         shell: bash
     env:
       TF_IN_AUTOMATION: true
+      TFE_ORGANIZATION: terraform-azurerm-modules
+      TFE_ADDRESS: terraform-azurerm-modules
+      TFE_PARALLELISM: 256
+      TFE_TOKEN: 1234
     steps:
     - name: Checkout
       uses: actions/checkout@v2
@@ -57,6 +61,7 @@ jobs:
         terraform apply -auto-approve -var "management_group_name=${{ env.MG_NAME }}"
       env:
         AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
+        TF_VAR_MANAGEMENT_GROUP_NAME: ${{ env.MG_NAME }}"
 
     - name: Terraform Destroy
       run: |
@@ -64,15 +69,14 @@ jobs:
         export ARM_SUBSCRIPTION_ID=$(echo $AZURE_CREDENTIALS | jq -r .subscriptionId)
         export ARM_CLIENT_SECRET=$(echo $AZURE_CREDENTIALS | jq -r .clientSecret)
         export ARM_TENANT_ID=$(echo $AZURE_CREDENTIALS | jq -r .tenantId)
-        terraform destroy -auto-approve -var "management_group_name=${{ env.MG_NAME }}"
+        terraform destroy -auto-approve
       env:
         AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
+        TF_VAR_MANAGEMENT_GROUP_NAME: ${{ env.MG_NAME }}"
 
     - name: Azure CLI delete MG
       uses: azure/CLI@v1
       with:
         inlineScript: |
-          MG_NAME=$(echo mg-$RANDOM)
-          echo "MG_NAME=$MG_NAME" >> $GITHUB_ENV
-          az account management-group delete --name $MG_NAME
+          az account management-group delete --name ${{ env.MG_NAME }}
       if: always()
