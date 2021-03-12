@@ -3,8 +3,8 @@ resource "azurerm_policy_definition" "deploy_budget" {
   name         = "Deploy-Budget"
   policy_type  = "Custom"
   mode         = "All"
-  display_name = "Deploy budet"
-  description  = "Depoloys a default budget on all subscriptions under the assigned scope."
+  display_name = "Deploy a default budget on subscriptions"
+  description  = "Depoloys a default budget on subscriptions."
 
   management_group_name = var.management_group_name
   policy_rule           = <<POLICYRULE
@@ -143,17 +143,15 @@ POLICYRULE
   parameters = <<PARAMETERS
 {
   "amount": {
-    "type": "String",
+    "type": "string",
+    "defaultValue": "1000",
     "metadata": {
       "description": "The total amount of cost or usage to track with the budget"
-    },
-    "defaultValue": "1000"
+    }
   },
   "timeGrain": {
-    "type": "String",
-    "metadata": {
-      "description": "The time covered by a budget. Tracking of the amount will be reset based on the time grain."
-    },
+    "type": "string",
+    "defaultValue": "Monthly",
     "allowedValues": [
       "Monthly",
       "Quarterly",
@@ -162,45 +160,47 @@ POLICYRULE
       "BillingQuarter",
       "BillingAnnual"
     ],
-    "defaultValue": "Monthly"
+    "metadata": {
+      "description": "The time covered by a budget. Tracking of the amount will be reset based on the time grain."
+    }
   },
   "firstThreshold": {
-    "type": "String",
+    "type": "string",
+    "defaultValue": "90",
     "metadata": {
       "description": "Threshold value associated with a notification. Notification is sent when the cost exceeded the threshold. It is always percent and has to be between 0 and 1000."
-    },
-    "defaultValue": "90"
+    }
   },
   "secondThreshold": {
-    "type": "String",
+    "type": "string",
+    "defaultValue": "100",
     "metadata": {
       "description": "Threshold value associated with a notification. Notification is sent when the cost exceeded the threshold. It is always percent and has to be between 0 and 1000."
-    },
-    "defaultValue": "100"
+    }
   },
   "contactRoles": {
-    "type": "Array",
-    "metadata": {
-      "description": "The list of contact RBAC roles, in an array, to send the budget notification to when the threshold is exceeded."
-    },
+    "type": "array",
     "defaultValue": [
       "Owner",
       "Contributor"
-    ]
+    ],
+    "metadata": {
+      "description": "The list of contact RBAC roles, in an array, to send the budget notification to when the threshold is exceeded."
+    }
   },
   "contactEmails": {
-    "type": "Array",
+    "type": "array",
+    "defaultValue": [],
     "metadata": {
       "description": "The list of email addresses, in an array, to send the budget notification to when the threshold is exceeded."
-    },
-    "defaultValue": []
+    }
   },
   "contactGroups": {
-    "type": "Array",
+    "type": "array",
+    "defaultValue": [],
     "metadata": {
       "description": "The list of action groups, in an array, to send the budget notification to when the threshold is exceeded. It accepts array of strings."
-    },
-    "defaultValue": []
+    }
   }
 }
 PARAMETERS

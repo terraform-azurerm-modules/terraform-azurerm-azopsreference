@@ -1,17 +1,17 @@
 # This file was auto generated
-resource "azurerm_policy_definition" "deploy_diagnostics_nic" {
-  name         = "Deploy-Diagnostics-NIC"
+resource "azurerm_policy_definition" "deploy_diagnostics_wvdworkspace" {
+  name         = "Deploy-Diagnostics-WVDWorkspace"
   policy_type  = "Custom"
   mode         = "All"
-  display_name = "Deploy Diagnostic Settings for Network Interfaces to Log Analytics workspace"
-  description  = "Deploys the diagnostic settings for Network Interfaces to stream to a Log Analytics workspace when any Network Interfaces which is missing this diagnostic settings is created or updated. The policy wil set the diagnostic with all metrics and category enabled"
+  display_name = "Deploy Diagnostic Settings for WVD Workspace to Log Analytics workspace"
+  description  = "Deploys the diagnostic settings for WVD Workspace to stream to a Log Analytics workspace when any Workspace which is missing this diagnostic settings is created or updated. The policy wil set the diagnostic with all and categorys enabled."
 
   management_group_name = var.management_group_name
   policy_rule           = <<POLICYRULE
 {
   "if": {
     "field": "type",
-    "equals": "Microsoft.Network/networkInterfaces"
+    "equals": "Microsoft.DesktopVirtualization/workspaces"
   },
   "then": {
     "effect": "[parameters('effect')]",
@@ -21,7 +21,7 @@ resource "azurerm_policy_definition" "deploy_diagnostics_nic" {
       "existenceCondition": {
         "allOf": [
           {
-            "field": "Microsoft.Insights/diagnosticSettings/metrics.enabled",
+            "field": "Microsoft.Insights/diagnosticSettings/logs.enabled",
             "equals": "true"
           },
           {
@@ -53,28 +53,36 @@ resource "azurerm_policy_definition" "deploy_diagnostics_nic" {
               "profileName": {
                 "type": "string"
               },
-              "metricsEnabled": {
+              "logsEnabled": {
                 "type": "string"
               }
             },
             "variables": {},
             "resources": [
               {
-                "type": "Microsoft.Network/networkInterfaces/providers/diagnosticSettings",
+                "type": "Microsoft.DesktopVirtualization/workspaces/providers/diagnosticSettings",
                 "apiVersion": "2017-05-01-preview",
                 "name": "[concat(parameters('resourceName'), '/', 'Microsoft.Insights/', parameters('profileName'))]",
                 "location": "[parameters('location')]",
                 "dependsOn": [],
                 "properties": {
                   "workspaceId": "[parameters('logAnalytics')]",
-                  "metrics": [
+                  "logs": [
                     {
-                      "category": "AllMetrics",
-                      "enabled": "[parameters('metricsEnabled')]",
-                      "retentionPolicy": {
-                        "enabled": false,
-                        "days": 0
-                      }
+                      "category": "Checkpoint",
+                      "enabled": "[parameters('logsEnabled')]"
+                    },
+                    {
+                      "category": "Error",
+                      "enabled": "[parameters('logsEnabled')]"
+                    },
+                    {
+                      "category": "Management",
+                      "enabled": "[parameters('logsEnabled')]"
+                    },
+                    {
+                      "category": "Feed",
+                      "enabled": "[parameters('logsEnabled')]"
                     }
                   ]
                 }
@@ -95,8 +103,8 @@ resource "azurerm_policy_definition" "deploy_diagnostics_nic" {
             "profileName": {
               "value": "[parameters('profileName')]"
             },
-            "metricsEnabled": {
-              "value": "[parameters('metricsEnabled')]"
+            "logsEnabled": {
+              "value": "[parameters('logsEnabled')]"
             }
           }
         }
@@ -136,7 +144,7 @@ POLICYRULE
       "description": "The diagnostic settings profile name"
     }
   },
-  "metricsEnabled": {
+  "logsEnabled": {
     "type": "string",
     "defaultValue": "True",
     "allowedValues": [
@@ -144,8 +152,8 @@ POLICYRULE
       "False"
     ],
     "metadata": {
-      "displayName": "Enable metrics",
-      "description": "Whether to enable metrics stream to the Log Analytics workspace - True or False"
+      "displayName": "Enable logs",
+      "description": "Whether to enable logs stream to the Log Analytics workspace - True or False"
     }
   }
 }
@@ -153,7 +161,7 @@ PARAMETERS
 
 }
 
-output "policydefinition_deploy_diagnostics_nic" {
-  value = azurerm_policy_definition.deploy_diagnostics_nic
+output "policydefinition_deploy_diagnostics_wvdworkspace" {
+  value = azurerm_policy_definition.deploy_diagnostics_wvdworkspace
 }
 

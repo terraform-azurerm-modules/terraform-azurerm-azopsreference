@@ -121,36 +121,36 @@ POLICYRULE
     }
   },
   "effect": {
-    "type": "String",
-    "metadata": {
-      "displayName": "Effect",
-      "description": "Enable or disable the execution of the policy"
-    },
+    "type": "string",
+    "defaultValue": "DeployIfNotExists",
     "allowedValues": [
       "DeployIfNotExists",
       "Disabled"
     ],
-    "defaultValue": "DeployIfNotExists"
+    "metadata": {
+      "displayName": "Effect",
+      "description": "Enable or disable the execution of the policy"
+    }
   },
   "profileName": {
-    "type": "String",
+    "type": "string",
+    "defaultValue": "setbypolicy",
     "metadata": {
       "displayName": "Profile name",
       "description": "The diagnostic settings profile name"
-    },
-    "defaultValue": "setbypolicy"
+    }
   },
   "logsEnabled": {
-    "type": "String",
-    "metadata": {
-      "displayName": "Enable logs",
-      "description": "Whether to enable logs stream to the Log Analytics workspace - True or False"
-    },
+    "type": "string",
+    "defaultValue": "True",
     "allowedValues": [
       "True",
       "False"
     ],
-    "defaultValue": "True"
+    "metadata": {
+      "displayName": "Enable logs",
+      "description": "Whether to enable logs stream to the Log Analytics workspace - True or False"
+    }
   }
 }
 PARAMETERS

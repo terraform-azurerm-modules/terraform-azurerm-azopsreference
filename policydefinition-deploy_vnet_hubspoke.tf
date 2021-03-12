@@ -3,7 +3,7 @@ resource "azurerm_policy_definition" "deploy_vnet_hubspoke" {
   name         = "Deploy-VNET-HubSpoke"
   policy_type  = "Custom"
   mode         = "All"
-  display_name = "Deploys virtual network with peering to hub"
+  display_name = "Deploys virtual network peering to hub"
   description  = "This policy deploys virtual network and peer to the hub"
 
   management_group_name = var.management_group_name
@@ -162,7 +162,7 @@ resource "azurerm_policy_definition" "deploy_vnet_hubspoke" {
                           },
                           "allowVirtualNetworkAccess": true,
                           "allowForwardedTraffic": true,
-                          "allowGatewayTransit": false,
+                          "allowGatewayTransit": true,
                           "useRemoteGateways": "[parameters('vNetPeerUseRemoteGateway')]"
                         }
                       },

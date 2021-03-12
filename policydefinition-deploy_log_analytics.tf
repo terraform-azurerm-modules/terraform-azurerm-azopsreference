@@ -192,12 +192,12 @@ POLICYRULE
     }
   },
   "retentionInDays": {
-    "type": "String",
+    "type": "string",
+    "defaultValue": "30",
     "metadata": {
       "displayName": "Data retention",
       "description": "Select data retention (days) for Log Analytics."
-    },
-    "defaultValue": "30"
+    }
   },
   "rgName": {
     "type": "String",
@@ -207,16 +207,16 @@ POLICYRULE
     }
   },
   "effect": {
-    "type": "String",
-    "metadata": {
-      "displayName": "Effect",
-      "description": "Enable or disable the execution of the policy"
-    },
+    "type": "string",
+    "defaultValue": "DeployIfNotExists",
     "allowedValues": [
       "DeployIfNotExists",
       "Disabled"
     ],
-    "defaultValue": "DeployIfNotExists"
+    "metadata": {
+      "displayName": "Effect",
+      "description": "Enable or disable the execution of the policy"
+    }
   }
 }
 PARAMETERS

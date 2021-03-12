@@ -1,10 +1,10 @@
 # This file was auto generated
-resource "azurerm_policy_definition" "deny_subnet_without_udr" {
-  name         = "Deny-Subnet-Without-Udr"
+resource "azurerm_policy_definition" "deny_vnet_peer_cross_sub" {
+  name         = "Deny-VNET-Peer-Cross-Sub"
   policy_type  = "Custom"
   mode         = "All"
-  display_name = "Subnets should have a User Defined Route"
-  description  = "This policy denies the creation of a subsnet with out a User Defined Route."
+  display_name = "Deny vNet peering cross subscription."
+  description  = "This policy denies the creation of vNet Peerings outside of the same subscriptions under the assigned scope."
 
   management_group_name = var.management_group_name
   policy_rule           = <<POLICYRULE
@@ -13,11 +13,11 @@ resource "azurerm_policy_definition" "deny_subnet_without_udr" {
     "allOf": [
       {
         "field": "type",
-        "equals": "Microsoft.Network/virtualNetworks/subnets"
+        "equals": "Microsoft.Network/virtualNetworks/virtualNetworkPeerings"
       },
       {
-        "field": "Microsoft.Network/virtualNetworks/subnets/routeTable.id",
-        "exists": "false"
+        "field": "Microsoft.Network/virtualNetworks/virtualNetworkPeerings/remoteVirtualNetwork.id",
+        "notcontains": "[subscription().id]"
       }
     ]
   },
@@ -47,7 +47,7 @@ PARAMETERS
 
 }
 
-output "policydefinition_deny_subnet_without_udr" {
-  value = azurerm_policy_definition.deny_subnet_without_udr
+output "policydefinition_deny_vnet_peer_cross_sub" {
+  value = azurerm_policy_definition.deny_vnet_peer_cross_sub
 }
 
