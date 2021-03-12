@@ -60,13 +60,13 @@ jobs:
         Install-Module -Name "Az.Accounts" -MinimumVersion "${{ env.az_accounts_minimum_version }}" -Force
         Write-Host "==> Running script..."
         New-Item -Path ${{ github.workspace }} -ItemType directory -Name policyconvert
-        ${{ github.workspace }}/scripts/Invoke-LibraryUpdate.ps1 `
+        ${{ github.workspace }}/module/scripts/Invoke-LibraryUpdate.ps1 `
           -TargetModulePath ${{ github.workspace }}/policyconvert `
           -SourceModulePath ${{ github.workspace }}/es `
           -UseCacheFromModule
       shell: pwsh
 
-    - name: Convert To Terraform
+    - name: Convert to Terraform
       run: |
         $GITHUB_WORKSPACE/module/scripts/convertesltlibrary.sh -r "$GITHUB_WORKSPACE/policyconvert" -o "$GITHUB_WORKSPACE/module"
     
