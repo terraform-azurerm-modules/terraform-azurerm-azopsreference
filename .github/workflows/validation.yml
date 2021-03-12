@@ -62,7 +62,7 @@ jobs:
         terraform apply -auto-approve
       env:
         AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
-        TF_VAR_MANAGEMENT_GROUP_NAME: ${{ env.MG_NAME }}
+        TF_VAR_management_group_name: ${{ env.MG_NAME }}
 
     - name: Terraform Destroy
       run: |
@@ -73,7 +73,7 @@ jobs:
         terraform destroy -auto-approve
       env:
         AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
-        TF_VAR_MANAGEMENT_GROUP_NAME: ${{ env.MG_NAME }}
+        TF_VAR_management_group_name: ${{ env.MG_NAME }}
 
     - name: Azure CLI delete MG
       uses: azure/CLI@v1
