@@ -64,6 +64,7 @@ jobs:
           -TargetModulePath ${{ github.workspace }}/policyconvert `
           -SourceModulePath ${{ github.workspace }}/es `
           -UseCacheFromModule
+      shell: pwsh
 
     - name: Convert To Terraform
       run: |
