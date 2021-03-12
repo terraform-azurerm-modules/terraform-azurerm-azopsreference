@@ -7,6 +7,7 @@ on:
     - cron: '0 0 * * 1'
 
 env:
+  ES_REFERENCE_NAME: wingtip
   GH_CLI_VER: 0.11.1
   GIT_USER_NAME: System
   GIT_USER_EMAIL: noreply@azure.com
@@ -14,7 +15,7 @@ env:
 jobs:
   update:
     name: Update
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     defaults:
       run:
         shell: bash
@@ -31,31 +32,47 @@ jobs:
         persist-credentials: true
         path: module
 
+    - name: Checkout Enterprise-Scale-Tools
+      uses: actions/checkout@v2
+      with:
+        repository: Azure/Enterprise-Scale-Tools
+        token: ${{ secrets.REPO_TOKEN }}
+        path: estools
+
     - name: Display env
       run: |
         env | sort
 
+    - name: Convert policies.json
+      run: |
+        Write-Host "==> Installing Az.Accounts PowerShell Module..."
+        Install-Module -Name "Az.Accounts" -MinimumVersion "${{ env.az_accounts_minimum_version }}" -Force
+        Write-Host "==> Running script..."
+        New-Item -Path ${{ github.workspace }} -ItemType directory -Name policyconvert
+        ${{ github.workspace }}/module/scripts/Invoke-LibraryUpdate.ps1 `
+          -EnterpriseScaleToolsModuleDirectory ${{ github.workspace }}/estools/src/EnterpriseScaleLibraryTools `
+          -SourceModulePath ${{ github.workspace }}/es `
+          -TargetModulePath ${{ github.workspace }}/policyconvert `
+          -UseCacheFromModule
+      shell: pwsh
+
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v1
-    
-    - name: Download jq 1.6
-      run: |
-        curl -L https://github.com/stedolan/jq/releases/download/jq-1.6/jq-linux64 -o $HOME/jq
-        sudo cp -fv $HOME/jq /usr/bin
-        sudo chmod a+x /usr/bin/jq
-        rm $HOME/jq
 
-    - name: Create branch
+    - name: Convert to Terraform
+      run: |
+        mkdir ${{ github.workspace }}/policyconverted
+        $GITHUB_WORKSPACE/module/scripts/convertesltlibrary.sh -r "$GITHUB_WORKSPACE/policyconvert" -o "$GITHUB_WORKSPACE/policyconverted"
+
+    - name: Create branch from main and copy converted .tf
       run: |
         git checkout -b autoupdate
+        git fetch origin
         git reset --hard origin/main
+        rm -f ${{ github.workspace }}/module/*.tf
+        cp -f ${{ github.workspace }}/policyconverted/*.tf ${{ github.workspace }}/module
       working-directory: ${{ github.workspace }}/module
-      
-    - name: Convert AzOpsReference
-      run: |
-        jq --version
-        $GITHUB_WORKSPACE/module/scripts/convertazopsreference.sh -r "$GITHUB_WORKSPACE/es/azopsreference" -o "$GITHUB_WORKSPACE/module"
-    
+        
     - name: Add changes & create PR
       run: |
         if [ "$(git status -s)" ]; then
@@ -69,4 +86,3 @@ jobs:
       working-directory: ${{ github.workspace }}/module
       env:
         GITHUB_TOKEN: ${{ secrets.REPO_TOKEN }}
-          
