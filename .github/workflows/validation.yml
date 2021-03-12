@@ -32,3 +32,32 @@ jobs:
     
     - name: Terraform validate
       run: terraform validate
+
+    - name: Azure Login
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+    - name: Azure CLI create MG
+      uses: azure/CLI@v1
+      with:
+        inlineScript: |
+          MG_NAME=$(echo mg-$RANDOM)
+          echo "MG_NAME=$MG_NAME" >> $GITHUB_ENV
+          az account management-group create --name $MG_NAME
+    
+    - name: Terraform Apply
+      run: |
+        terraform apply -var "management_group_name=${{ env.MG_NAME }}"
+
+    - name: Terraform Destroy
+      run: |
+        terraform destroy -var "management_group_name=${{ env.MG_NAME }}"
+
+    - name: Azure CLI delete MG
+      uses: azure/CLI@v1
+      with:
+        inlineScript: |
+          MG_NAME=$(echo mg-$RANDOM)
+          echo "MG_NAME=$MG_NAME" >> $GITHUB_ENV
+          az account management-group delete --name $MG_NAME
