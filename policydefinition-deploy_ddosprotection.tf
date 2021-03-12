@@ -5,6 +5,12 @@ resource "azurerm_policy_definition" "deploy_ddosprotection" {
   mode         = "All"
   display_name = "Deploy an Azure DDoS Protection Standard plan"
   description  = "Deploys an Azure DDoS Protection Standard plan"
+  metadata     = <<METADATA
+{
+  "version": "1.0.0",
+  "category": "Network"
+}
+METADATA
 
   management_group_name = var.management_group_name
   policy_rule           = <<POLICYRULE
@@ -127,16 +133,16 @@ POLICYRULE
     }
   },
   "effect": {
-    "type": "String",
-    "metadata": {
-      "displayName": "Effect",
-      "description": "Enable or disable the execution of the policy"
-    },
+    "type": "string",
+    "defaultValue": "DeployIfNotExists",
     "allowedValues": [
       "DeployIfNotExists",
       "Disabled"
     ],
-    "defaultValue": "DeployIfNotExists"
+    "metadata": {
+      "displayName": "Effect",
+      "description": "Enable or disable the execution of the policy"
+    }
   }
 }
 PARAMETERS

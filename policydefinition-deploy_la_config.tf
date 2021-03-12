@@ -5,6 +5,12 @@ resource "azurerm_policy_definition" "deploy_la_config" {
   mode         = "All"
   display_name = "Deploy the configurations to the Log Analytics in the subscription"
   description  = "Deploy the configurations to the Log Analytics in the subscription. This includes a list of solutions like update, automation etc and enables the vminsight counters. "
+  metadata     = <<METADATA
+{
+  "version": "1.0.0",
+  "category": "Monitoring"
+}
+METADATA
 
   management_group_name = var.management_group_name
   policy_rule           = <<POLICYRULE
@@ -395,16 +401,16 @@ POLICYRULE
     }
   },
   "effect": {
-    "type": "String",
-    "metadata": {
-      "displayName": "Effect",
-      "description": "Enable or disable the execution of the policy"
-    },
+    "type": "string",
+    "defaultValue": "DeployIfNotExists",
     "allowedValues": [
       "DeployIfNotExists",
       "Disabled"
     ],
-    "defaultValue": "DeployIfNotExists"
+    "metadata": {
+      "displayName": "Effect",
+      "description": "Enable or disable the execution of the policy"
+    }
   }
 }
 PARAMETERS

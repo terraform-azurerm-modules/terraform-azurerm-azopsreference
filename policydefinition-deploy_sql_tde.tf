@@ -5,6 +5,12 @@ resource "azurerm_policy_definition" "deploy_sql_tde" {
   mode         = "All"
   display_name = "Deploy SQL Database Transparent Data Encryption "
   description  = "Deploy the Transparent Data Encryption when it is not enabled in the deployment"
+  metadata     = <<METADATA
+{
+  "version": "1.0.0",
+  "category": "SQL"
+}
+METADATA
 
   management_group_name = var.management_group_name
   policy_rule           = <<POLICYRULE
@@ -79,16 +85,16 @@ POLICYRULE
   parameters = <<PARAMETERS
 {
   "effect": {
-    "type": "String",
-    "metadata": {
-      "displayName": "Effect",
-      "description": "Enable or disable the execution of the policy"
-    },
+    "type": "string",
+    "defaultValue": "DeployIfNotExists",
     "allowedValues": [
       "DeployIfNotExists",
       "Disabled"
     ],
-    "defaultValue": "DeployIfNotExists"
+    "metadata": {
+      "displayName": "Effect",
+      "description": "Enable or disable the execution of the policy"
+    }
   }
 }
 PARAMETERS

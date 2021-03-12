@@ -5,6 +5,12 @@ resource "azurerm_policy_definition" "deploy_windows_domainjoin" {
   mode         = "All"
   display_name = "Deploy Windows Domain Join Extension with keyvault configuration"
   description  = "Deploy Windows Domain Join Extension with keyvault configuration when the extension does not exist on a given windows Virtual Machine"
+  metadata     = <<METADATA
+{
+  "version": "1.0.0",
+  "category": "Guest Configuration"
+}
+METADATA
 
   management_group_name = var.management_group_name
   policy_rule           = <<POLICYRULE
@@ -238,16 +244,16 @@ POLICYRULE
     }
   },
   "effect": {
-    "type": "String",
-    "metadata": {
-      "displayName": "Effect",
-      "description": "Enable or disable the execution of the policy"
-    },
+    "type": "string",
+    "defaultValue": "DeployIfNotExists",
     "allowedValues": [
       "DeployIfNotExists",
       "Disabled"
     ],
-    "defaultValue": "DeployIfNotExists"
+    "metadata": {
+      "displayName": "Effect",
+      "description": "Enable or disable the execution of the policy"
+    }
   }
 }
 PARAMETERS
