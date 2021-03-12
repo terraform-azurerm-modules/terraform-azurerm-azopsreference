@@ -16,11 +16,6 @@ jobs:
     env:
       TF_IN_AUTOMATION: 1
       TF_INPUT: 0
-      TFE_ORGANIZATION: terraform-azurerm-modules
-      TFE_ADDRESS: terraform-azurerm-modules
-      TFE_PARALLELISM: 256
-      TFE_RUN_ID: 1
-      TFE_TOKEN: 1234
     steps:
     - name: Checkout
       uses: actions/checkout@v2
@@ -60,7 +55,7 @@ jobs:
         export ARM_SUBSCRIPTION_ID=$(echo $AZURE_CREDENTIALS | jq -r .subscriptionId)
         export ARM_CLIENT_SECRET=$(echo $AZURE_CREDENTIALS | jq -r .clientSecret)
         export ARM_TENANT_ID=$(echo $AZURE_CREDENTIALS | jq -r .tenantId)
-        terraform apply -auto-approve
+        terraform apply -auto-approve -parallelism=256
       env:
         AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
         TF_VAR_management_group_name: ${{ env.MG_NAME }}
@@ -71,7 +66,7 @@ jobs:
         export ARM_SUBSCRIPTION_ID=$(echo $AZURE_CREDENTIALS | jq -r .subscriptionId)
         export ARM_CLIENT_SECRET=$(echo $AZURE_CREDENTIALS | jq -r .clientSecret)
         export ARM_TENANT_ID=$(echo $AZURE_CREDENTIALS | jq -r .tenantId)
-        terraform destroy -auto-approve
+        terraform destroy -auto-approve -parallelism=256
       env:
         AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
         TF_VAR_management_group_name: ${{ env.MG_NAME }}
