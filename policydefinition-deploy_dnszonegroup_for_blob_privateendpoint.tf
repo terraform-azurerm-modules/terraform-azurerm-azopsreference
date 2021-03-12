@@ -5,6 +5,12 @@ resource "azurerm_policy_definition" "deploy_dnszonegroup_for_blob_privateendpoi
   mode         = "All"
   display_name = "Deploy DNS Zone Group for Storage-Blob Private Endpoint"
   description  = "Deploys the configurations of a Private DNS Zone Group by a parameter for Storage-Blob Private Endpoint. Used enforce the configuration to a single Private DNS Zone. "
+  metadata     = <<METADATA
+{
+  "version": "1.0.0",
+  "category": "Network"
+}
+METADATA
 
   management_group_name = var.management_group_name
   policy_rule           = <<POLICYRULE
@@ -32,7 +38,7 @@ resource "azurerm_policy_definition" "deploy_dnszonegroup_for_blob_privateendpoi
     "details": {
       "type": "Microsoft.Network/privateEndpoints/privateDnsZoneGroups",
       "roleDefinitionIds": [
-        "/providers/Microsoft.Authorization/roleDefinitions/b12aa53e-6015-4669-85d0-8515ebb3ae7f"
+        "/providers/Microsoft.Authorization/roleDefinitions/4d97b98b-1d4f-4787-a291-c67834d212e7"
       ],
       "deployment": {
         "properties": {
@@ -98,16 +104,16 @@ POLICYRULE
     }
   },
   "effect": {
-    "type": "String",
-    "metadata": {
-      "displayName": "Effect",
-      "description": "Enable or disable the execution of the policy"
-    },
+    "type": "string",
+    "defaultValue": "DeployIfNotExists",
     "allowedValues": [
       "DeployIfNotExists",
       "Disabled"
     ],
-    "defaultValue": "DeployIfNotExists"
+    "metadata": {
+      "displayName": "Effect",
+      "description": "Enable or disable the execution of the policy"
+    }
   }
 }
 PARAMETERS

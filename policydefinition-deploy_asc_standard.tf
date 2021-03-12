@@ -5,6 +5,12 @@ resource "azurerm_policy_definition" "deploy_asc_standard" {
   mode         = "All"
   display_name = "Deploy Azure Defender settings in Azure Security Center."
   description  = "Deploys the Azure Defender settings in Azure Security Center for the specific services."
+  metadata     = <<METADATA
+{
+  "version": "1.0.0",
+  "category": "Security Center"
+}
+METADATA
 
   management_group_name = var.management_group_name
   policy_rule           = <<POLICYRULE
@@ -63,6 +69,12 @@ resource "azurerm_policy_definition" "deploy_asc_standard" {
             },
             "pricingTierKubernetesService": {
               "value": "[parameters('pricingTierKubernetesService')]"
+            },
+            "pricingTierDns": {
+              "value": "[parameters('pricingTierDns')]"
+            },
+            "pricingTierArm": {
+              "value": "[parameters('pricingTierArm')]"
             }
           },
           "template": {
@@ -106,6 +118,18 @@ resource "azurerm_policy_definition" "deploy_asc_standard" {
                 }
               },
               "pricingTierKubernetesService": {
+                "type": "string",
+                "metadata": {
+                  "description": "KubernetesService"
+                }
+              },
+              "pricingTierDns": {
+                "type": "string",
+                "metadata": {
+                  "description": "KubernetesService"
+                }
+              },
+              "pricingTierArm": {
                 "type": "string",
                 "metadata": {
                   "description": "KubernetesService"
@@ -186,6 +210,28 @@ resource "azurerm_policy_definition" "deploy_asc_standard" {
                 ],
                 "properties": {
                   "pricingTier": "[parameters('pricingTierContainerRegistry')]"
+                }
+              },
+              {
+                "type": "Microsoft.Security/pricings",
+                "apiVersion": "2018-06-01",
+                "name": "Dns",
+                "dependsOn": [
+                  "[concat('Microsoft.Security/pricings/ContainerRegistry')]"
+                ],
+                "properties": {
+                  "pricingTier": "[parameters('pricingTierDns')]"
+                }
+              },
+              {
+                "type": "Microsoft.Security/pricings",
+                "apiVersion": "2018-06-01",
+                "name": "Arm",
+                "dependsOn": [
+                  "[concat('Microsoft.Security/pricings/Dns')]"
+                ],
+                "properties": {
+                  "pricingTier": "[parameters('pricingTierArm')]"
                 }
               }
             ],
@@ -277,17 +323,39 @@ POLICYRULE
     ],
     "defaultValue": "Standard"
   },
-  "effect": {
+  "pricingTierDns": {
     "type": "String",
     "metadata": {
-      "displayName": "Effect",
-      "description": "Enable or disable the execution of the policy"
+      "displayName": "pricingTierDns"
     },
+    "allowedValues": [
+      "Standard",
+      "Free"
+    ],
+    "defaultValue": "Standard"
+  },
+  "pricingTierArm": {
+    "type": "String",
+    "metadata": {
+      "displayName": "pricingTierArm"
+    },
+    "allowedValues": [
+      "Standard",
+      "Free"
+    ],
+    "defaultValue": "Standard"
+  },
+  "effect": {
+    "type": "string",
+    "defaultValue": "DeployIfNotExists",
     "allowedValues": [
       "DeployIfNotExists",
       "Disabled"
     ],
-    "defaultValue": "DeployIfNotExists"
+    "metadata": {
+      "displayName": "Effect",
+      "description": "Enable or disable the execution of the policy"
+    }
   }
 }
 PARAMETERS

@@ -5,6 +5,12 @@ resource "azurerm_policy_definition" "deny_subnet_without_nsg" {
   mode         = "All"
   display_name = "Subnets should have a Network Security Group "
   description  = "This policy denies the creation of a subsnet with out an Network Security Group. NSG help to protect traffic across subnet-level."
+  metadata     = <<METADATA
+{
+  "version": "1.0.0",
+  "category": "Network"
+}
+METADATA
 
   management_group_name = var.management_group_name
   policy_rule           = <<POLICYRULE
@@ -31,16 +37,16 @@ POLICYRULE
 {
   "effect": {
     "type": "String",
-    "metadata": {
-      "displayName": "Effect",
-      "description": "Enable or disable the execution of the policy"
-    },
     "allowedValues": [
       "Audit",
       "Deny",
       "Disabled"
     ],
-    "defaultValue": "Deny"
+    "defaultValue": "Deny",
+    "metadata": {
+      "displayName": "Effect",
+      "description": "Enable or disable the execution of the policy"
+    }
   }
 }
 PARAMETERS

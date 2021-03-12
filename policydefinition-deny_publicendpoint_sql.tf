@@ -5,6 +5,12 @@ resource "azurerm_policy_definition" "deny_publicendpoint_sql" {
   mode         = "All"
   display_name = "Public network access on Azure SQL Database should be disabled"
   description  = "This policy denies creation of Sql servers with exposed public endpoints"
+  metadata     = <<METADATA
+{
+  "version": "1.0.0",
+  "category": "SQL"
+}
+METADATA
 
   management_group_name = var.management_group_name
   policy_rule           = <<POLICYRULE
@@ -31,16 +37,16 @@ POLICYRULE
 {
   "effect": {
     "type": "String",
-    "metadata": {
-      "displayName": "Effect",
-      "description": "Enable or disable the execution of the policy"
-    },
     "allowedValues": [
       "Audit",
       "Deny",
       "Disabled"
     ],
-    "defaultValue": "Deny"
+    "defaultValue": "Deny",
+    "metadata": {
+      "displayName": "Effect",
+      "description": "Enable or disable the execution of the policy"
+    }
   }
 }
 PARAMETERS

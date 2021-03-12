@@ -1,10 +1,10 @@
 # This file was auto generated
-resource "azurerm_policy_definition" "deny_publicip" {
-  name         = "Deny-PublicIP"
+resource "azurerm_policy_definition" "deny_vnet_peering" {
+  name         = "Deny-VNet-Peering"
   policy_type  = "Custom"
   mode         = "All"
-  display_name = "Deny the creation of public IP"
-  description  = "This policy denies creation of Public IPs under the assigned scope."
+  display_name = "Deny vNet peering "
+  description  = "This policy denies the creation of vNet Peerings under the assigned scope."
   metadata     = <<METADATA
 {
   "version": "1.0.0",
@@ -17,7 +17,7 @@ METADATA
 {
   "if": {
     "field": "type",
-    "equals": "Microsoft.Network/publicIPAddresses"
+    "equals": "Microsoft.Network/virtualNetworks/virtualNetworkPeerings"
   },
   "then": {
     "effect": "[parameters('effect')]"
@@ -45,7 +45,7 @@ PARAMETERS
 
 }
 
-output "policydefinition_deny_publicip" {
-  value = azurerm_policy_definition.deny_publicip
+output "policydefinition_deny_vnet_peering" {
+  value = azurerm_policy_definition.deny_vnet_peering
 }
 

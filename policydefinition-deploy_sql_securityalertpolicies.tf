@@ -5,6 +5,12 @@ resource "azurerm_policy_definition" "deploy_sql_securityalertpolicies" {
   mode         = "All"
   display_name = "Deploy SQL Database security Alert Policies configuration with email admin accounts"
   description  = "Deploy the security Alert Policies configuration with email admin accounts when it not exist in current configuration"
+  metadata     = <<METADATA
+{
+  "version": "1.0.0",
+  "category": "SQL"
+}
+METADATA
 
   management_group_name = var.management_group_name
   policy_rule           = <<POLICYRULE
@@ -88,16 +94,16 @@ POLICYRULE
   parameters = <<PARAMETERS
 {
   "effect": {
-    "type": "String",
-    "metadata": {
-      "displayName": "Effect",
-      "description": "Enable or disable the execution of the policy"
-    },
+    "type": "string",
+    "defaultValue": "DeployIfNotExists",
     "allowedValues": [
       "DeployIfNotExists",
       "Disabled"
     ],
-    "defaultValue": "DeployIfNotExists"
+    "metadata": {
+      "displayName": "Effect",
+      "description": "Enable or disable the execution of the policy"
+    }
   }
 }
 PARAMETERS
