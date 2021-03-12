@@ -56,20 +56,23 @@ jobs:
           -UseCacheFromModule
       shell: pwsh
 
-    - name: Create branch
-      run: |
-        git checkout -b autoupdate
-        git fetch origin
-        git reset --hard origin/main
-      working-directory: ${{ github.workspace }}/module
-
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v1
 
     - name: Convert to Terraform
       run: |
-        $GITHUB_WORKSPACE/module/scripts/convertesltlibrary.sh -r "$GITHUB_WORKSPACE/policyconvert" -o "$GITHUB_WORKSPACE/module"
-    
+        mkdir ${{ github.workspace }}/policyconverted
+        $GITHUB_WORKSPACE/module/scripts/convertesltlibrary.sh -r "$GITHUB_WORKSPACE/policyconvert" -o "$GITHUB_WORKSPACE/policyconverted"
+
+    - name: Create branch from main and copy converted .tf
+      run: |
+        git checkout -b autoupdate
+        git fetch origin
+        git reset --hard origin/main
+        rm -f ${{ github.workspace }}/module/*.tf
+        cp -f ${{ github.workspace }}/policyconverted/*.tf ${{ github.workspace }}/module
+      working-directory: ${{ github.workspace }}/module
+        
     - name: Add changes & create PR
       run: |
         if [ "$(git status -s)" ]; then
