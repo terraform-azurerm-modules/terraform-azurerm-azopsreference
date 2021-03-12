@@ -203,7 +203,7 @@ find $REFDIR -iname policy_set_definition* -type f -print0 | xargs -0 -I % -n 1 
 
 # Replace MG prefix if specified
 echo "Changing policyDefinitions refs in policysets"
-find $OUTDIR -iname \*policyset\*.tf -type f | xargs -n 1 -P 8 sed -i 's/${current_scope_resource_id}/\/providers\/Microsoft.Management\/${var.management_group_name}/g'
+find $OUTDIR -iname \*policyset\*.tf -type f | xargs -n 1 -P 8 sed -i 's/${current_scope_resource_id}/\/providers\/Microsoft.Management\/managementGroups\/${var.management_group_name}/g'
 
 # Terraform fmt
 if [ $(command -v terraform) ]; then
