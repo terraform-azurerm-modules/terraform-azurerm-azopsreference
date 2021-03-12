@@ -13,6 +13,8 @@ jobs:
     defaults:
       run:
         shell: bash
+    env:
+      TF_IN_AUTOMATION: true
     steps:
     - name: Checkout
       uses: actions/checkout@v2
@@ -52,7 +54,7 @@ jobs:
         export ARM_SUBSCRIPTION_ID=$(echo $AZURE_CREDENTIALS | jq -r .subscriptionId)
         export ARM_CLIENT_SECRET=$(echo $AZURE_CREDENTIALS | jq -r .clientSecret)
         export ARM_TENANT_ID=$(echo $AZURE_CREDENTIALS | jq -r .tenantId)
-        terraform apply -var "management_group_name=${{ env.MG_NAME }}"
+        terraform apply -auto-approve -var "management_group_name=${{ env.MG_NAME }}"
       env:
         AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
 
@@ -62,7 +64,7 @@ jobs:
         export ARM_SUBSCRIPTION_ID=$(echo $AZURE_CREDENTIALS | jq -r .subscriptionId)
         export ARM_CLIENT_SECRET=$(echo $AZURE_CREDENTIALS | jq -r .clientSecret)
         export ARM_TENANT_ID=$(echo $AZURE_CREDENTIALS | jq -r .tenantId)
-        terraform destroy -var "management_group_name=${{ env.MG_NAME }}"
+        terraform destroy -auto-approve -var "management_group_name=${{ env.MG_NAME }}"
       env:
         AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
 
