@@ -14,7 +14,8 @@ jobs:
       run:
         shell: bash
     env:
-      TF_IN_AUTOMATION: true
+      TF_IN_AUTOMATION: 1
+      TF_INPUT: 0
       TFE_ORGANIZATION: terraform-azurerm-modules
       TFE_ADDRESS: terraform-azurerm-modules
       TFE_PARALLELISM: 256
