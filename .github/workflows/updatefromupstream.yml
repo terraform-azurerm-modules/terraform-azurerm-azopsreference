@@ -49,6 +49,7 @@ jobs:
     - name: Create branch
       run: |
         git checkout -b autoupdate
+        git fetch origin
         git reset --hard origin/main
       working-directory: ${{ github.workspace }}/module
 
