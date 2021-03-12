@@ -37,7 +37,9 @@ process_policydef() {
   local POLICYDISPLAYNAME=$(echo $POLICYJSON | jq -r '.properties.displayName')
   local POLICYDESCRIPTION=$(echo $POLICYJSON | jq -r '.properties.description')
   local POLICYMODE=$(echo $POLICYJSON | jq -r '.properties.mode')
+  local POLICYMETADATA=$(echo $POLICYJSON | jq '.properties.metadata' )
   local POLICYPARAMETERS=$(echo $POLICYJSON | jq '.properties.parameters')
+
   if [ ! "$POLICYPARAMETERS" == "{}" ] && [ ! "$POLICYPARAMETERS" == "null" ]; then
     local POLICYPARAMETERLINE="  parameters            = <<PARAMETERS
 $POLICYPARAMETERS
@@ -45,6 +47,15 @@ PARAMETERS
 "
   else
     local POLICYPARAMETERLINE=""
+  fi
+
+  if [ ! "$POLICYMETADATA" == "{}" ] && [ ! "$POLICYMETADATA" == "null" ]; then
+    local POLICYMETADATALINE="  metadata              = <<METADATA
+$POLICYMETADATA
+METADATA
+"
+  else
+    local POLICYMETADATALINE=""
   fi
 
   cat << EOF >$2/policydefinition-${TFNAME}.tf
@@ -55,7 +66,7 @@ resource "azurerm_policy_definition" "${TFNAME}" {
   mode                  = "$POLICYMODE"
   display_name          = "$POLICYDISPLAYNAME"
   description           = "$POLICYDESCRIPTION"
-
+$POLICYMETADATALINE
   management_group_name = $MANAGEMENTGROUPNAMEREFERENCE
   policy_rule           = <<POLICYRULE
 $(echo $POLICYJSON | jq '.properties.policyRule')
