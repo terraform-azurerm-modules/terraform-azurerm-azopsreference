@@ -30,3 +30,6 @@ override.tf.json
 
 # Ignore provider.tf in root
 /provider.tf
+
+# Ignore Terraform lock file
+.terraform.lock.hcl
