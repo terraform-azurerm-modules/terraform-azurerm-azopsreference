@@ -50,8 +50,9 @@ jobs:
         Write-Host "==> Running script..."
         New-Item -Path ${{ github.workspace }} -ItemType directory -Name policyconvert
         ${{ github.workspace }}/module/scripts/Invoke-LibraryUpdate.ps1 `
-          -TargetModulePath ${{ github.workspace }}/policyconvert `
+          -EnterpriseScaleToolsModuleDirectory ${{ github.workspace }}/estools/src/EnterpriseScaleLibraryTools `
           -SourceModulePath ${{ github.workspace }}/es `
+          -TargetModulePath ${{ github.workspace }}/policyconvert `
           -UseCacheFromModule
       shell: pwsh
 
