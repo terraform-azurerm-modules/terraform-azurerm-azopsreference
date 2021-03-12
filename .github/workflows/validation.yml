@@ -18,6 +18,7 @@ jobs:
       TFE_ORGANIZATION: terraform-azurerm-modules
       TFE_ADDRESS: terraform-azurerm-modules
       TFE_PARALLELISM: 256
+      TFE_RUN_ID: 1
       TFE_TOKEN: 1234
     steps:
     - name: Checkout
@@ -58,10 +59,10 @@ jobs:
         export ARM_SUBSCRIPTION_ID=$(echo $AZURE_CREDENTIALS | jq -r .subscriptionId)
         export ARM_CLIENT_SECRET=$(echo $AZURE_CREDENTIALS | jq -r .clientSecret)
         export ARM_TENANT_ID=$(echo $AZURE_CREDENTIALS | jq -r .tenantId)
-        terraform apply -auto-approve -var "management_group_name=${{ env.MG_NAME }}"
+        terraform apply -auto-approve
       env:
         AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
-        TF_VAR_MANAGEMENT_GROUP_NAME: ${{ env.MG_NAME }}"
+        TF_VAR_MANAGEMENT_GROUP_NAME: ${{ env.MG_NAME }}
 
     - name: Terraform Destroy
       run: |
@@ -72,7 +73,7 @@ jobs:
         terraform destroy -auto-approve
       env:
         AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
-        TF_VAR_MANAGEMENT_GROUP_NAME: ${{ env.MG_NAME }}"
+        TF_VAR_MANAGEMENT_GROUP_NAME: ${{ env.MG_NAME }}
 
     - name: Azure CLI delete MG
       uses: azure/CLI@v1
