@@ -73,3 +73,4 @@ jobs:
           MG_NAME=$(echo mg-$RANDOM)
           echo "MG_NAME=$MG_NAME" >> $GITHUB_ENV
           az account management-group delete --name $MG_NAME
+      if: always()
