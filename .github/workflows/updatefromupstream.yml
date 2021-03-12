@@ -43,17 +43,6 @@ jobs:
       run: |
         env | sort
 
-    - name: Setup Terraform
-      uses: hashicorp/setup-terraform@v1
-
-    - name: Create branch
-      run: |
-        git checkout -b autoupdate
-        git fetch origin
-        git reset --hard origin/main
-      working-directory: ${{ github.workspace }}/module
-
-
     - name: Convert policies.json
       run: |
         Write-Host "==> Installing Az.Accounts PowerShell Module..."
@@ -65,6 +54,16 @@ jobs:
           -SourceModulePath ${{ github.workspace }}/es `
           -UseCacheFromModule
       shell: pwsh
+
+    - name: Create branch
+      run: |
+        git checkout -b autoupdate
+        git fetch origin
+        git reset --hard origin/main
+      working-directory: ${{ github.workspace }}/module
+
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v1
 
     - name: Convert to Terraform
       run: |
