@@ -47,7 +47,7 @@ METADATA
       "deployment": {
         "location": "northeurope",
         "properties": {
-          "mode": "incremental",
+          "mode": "Incremental",
           "parameters": {
             "ipam": {
               "value": "[parameters('ipam')]",
@@ -212,22 +212,22 @@ METADATA
                             "contentVersion": "1.0.0.0",
                             "parameters": {
                               "remoteVirtualNetwork": {
-                                "type": "string"
+                                "type": "String"
                               },
                               "vWanVhubName": {
-                                "Type": "string",
+                                "type": "String",
                                 "defaultValue": ""
                               },
                               "allowHubToRemoteVnetTransit": {
-                                "Type": "bool",
+                                "type": "bool",
                                 "defaultValue": true
                               },
                               "allowRemoteVnetToUseHubVnetGateways": {
-                                "Type": "bool",
+                                "type": "bool",
                                 "defaultValue": false
                               },
                               "enableInternetSecurity": {
-                                "Type": "bool",
+                                "type": "bool",
                                 "defaultValue": true
                               }
                             },
@@ -288,11 +288,11 @@ METADATA
                             "contentVersion": "1.0.0.0",
                             "parameters": {
                               "remoteVirtualNetwork": {
-                                "Type": "string",
+                                "type": "String",
                                 "defaultValue": false
                               },
                               "hubName": {
-                                "Type": "string",
+                                "type": "String",
                                 "defaultValue": false
                               }
                             },
@@ -362,7 +362,7 @@ POLICYRULE
     "defaultValue": []
   },
   "effect": {
-    "type": "string",
+    "type": "String",
     "defaultValue": "DeployIfNotExists",
     "allowedValues": [
       "DeployIfNotExists",

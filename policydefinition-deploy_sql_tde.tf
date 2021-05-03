@@ -33,19 +33,19 @@ METADATA
       },
       "deployment": {
         "properties": {
-          "mode": "incremental",
+          "mode": "Incremental",
           "template": {
             "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
             "contentVersion": "1.0.0.0",
             "parameters": {
               "location": {
-                "type": "string"
+                "type": "String"
               },
               "sqlServerName": {
-                "type": "string"
+                "type": "String"
               },
               "sqlServerDataBaseName": {
-                "type": "string"
+                "type": "String"
               }
             },
             "variables": {},
@@ -85,7 +85,7 @@ POLICYRULE
   parameters = <<PARAMETERS
 {
   "effect": {
-    "type": "string",
+    "type": "String",
     "defaultValue": "DeployIfNotExists",
     "allowedValues": [
       "DeployIfNotExists",

@@ -25,7 +25,7 @@ METADATA
           "Microsoft.Automation/automationAccounts/modules",
           "Microsoft.Automation/automationAccounts/credentials",
           "Microsoft.Automation/automationAccounts/connections",
-          "Microsoft.Automation/automationAccount/certificates"
+          "Microsoft.Automation/automationAccounts/certificates"
         ]
       }
     ]

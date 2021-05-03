@@ -5,6 +5,12 @@ resource "azurerm_policy_definition" "deploy_nsg_flowlogs" {
   mode         = "All"
   display_name = "Deploys NSG flow logs and traffic analytics"
   description  = "Deploys NSG flow logs and traffic analytics to a storageaccountid with a specfied retention period."
+  metadata     = <<METADATA
+{
+  "version": "1.0.0",
+  "category": "Monitoring"
+}
+METADATA
 
   management_group_name = var.management_group_name
   policy_rule           = <<POLICYRULE
@@ -36,7 +42,7 @@ resource "azurerm_policy_definition" "deploy_nsg_flowlogs" {
       },
       "deployment": {
         "properties": {
-          "mode": "incremental",
+          "mode": "Incremental",
           "parameters": {
             "networkSecurityGroupName": {
               "value": "[field('name')]"
@@ -68,16 +74,16 @@ resource "azurerm_policy_definition" "deploy_nsg_flowlogs" {
             "contentVersion": "1.0.0.0",
             "parameters": {
               "networkSecurityGroupName": {
-                "type": "string"
+                "type": "String"
               },
               "resourceGroupName": {
-                "type": "string"
+                "type": "String"
               },
               "location": {
-                "type": "string"
+                "type": "String"
               },
               "storageAccountResourceId": {
-                "type": "string"
+                "type": "String"
               },
               "retention": {
                 "type": "int"
@@ -89,7 +95,7 @@ resource "azurerm_policy_definition" "deploy_nsg_flowlogs" {
                 "type": "int"
               },
               "logAnalytics": {
-                "type": "string"
+                "type": "String"
               }
             },
             "variables": {},
@@ -173,15 +179,15 @@ POLICYRULE
   },
   "effect": {
     "type": "String",
-    "metadata": {
-      "displayName": "Effect",
-      "description": "Enable or disable the execution of the policy"
-    },
+    "defaultValue": "DeployIfNotExists",
     "allowedValues": [
       "DeployIfNotExists",
       "Disabled"
     ],
-    "defaultValue": "DeployIfNotExists"
+    "metadata": {
+      "displayName": "Effect",
+      "description": "Enable or disable the execution of the policy"
+    }
   }
 }
 PARAMETERS

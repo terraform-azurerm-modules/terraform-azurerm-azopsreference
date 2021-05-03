@@ -30,14 +30,14 @@ METADATA
       "name": "[parameters('hubName')]",
       "deploymentScope": "Subscription",
       "existenceScope": "ResourceGroup",
-      "ResourceGroupName": "[parameters('rgName')]",
+      "resourceGroupName": "[parameters('rgName')]",
       "roleDefinitionIds": [
         "/providers/Microsoft.Authorization/roleDefinitions/b24988ac-6180-42a0-ab88-20f7382dd24c"
       ],
       "deployment": {
         "location": "northeurope",
         "properties": {
-          "mode": "incremental",
+          "mode": "Incremental",
           "parameters": {
             "rgName": {
               "value": "[parameters('rgName')]"
@@ -63,7 +63,7 @@ METADATA
             "contentVersion": "1.0.0.0",
             "parameters": {
               "hubName": {
-                "type": "string",
+                "type": "String",
                 "metadata": {
                   "description": "Name of the HUB"
                 }
@@ -399,8 +399,8 @@ POLICYRULE
   "azfw": {
     "type": "Object",
     "metadata": {
-      "displayName": "ergw",
-      "description": "Object describing ExpressRoute gateway"
+      "displayName": "azfw",
+      "description": "Object describing Azure Firewall"
     },
     "defaultValue": {}
   },
@@ -412,7 +412,7 @@ POLICYRULE
     }
   },
   "effect": {
-    "type": "string",
+    "type": "String",
     "defaultValue": "DeployIfNotExists",
     "allowedValues": [
       "DeployIfNotExists",

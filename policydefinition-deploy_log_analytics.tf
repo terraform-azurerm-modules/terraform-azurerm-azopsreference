@@ -44,7 +44,7 @@ METADATA
       "deployment": {
         "location": "northeurope",
         "properties": {
-          "mode": "incremental",
+          "mode": "Incremental",
           "parameters": {
             "rgName": {
               "value": "[parameters('rgName')]"
@@ -70,22 +70,22 @@ METADATA
             "contentVersion": "1.0.0.0",
             "parameters": {
               "rgName": {
-                "type": "string"
+                "type": "String"
               },
               "workspaceName": {
-                "type": "string"
+                "type": "String"
               },
               "workspaceRegion": {
-                "type": "string"
+                "type": "String"
               },
               "automationAccountName": {
-                "type": "string"
+                "type": "String"
               },
               "automationRegion": {
-                "type": "string"
+                "type": "String"
               },
               "retentionInDays": {
-                "type": "string"
+                "type": "String"
               }
             },
             "variables": {},
@@ -114,25 +114,25 @@ METADATA
                     "variables": {},
                     "resources": [
                       {
-                        "apiversion": "2015-10-31",
+                        "apiVersion": "2015-10-31",
                         "location": "[parameters('AutomationRegion')]",
                         "name": "[parameters('AutomationAccountName')]",
                         "type": "Microsoft.Automation/automationAccounts",
                         "comments": "Automation account for ",
                         "properties": {
                           "sku": {
-                            "name": "OMS"
+                            "name": "Basic"
                           }
                         }
                       },
                       {
-                        "apiVersion": "2017-03-15-preview",
+                        "apiVersion": "2020-08-01",
                         "location": "[parameters('workspaceRegion')]",
                         "name": "[parameters('workspaceName')]",
                         "type": "Microsoft.OperationalInsights/workspaces",
                         "properties": {
                           "sku": {
-                            "name": "pernode"
+                            "name": "PerGB2018"
                           },
                           "enableLogAccessUsingOnlyResourcePermissions": true,
                           "retentionInDays": "[int(parameters('retentionInDays'))]"
@@ -141,7 +141,7 @@ METADATA
                           {
                             "name": "Automation",
                             "type": "linkedServices",
-                            "apiVersion": "2015-11-01-preview",
+                            "apiVersion": "2020-08-01",
                             "dependsOn": [
                               "[resourceId('Microsoft.OperationalInsights/workspaces/', parameters('workspaceName'))]",
                               "[resourceId('Microsoft.Automation/automationAccounts/', parameters('AutomationAccountName'))]"
@@ -198,7 +198,7 @@ POLICYRULE
     }
   },
   "retentionInDays": {
-    "type": "string",
+    "type": "String",
     "defaultValue": "30",
     "metadata": {
       "displayName": "Data retention",
@@ -213,7 +213,7 @@ POLICYRULE
     }
   },
   "effect": {
-    "type": "string",
+    "type": "String",
     "defaultValue": "DeployIfNotExists",
     "allowedValues": [
       "DeployIfNotExists",
