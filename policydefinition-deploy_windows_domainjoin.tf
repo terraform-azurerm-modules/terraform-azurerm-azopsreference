@@ -114,7 +114,7 @@ METADATA
       },
       "deployment": {
         "properties": {
-          "mode": "incremental",
+          "mode": "Incremental",
           "parameters": {
             "vmName": {
               "value": "[field('name')]"
@@ -153,25 +153,25 @@ METADATA
             "contentVersion": "1.0.0.0",
             "parameters": {
               "vmName": {
-                "type": "string"
+                "type": "String"
               },
               "location": {
-                "type": "string"
+                "type": "String"
               },
               "domainUsername": {
-                "type": "string"
+                "type": "String"
               },
               "domainPassword": {
                 "type": "securestring"
               },
               "domainFQDN": {
-                "type": "string"
+                "type": "String"
               },
               "domainOUPath": {
-                "type": "string"
+                "type": "String"
               },
               "keyVaultResourceId": {
-                "type": "string"
+                "type": "String"
               }
             },
             "variables": {
@@ -244,7 +244,7 @@ POLICYRULE
     }
   },
   "effect": {
-    "type": "string",
+    "type": "String",
     "defaultValue": "DeployIfNotExists",
     "allowedValues": [
       "DeployIfNotExists",

@@ -37,7 +37,7 @@ METADATA
       "deployment": {
         "location": "northeurope",
         "properties": {
-          "mode": "incremental",
+          "mode": "Incremental",
           "parameters": {
             "rgName": {
               "value": "[parameters('rgName')]"
@@ -54,13 +54,13 @@ METADATA
             "contentVersion": "1.0.0.0",
             "parameters": {
               "rgName": {
-                "type": "string"
+                "type": "String"
               },
               "vwanname": {
-                "type": "string"
+                "type": "String"
               },
               "vwanRegion": {
-                "type": "string"
+                "type": "String"
               }
             },
             "variables": {
@@ -140,7 +140,7 @@ POLICYRULE
     }
   },
   "effect": {
-    "type": "string",
+    "type": "String",
     "defaultValue": "DeployIfNotExists",
     "allowedValues": [
       "DeployIfNotExists",

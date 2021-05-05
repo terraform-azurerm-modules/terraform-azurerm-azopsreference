@@ -47,7 +47,7 @@ METADATA
       },
       "deployment": {
         "properties": {
-          "mode": "incremental",
+          "mode": "Incremental",
           "parameters": {
             "workspaceName": {
               "value": "[parameters('workspaceName')]"
@@ -61,10 +61,10 @@ METADATA
             "contentVersion": "1.0.0.0",
             "parameters": {
               "workspaceName": {
-                "type": "string"
+                "type": "String"
               },
               "workspaceRegion": {
-                "type": "string"
+                "type": "String"
               }
             },
             "variables": {
@@ -401,7 +401,7 @@ POLICYRULE
     }
   },
   "effect": {
-    "type": "string",
+    "type": "String",
     "defaultValue": "DeployIfNotExists",
     "allowedValues": [
       "DeployIfNotExists",

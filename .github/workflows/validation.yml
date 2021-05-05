@@ -48,6 +48,7 @@ jobs:
           MG_NAME=$(echo mg-$RANDOM)
           echo "MG_NAME=$MG_NAME" >> $GITHUB_ENV
           az account management-group create --name $MG_NAME
+          sleep 60 # to prevent authorization errors on teh next step
     
     - name: Terraform Apply
       run: |

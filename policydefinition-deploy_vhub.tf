@@ -30,14 +30,14 @@ METADATA
       "name": "[parameters('vHubName')]",
       "deploymentScope": "Subscription",
       "existenceScope": "ResourceGroup",
-      "ResourceGroupName": "[parameters('rgName')]",
+      "resourceGroupName": "[parameters('rgName')]",
       "roleDefinitionIds": [
         "/providers/Microsoft.Authorization/roleDefinitions/b24988ac-6180-42a0-ab88-20f7382dd24c"
       ],
       "deployment": {
         "location": "northeurope",
         "properties": {
-          "mode": "incremental",
+          "mode": "Incremental",
           "parameters": {
             "rgName": {
               "value": "[parameters('rgName')]"
@@ -66,7 +66,7 @@ METADATA
             "contentVersion": "1.0.0.0",
             "parameters": {
               "vwanname": {
-                "type": "string",
+                "type": "String",
                 "metadata": {
                   "description": "Name of the Virtual WAN"
                 }
@@ -291,7 +291,7 @@ POLICYRULE
     }
   },
   "effect": {
-    "type": "string",
+    "type": "String",
     "defaultValue": "DeployIfNotExists",
     "allowedValues": [
       "DeployIfNotExists",

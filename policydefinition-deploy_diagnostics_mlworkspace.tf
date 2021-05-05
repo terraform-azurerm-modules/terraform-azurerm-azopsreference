@@ -46,28 +46,28 @@ METADATA
       ],
       "deployment": {
         "properties": {
-          "mode": "incremental",
+          "mode": "Incremental",
           "template": {
             "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
             "contentVersion": "1.0.0.0",
             "parameters": {
               "resourceName": {
-                "type": "string"
+                "type": "String"
               },
               "logAnalytics": {
-                "type": "string"
+                "type": "String"
               },
               "location": {
-                "type": "string"
+                "type": "String"
               },
               "profileName": {
-                "type": "string"
+                "type": "String"
               },
               "metricsEnabled": {
-                "type": "string"
+                "type": "String"
               },
               "logsEnabled": {
-                "type": "string"
+                "type": "String"
               }
             },
             "variables": {},
@@ -179,7 +179,7 @@ POLICYRULE
     }
   },
   "effect": {
-    "type": "string",
+    "type": "String",
     "defaultValue": "DeployIfNotExists",
     "allowedValues": [
       "DeployIfNotExists",
@@ -191,7 +191,7 @@ POLICYRULE
     }
   },
   "profileName": {
-    "type": "string",
+    "type": "String",
     "defaultValue": "setbypolicy",
     "metadata": {
       "displayName": "Profile name",
@@ -199,7 +199,7 @@ POLICYRULE
     }
   },
   "metricsEnabled": {
-    "type": "string",
+    "type": "String",
     "defaultValue": "True",
     "allowedValues": [
       "True",
@@ -211,7 +211,7 @@ POLICYRULE
     }
   },
   "logsEnabled": {
-    "type": "string",
+    "type": "String",
     "defaultValue": "True",
     "allowedValues": [
       "True",

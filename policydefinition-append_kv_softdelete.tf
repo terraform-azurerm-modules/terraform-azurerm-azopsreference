@@ -25,7 +25,7 @@ METADATA
           },
           {
             "field": "Microsoft.KeyVault/vaults/enableSoftDelete",
-            "notEquals": false
+            "notEquals": true
           }
         ]
       }

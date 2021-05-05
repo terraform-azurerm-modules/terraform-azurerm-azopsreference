@@ -44,16 +44,16 @@ METADATA
       "deployment": {
         "location": "northeurope",
         "properties": {
-          "mode": "incremental",
+          "mode": "Incremental",
           "template": {
             "$schema": "https://schema.management.azure.com/schemas/2018-05-01/subscriptionDeploymentTemplate.json#",
             "contentVersion": "1.0.0.0",
             "parameters": {
               "logAnalytics": {
-                "type": "string"
+                "type": "String"
               },
               "logsEnabled": {
-                "type": "string"
+                "type": "String"
               }
             },
             "variables": {},
@@ -134,7 +134,7 @@ POLICYRULE
     }
   },
   "effect": {
-    "type": "string",
+    "type": "String",
     "defaultValue": "DeployIfNotExists",
     "allowedValues": [
       "DeployIfNotExists",
@@ -146,7 +146,7 @@ POLICYRULE
     }
   },
   "logsEnabled": {
-    "type": "string",
+    "type": "String",
     "defaultValue": "True",
     "allowedValues": [
       "True",

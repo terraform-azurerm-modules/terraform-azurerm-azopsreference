@@ -37,7 +37,7 @@ METADATA
       "deployment": {
         "location": "northeurope",
         "properties": {
-          "mode": "incremental",
+          "mode": "Incremental",
           "parameters": {
             "rgName": {
               "value": "[parameters('rgName')]"
@@ -54,13 +54,13 @@ METADATA
             "contentVersion": "1.0.0.0",
             "parameters": {
               "rgName": {
-                "type": "string"
+                "type": "String"
               },
               "ddosname": {
-                "type": "string"
+                "type": "String"
               },
               "ddosRegion": {
-                "type": "string"
+                "type": "String"
               }
             },
             "resources": [
@@ -114,14 +114,14 @@ POLICYRULE
     "type": "String",
     "metadata": {
       "displayName": "ddosName",
-      "description": "Name of the Virtual WAN"
+      "description": "DDoSVnet"
     }
   },
   "ddosRegion": {
     "type": "String",
     "metadata": {
       "displayName": "ddosRegion",
-      "description": "Select Azure region for Virtual WAN",
+      "description": "DDoSVnet location",
       "strongType": "location"
     }
   },
@@ -133,7 +133,7 @@ POLICYRULE
     }
   },
   "effect": {
-    "type": "string",
+    "type": "String",
     "defaultValue": "DeployIfNotExists",
     "allowedValues": [
       "DeployIfNotExists",

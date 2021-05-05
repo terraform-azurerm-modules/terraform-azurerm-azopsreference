@@ -3,8 +3,8 @@ resource "azurerm_policy_definition" "deploy_budget" {
   name         = "Deploy-Budget"
   policy_type  = "Custom"
   mode         = "All"
-  display_name = "Deploy a default budget on subscriptions"
-  description  = "Depoloys a default budget on subscriptions."
+  display_name = "Deploy a default budget on all subscriptions under the assigned scope"
+  description  = "Deploy a default budget on all subscriptions under the assigned scope"
   metadata     = <<METADATA
 {
   "version": "1.0.0",
@@ -51,7 +51,7 @@ METADATA
       "deployment": {
         "location": "northeurope",
         "properties": {
-          "mode": "incremental",
+          "mode": "Incremental",
           "parameters": {
             "amount": {
               "value": "[parameters('amount')]"
@@ -80,28 +80,28 @@ METADATA
             "contentVersion": "1.0.0.0",
             "parameters": {
               "amount": {
-                "type": "string"
+                "type": "String"
               },
               "timeGrain": {
-                "type": "string"
+                "type": "String"
               },
               "firstThreshold": {
-                "type": "string"
+                "type": "String"
               },
               "secondThreshold": {
-                "type": "string"
+                "type": "String"
               },
               "contactEmails": {
-                "type": "array"
+                "type": "Array"
               },
               "contactRoles": {
-                "type": "array"
+                "type": "Array"
               },
               "contactGroups": {
-                "type": "array"
+                "type": "Array"
               },
               "startDate": {
-                "type": "string",
+                "type": "String",
                 "defaultValue": "[concat(utcNow('MM'), '/01/', utcNow('yyyy'))]"
               }
             },
@@ -149,14 +149,14 @@ POLICYRULE
   parameters = <<PARAMETERS
 {
   "amount": {
-    "type": "string",
+    "type": "String",
     "defaultValue": "1000",
     "metadata": {
       "description": "The total amount of cost or usage to track with the budget"
     }
   },
   "timeGrain": {
-    "type": "string",
+    "type": "String",
     "defaultValue": "Monthly",
     "allowedValues": [
       "Monthly",
@@ -171,21 +171,21 @@ POLICYRULE
     }
   },
   "firstThreshold": {
-    "type": "string",
+    "type": "String",
     "defaultValue": "90",
     "metadata": {
       "description": "Threshold value associated with a notification. Notification is sent when the cost exceeded the threshold. It is always percent and has to be between 0 and 1000."
     }
   },
   "secondThreshold": {
-    "type": "string",
+    "type": "String",
     "defaultValue": "100",
     "metadata": {
       "description": "Threshold value associated with a notification. Notification is sent when the cost exceeded the threshold. It is always percent and has to be between 0 and 1000."
     }
   },
   "contactRoles": {
-    "type": "array",
+    "type": "Array",
     "defaultValue": [
       "Owner",
       "Contributor"
@@ -195,14 +195,14 @@ POLICYRULE
     }
   },
   "contactEmails": {
-    "type": "array",
+    "type": "Array",
     "defaultValue": [],
     "metadata": {
       "description": "The list of email addresses, in an array, to send the budget notification to when the threshold is exceeded."
     }
   },
   "contactGroups": {
-    "type": "array",
+    "type": "Array",
     "defaultValue": [],
     "metadata": {
       "description": "The list of action groups, in an array, to send the budget notification to when the threshold is exceeded. It accepts array of strings."

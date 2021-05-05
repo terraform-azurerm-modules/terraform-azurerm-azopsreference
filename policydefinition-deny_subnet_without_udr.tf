@@ -1,6 +1,6 @@
 # This file was auto generated
 resource "azurerm_policy_definition" "deny_subnet_without_udr" {
-  name         = "Deny-Subnet-Without-Udr"
+  name         = "Deny-Subnet-Without-UDR"
   policy_type  = "Custom"
   mode         = "All"
   display_name = "Subnets should have a User Defined Route"

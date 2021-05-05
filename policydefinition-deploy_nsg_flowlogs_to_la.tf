@@ -72,13 +72,13 @@ METADATA
             "contentVersion": "1.0.0.0",
             "parameters": {
               "location": {
-                "type": "string"
+                "type": "String"
               },
               "networkSecurityGroup": {
-                "type": "string"
+                "type": "String"
               },
               "workspace": {
-                "type": "string"
+                "type": "String"
               },
               "retention": {
                 "type": "int"
@@ -87,7 +87,7 @@ METADATA
                 "type": "int"
               },
               "time": {
-                "type": "string",
+                "type": "String",
                 "defaultValue": "[utcNow()]"
               }
             },
@@ -216,7 +216,7 @@ POLICYRULE
     "defaultValue": ""
   },
   "effect": {
-    "type": "string",
+    "type": "String",
     "defaultValue": "DeployIfNotExists",
     "allowedValues": [
       "DeployIfNotExists",

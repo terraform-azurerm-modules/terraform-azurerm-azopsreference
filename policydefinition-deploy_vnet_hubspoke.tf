@@ -49,7 +49,7 @@ METADATA
       "deployment": {
         "location": "northeurope",
         "properties": {
-          "mode": "incremental",
+          "mode": "Incremental",
           "parameters": {
             "vNetRgName": {
               "value": "[parameters('vNetRgName')]"
@@ -65,6 +65,9 @@ METADATA
             },
             "hubResourceId": {
               "value": "[parameters('hubResourceId')]"
+            },
+            "dnsServers": {
+              "value": "[parameters('dnsServers')]"
             }
           },
           "template": {
@@ -72,23 +75,27 @@ METADATA
             "contentVersion": "1.0.0.0",
             "parameters": {
               "vNetRgName": {
-                "type": "string"
+                "type": "String"
               },
               "vNetName": {
-                "type": "string"
+                "type": "String"
               },
               "vNetLocation": {
-                "type": "string"
+                "type": "String"
               },
               "vNetCidrRange": {
-                "type": "string"
+                "type": "String"
               },
               "vNetPeerUseRemoteGateway": {
                 "type": "bool",
                 "defaultValue": false
               },
               "hubResourceId": {
-                "type": "string"
+                "type": "String"
+              },
+              "dnsServers": {
+                "type": "Array",
+                "defaultValue": []
               }
             },
             "variables": {},
@@ -152,6 +159,9 @@ METADATA
                             "addressPrefixes": [
                               "[parameters('vNetCidrRange')]"
                             ]
+                          },
+                          "dhcpOptions": {
+                            "dnsServers": "[parameters('dnsServers')]"
                           }
                         }
                       },
@@ -191,11 +201,11 @@ METADATA
                             "contentVersion": "1.0.0.0",
                             "parameters": {
                               "remoteVirtualNetwork": {
-                                "Type": "string",
+                                "type": "String",
                                 "defaultValue": false
                               },
                               "hubName": {
-                                "Type": "string",
+                                "type": "String",
                                 "defaultValue": false
                               }
                             },
@@ -280,6 +290,14 @@ POLICYRULE
       "displayName": "hubResourceId",
       "description": "Resource ID for the HUB vNet"
     }
+  },
+  "dnsServers": {
+    "type": "Array",
+    "metadata": {
+      "displayName": "IP address of the DNSServers",
+      "description": "Provide the IP address of the DNS server the vnet will use, or leave empty to use Azure DNS."
+    },
+    "defaultValue": []
   }
 }
 PARAMETERS

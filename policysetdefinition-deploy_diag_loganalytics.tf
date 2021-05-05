@@ -11,6 +11,7 @@ resource "azurerm_policy_set_definition" "deploy_diag_loganalytics" {
     azurerm_policy_definition.deploy_diagnostics_acr,
     azurerm_policy_definition.deploy_diagnostics_aks,
     azurerm_policy_definition.deploy_diagnostics_analysisservice,
+    azurerm_policy_definition.deploy_diagnostics_apiforfhir,
     azurerm_policy_definition.deploy_diagnostics_apimgmt,
     azurerm_policy_definition.deploy_diagnostics_applicationgateway,
     azurerm_policy_definition.deploy_diagnostics_batch,
@@ -18,6 +19,7 @@ resource "azurerm_policy_set_definition" "deploy_diag_loganalytics" {
     azurerm_policy_definition.deploy_diagnostics_cognitiveservices,
     azurerm_policy_definition.deploy_diagnostics_cosmosdb,
     azurerm_policy_definition.deploy_diagnostics_databricks,
+    azurerm_policy_definition.deploy_diagnostics_dataexplorercluster,
     azurerm_policy_definition.deploy_diagnostics_datafactory,
     azurerm_policy_definition.deploy_diagnostics_datalakestore,
     azurerm_policy_definition.deploy_diagnostics_dlanalytics,
@@ -36,13 +38,13 @@ resource "azurerm_policy_set_definition" "deploy_diag_loganalytics" {
     azurerm_policy_definition.deploy_diagnostics_logicappsise,
     azurerm_policy_definition.deploy_diagnostics_logicappswf,
     azurerm_policy_definition.deploy_diagnostics_mariadb,
+    azurerm_policy_definition.deploy_diagnostics_mediaservice,
     azurerm_policy_definition.deploy_diagnostics_mlworkspace,
     azurerm_policy_definition.deploy_diagnostics_mysql,
     azurerm_policy_definition.deploy_diagnostics_networksecuritygroups,
     azurerm_policy_definition.deploy_diagnostics_nic,
     azurerm_policy_definition.deploy_diagnostics_postgresql,
     azurerm_policy_definition.deploy_diagnostics_powerbiembedded,
-    azurerm_policy_definition.deploy_diagnostics_publicip,
     azurerm_policy_definition.deploy_diagnostics_recoveryvault,
     azurerm_policy_definition.deploy_diagnostics_rediscache,
     azurerm_policy_definition.deploy_diagnostics_relay,
@@ -208,6 +210,24 @@ VALUES
   }
 
   policy_definition_reference {
+    policy_definition_id = "/providers/Microsoft.Management/managementGroups/${var.management_group_name}/providers/Microsoft.Authorization/policyDefinitions/Deploy-Diagnostics-ApiForFHIR"
+    reference_id         = "APIforFHIRDeployDiagnosticLogDeployLogAnalytics"
+    parameter_values     = <<VALUES
+{
+  "logAnalytics": {
+    "value": "[parameters('logAnalytics')]"
+  },
+  "effect": {
+    "value": "[parameters('APIforFHIRLogAnalyticsEffect')]"
+  },
+  "profileName": {
+    "value": "[parameters('profileName')]"
+  }
+}
+VALUES
+  }
+
+  policy_definition_reference {
     policy_definition_id = "/providers/Microsoft.Management/managementGroups/${var.management_group_name}/providers/Microsoft.Authorization/policyDefinitions/Deploy-Diagnostics-APIMgmt"
     reference_id         = "APIMgmtDeployDiagnosticLogDeployLogAnalytics"
     parameter_values     = <<VALUES
@@ -343,6 +363,24 @@ VALUES
   },
   "effect": {
     "value": "[parameters('DatabricksLogAnalyticsEffect')]"
+  },
+  "profileName": {
+    "value": "[parameters('profileName')]"
+  }
+}
+VALUES
+  }
+
+  policy_definition_reference {
+    policy_definition_id = "/providers/Microsoft.Management/managementGroups/${var.management_group_name}/providers/Microsoft.Authorization/policyDefinitions/Deploy-Diagnostics-DataExplorerCluster"
+    reference_id         = "DataExplorerClusterDeployDiagnosticLogDeployLogAnalytics"
+    parameter_values     = <<VALUES
+{
+  "logAnalytics": {
+    "value": "[parameters('logAnalytics')]"
+  },
+  "effect": {
+    "value": "[parameters('DataExplorerClusterLogAnalyticsEffect')]"
   },
   "profileName": {
     "value": "[parameters('profileName')]"
@@ -676,6 +714,24 @@ VALUES
   }
 
   policy_definition_reference {
+    policy_definition_id = "/providers/Microsoft.Management/managementGroups/${var.management_group_name}/providers/Microsoft.Authorization/policyDefinitions/Deploy-Diagnostics-MediaService"
+    reference_id         = "MediaServiceDeployDiagnosticLogDeployLogAnalytics"
+    parameter_values     = <<VALUES
+{
+  "logAnalytics": {
+    "value": "[parameters('logAnalytics')]"
+  },
+  "effect": {
+    "value": "[parameters('MediaServiceLogAnalyticsEffect')]"
+  },
+  "profileName": {
+    "value": "[parameters('profileName')]"
+  }
+}
+VALUES
+  }
+
+  policy_definition_reference {
     policy_definition_id = "/providers/Microsoft.Management/managementGroups/${var.management_group_name}/providers/Microsoft.Authorization/policyDefinitions/Deploy-Diagnostics-MlWorkspace"
     reference_id         = "MlWorkspaceDeployDiagnosticLogDeployLogAnalytics"
     parameter_values     = <<VALUES
@@ -784,7 +840,7 @@ VALUES
   }
 
   policy_definition_reference {
-    policy_definition_id = "/providers/Microsoft.Management/managementGroups/${var.management_group_name}/providers/Microsoft.Authorization/policyDefinitions/Deploy-Diagnostics-PublicIP"
+    policy_definition_id = "/providers/Microsoft.Authorization/policyDefinitions/752154a7-1e0f-45c6-a880-ac75a7e4f648"
     reference_id         = "NetworkPublicIPNicDeployDiagnosticLogDeployLogAnalytics"
     parameter_values     = <<VALUES
 {
@@ -796,6 +852,9 @@ VALUES
   },
   "profileName": {
     "value": "[parameters('profileName')]"
+  },
+  "metricsEnabled": {
+    "value": "True"
   }
 }
 VALUES
@@ -1136,7 +1195,7 @@ VALUES
     "type": "String"
   },
   "profileName": {
-    "type": "string",
+    "type": "String",
     "defaultValue": "setbypolicy",
     "metadata": {
       "displayName": "Profile name",
@@ -1144,7 +1203,7 @@ VALUES
     }
   },
   "ACILogAnalyticsEffect": {
-    "type": "string",
+    "type": "String",
     "defaultValue": "DeployIfNotExists",
     "allowedValues": [
       "DeployIfNotExists",
@@ -1156,7 +1215,7 @@ VALUES
     }
   },
   "ACRLogAnalyticsEffect": {
-    "type": "string",
+    "type": "String",
     "defaultValue": "DeployIfNotExists",
     "allowedValues": [
       "DeployIfNotExists",
@@ -1168,7 +1227,7 @@ VALUES
     }
   },
   "AKSLogAnalyticsEffect": {
-    "type": "string",
+    "type": "String",
     "defaultValue": "DeployIfNotExists",
     "allowedValues": [
       "DeployIfNotExists",
@@ -1180,7 +1239,7 @@ VALUES
     }
   },
   "AnalysisServiceLogAnalyticsEffect": {
-    "type": "string",
+    "type": "String",
     "defaultValue": "DeployIfNotExists",
     "allowedValues": [
       "DeployIfNotExists",
@@ -1191,8 +1250,20 @@ VALUES
       "description": "Deploys the diagnostic settings for Analysis Services to stream to a Log Analytics workspace when any Analysis Services which is missing this diagnostic settings is created or updated. The policy wil set the diagnostic with all metrics and category enabled"
     }
   },
+  "APIforFHIRLogAnalyticsEffect": {
+    "type": "String",
+    "defaultValue": "DeployIfNotExists",
+    "allowedValues": [
+      "DeployIfNotExists",
+      "Disabled"
+    ],
+    "metadata": {
+      "displayName": "Deploy Diagnostic Settings for Azure API for FHIR to Log Analytics workspace",
+      "description": "Deploys the diagnostic settings for Azure API for FHIR to stream to a Log Analytics workspace when any Azure API for FHIR which is missing this diagnostic settings is created or updated. The policy wil set the diagnostic with all metrics and category enabled"
+    }
+  },
   "APIMgmtLogAnalyticsEffect": {
-    "type": "string",
+    "type": "String",
     "defaultValue": "DeployIfNotExists",
     "allowedValues": [
       "DeployIfNotExists",
@@ -1204,7 +1275,7 @@ VALUES
     }
   },
   "ApplicationGatewayLogAnalyticsEffect": {
-    "type": "string",
+    "type": "String",
     "defaultValue": "DeployIfNotExists",
     "allowedValues": [
       "DeployIfNotExists",
@@ -1216,7 +1287,7 @@ VALUES
     }
   },
   "AutomationLogAnalyticsEffect": {
-    "type": "string",
+    "type": "String",
     "defaultValue": "DeployIfNotExists",
     "allowedValues": [
       "DeployIfNotExists",
@@ -1228,7 +1299,7 @@ VALUES
     }
   },
   "BatchLogAnalyticsEffect": {
-    "type": "string",
+    "type": "String",
     "defaultValue": "DeployIfNotExists",
     "allowedValues": [
       "DeployIfNotExists",
@@ -1240,7 +1311,7 @@ VALUES
     }
   },
   "CDNEndpointsLogAnalyticsEffect": {
-    "type": "string",
+    "type": "String",
     "defaultValue": "DeployIfNotExists",
     "allowedValues": [
       "DeployIfNotExists",
@@ -1252,7 +1323,7 @@ VALUES
     }
   },
   "CognitiveServicesLogAnalyticsEffect": {
-    "type": "string",
+    "type": "String",
     "defaultValue": "DeployIfNotExists",
     "allowedValues": [
       "DeployIfNotExists",
@@ -1264,7 +1335,7 @@ VALUES
     }
   },
   "CosmosLogAnalyticsEffect": {
-    "type": "string",
+    "type": "String",
     "defaultValue": "DeployIfNotExists",
     "allowedValues": [
       "DeployIfNotExists",
@@ -1276,7 +1347,7 @@ VALUES
     }
   },
   "DatabricksLogAnalyticsEffect": {
-    "type": "string",
+    "type": "String",
     "defaultValue": "DeployIfNotExists",
     "allowedValues": [
       "DeployIfNotExists",
@@ -1287,8 +1358,20 @@ VALUES
       "description": "Deploys the diagnostic settings for Databricks to stream to a Log Analytics workspace when any Databricks which is missing this diagnostic settings is created or updated. The policy wil set the diagnostic with all metrics and category enabled"
     }
   },
+  "DataExplorerClusterLogAnalyticsEffect": {
+    "type": "String",
+    "defaultValue": "DeployIfNotExists",
+    "allowedValues": [
+      "DeployIfNotExists",
+      "Disabled"
+    ],
+    "metadata": {
+      "displayName": "Deploy Diagnostic Settings for Azure Data Explorer Cluster to Log Analytics workspace",
+      "description": "Deploys the diagnostic settings for Azure Data Explorer Cluster to stream to a Log Analytics workspace when any Azure Data Explorer Cluster which is missing this diagnostic settings is created or updated. The policy wil set the diagnostic with all metrics and category enabled"
+    }
+  },
   "DataFactoryLogAnalyticsEffect": {
-    "type": "string",
+    "type": "String",
     "defaultValue": "DeployIfNotExists",
     "allowedValues": [
       "DeployIfNotExists",
@@ -1300,7 +1383,7 @@ VALUES
     }
   },
   "DataLakeStoreLogAnalyticsEffect": {
-    "type": "string",
+    "type": "String",
     "defaultValue": "DeployIfNotExists",
     "allowedValues": [
       "DeployIfNotExists",
@@ -1312,7 +1395,7 @@ VALUES
     }
   },
   "DataLakeAnalyticsLogAnalyticsEffect": {
-    "type": "string",
+    "type": "String",
     "defaultValue": "DeployIfNotExists",
     "allowedValues": [
       "DeployIfNotExists",
@@ -1324,7 +1407,7 @@ VALUES
     }
   },
   "EventGridSubLogAnalyticsEffect": {
-    "type": "string",
+    "type": "String",
     "defaultValue": "DeployIfNotExists",
     "allowedValues": [
       "DeployIfNotExists",
@@ -1336,7 +1419,7 @@ VALUES
     }
   },
   "EventGridTopicLogAnalyticsEffect": {
-    "type": "string",
+    "type": "String",
     "defaultValue": "DeployIfNotExists",
     "allowedValues": [
       "DeployIfNotExists",
@@ -1348,7 +1431,7 @@ VALUES
     }
   },
   "EventHubLogAnalyticsEffect": {
-    "type": "string",
+    "type": "String",
     "defaultValue": "DeployIfNotExists",
     "allowedValues": [
       "DeployIfNotExists",
@@ -1360,7 +1443,7 @@ VALUES
     }
   },
   "EventSystemTopicLogAnalyticsEffect": {
-    "type": "string",
+    "type": "String",
     "defaultValue": "DeployIfNotExists",
     "allowedValues": [
       "DeployIfNotExists",
@@ -1372,7 +1455,7 @@ VALUES
     }
   },
   "ExpressRouteLogAnalyticsEffect": {
-    "type": "string",
+    "type": "String",
     "defaultValue": "DeployIfNotExists",
     "allowedValues": [
       "DeployIfNotExists",
@@ -1384,7 +1467,7 @@ VALUES
     }
   },
   "FirewallLogAnalyticsEffect": {
-    "type": "string",
+    "type": "String",
     "defaultValue": "DeployIfNotExists",
     "allowedValues": [
       "DeployIfNotExists",
@@ -1396,7 +1479,7 @@ VALUES
     }
   },
   "FrontDoorLogAnalyticsEffect": {
-    "type": "string",
+    "type": "String",
     "defaultValue": "DeployIfNotExists",
     "allowedValues": [
       "DeployIfNotExists",
@@ -1408,7 +1491,7 @@ VALUES
     }
   },
   "FunctionAppLogAnalyticsEffect": {
-    "type": "string",
+    "type": "String",
     "defaultValue": "DeployIfNotExists",
     "allowedValues": [
       "DeployIfNotExists",
@@ -1420,7 +1503,7 @@ VALUES
     }
   },
   "HDInsightLogAnalyticsEffect": {
-    "type": "string",
+    "type": "String",
     "defaultValue": "DeployIfNotExists",
     "allowedValues": [
       "DeployIfNotExists",
@@ -1432,7 +1515,7 @@ VALUES
     }
   },
   "IotHubLogAnalyticsEffect": {
-    "type": "string",
+    "type": "String",
     "defaultValue": "DeployIfNotExists",
     "allowedValues": [
       "DeployIfNotExists",
@@ -1444,7 +1527,7 @@ VALUES
     }
   },
   "KeyVaultLogAnalyticsEffect": {
-    "type": "string",
+    "type": "String",
     "defaultValue": "DeployIfNotExists",
     "allowedValues": [
       "DeployIfNotExists",
@@ -1456,7 +1539,7 @@ VALUES
     }
   },
   "LoadBalancerLogAnalyticsEffect": {
-    "type": "string",
+    "type": "String",
     "defaultValue": "DeployIfNotExists",
     "allowedValues": [
       "DeployIfNotExists",
@@ -1468,7 +1551,7 @@ VALUES
     }
   },
   "LogicAppsISELogAnalyticsEffect": {
-    "type": "string",
+    "type": "String",
     "defaultValue": "DeployIfNotExists",
     "allowedValues": [
       "DeployIfNotExists",
@@ -1480,7 +1563,7 @@ VALUES
     }
   },
   "LogicAppsWFLogAnalyticsEffect": {
-    "type": "string",
+    "type": "String",
     "defaultValue": "DeployIfNotExists",
     "allowedValues": [
       "DeployIfNotExists",
@@ -1492,7 +1575,7 @@ VALUES
     }
   },
   "MariaDBLogAnalyticsEffect": {
-    "type": "string",
+    "type": "String",
     "defaultValue": "DeployIfNotExists",
     "allowedValues": [
       "DeployIfNotExists",
@@ -1503,8 +1586,20 @@ VALUES
       "description": "Deploys the diagnostic settings for MariaDB to stream to a Log Analytics workspace when any MariaDB which is missing this diagnostic settings is created or updated. The policy wil set the diagnostic with all metrics and category enabled"
     }
   },
+  "MediaServiceLogAnalyticsEffect": {
+    "type": "String",
+    "defaultValue": "DeployIfNotExists",
+    "allowedValues": [
+      "DeployIfNotExists",
+      "Disabled"
+    ],
+    "metadata": {
+      "displayName": "Deploy Diagnostic Settings for Azure Media Service to Log Analytics workspace",
+      "description": "Deploys the diagnostic settings for Azure Media Service to stream to a Log Analytics workspace when any Azure Media Service which is missing this diagnostic settings is created or updated. The policy wil set the diagnostic with all metrics and category enabled"
+    }
+  },
   "MlWorkspaceLogAnalyticsEffect": {
-    "type": "string",
+    "type": "String",
     "defaultValue": "DeployIfNotExists",
     "allowedValues": [
       "DeployIfNotExists",
@@ -1516,7 +1611,7 @@ VALUES
     }
   },
   "MySQLLogAnalyticsEffect": {
-    "type": "string",
+    "type": "String",
     "defaultValue": "DeployIfNotExists",
     "allowedValues": [
       "DeployIfNotExists",
@@ -1528,7 +1623,7 @@ VALUES
     }
   },
   "NetworkSecurityGroupsLogAnalyticsEffect": {
-    "type": "string",
+    "type": "String",
     "defaultValue": "DeployIfNotExists",
     "allowedValues": [
       "DeployIfNotExists",
@@ -1540,7 +1635,7 @@ VALUES
     }
   },
   "NetworkNICLogAnalyticsEffect": {
-    "type": "string",
+    "type": "String",
     "defaultValue": "DeployIfNotExists",
     "allowedValues": [
       "DeployIfNotExists",
@@ -1552,7 +1647,7 @@ VALUES
     }
   },
   "PostgreSQLLogAnalyticsEffect": {
-    "type": "string",
+    "type": "String",
     "defaultValue": "DeployIfNotExists",
     "allowedValues": [
       "DeployIfNotExists",
@@ -1564,7 +1659,7 @@ VALUES
     }
   },
   "PowerBIEmbeddedLogAnalyticsEffect": {
-    "type": "string",
+    "type": "String",
     "defaultValue": "DeployIfNotExists",
     "allowedValues": [
       "DeployIfNotExists",
@@ -1576,7 +1671,7 @@ VALUES
     }
   },
   "NetworkPublicIPNicLogAnalyticsEffect": {
-    "type": "string",
+    "type": "String",
     "defaultValue": "DeployIfNotExists",
     "allowedValues": [
       "DeployIfNotExists",
@@ -1588,7 +1683,7 @@ VALUES
     }
   },
   "RecoveryVaultLogAnalyticsEffect": {
-    "type": "string",
+    "type": "String",
     "defaultValue": "DeployIfNotExists",
     "allowedValues": [
       "DeployIfNotExists",
@@ -1600,7 +1695,7 @@ VALUES
     }
   },
   "RedisCacheLogAnalyticsEffect": {
-    "type": "string",
+    "type": "String",
     "defaultValue": "DeployIfNotExists",
     "allowedValues": [
       "DeployIfNotExists",
@@ -1612,7 +1707,7 @@ VALUES
     }
   },
   "RelayLogAnalyticsEffect": {
-    "type": "string",
+    "type": "String",
     "defaultValue": "DeployIfNotExists",
     "allowedValues": [
       "DeployIfNotExists",
@@ -1624,7 +1719,7 @@ VALUES
     }
   },
   "SearchServicesLogAnalyticsEffect": {
-    "type": "string",
+    "type": "String",
     "defaultValue": "DeployIfNotExists",
     "allowedValues": [
       "DeployIfNotExists",
@@ -1636,7 +1731,7 @@ VALUES
     }
   },
   "ServiceBusLogAnalyticsEffect": {
-    "type": "string",
+    "type": "String",
     "defaultValue": "DeployIfNotExists",
     "allowedValues": [
       "DeployIfNotExists",
@@ -1648,7 +1743,7 @@ VALUES
     }
   },
   "SignalRLogAnalyticsEffect": {
-    "type": "string",
+    "type": "String",
     "defaultValue": "DeployIfNotExists",
     "allowedValues": [
       "DeployIfNotExists",
@@ -1660,7 +1755,7 @@ VALUES
     }
   },
   "SQLDBsLogAnalyticsEffect": {
-    "type": "string",
+    "type": "String",
     "defaultValue": "DeployIfNotExists",
     "allowedValues": [
       "DeployIfNotExists",
@@ -1672,7 +1767,7 @@ VALUES
     }
   },
   "SQLElasticPoolsLogAnalyticsEffect": {
-    "type": "string",
+    "type": "String",
     "defaultValue": "DeployIfNotExists",
     "allowedValues": [
       "DeployIfNotExists",
@@ -1684,7 +1779,7 @@ VALUES
     }
   },
   "SQLMLogAnalyticsEffect": {
-    "type": "string",
+    "type": "String",
     "defaultValue": "DeployIfNotExists",
     "allowedValues": [
       "DeployIfNotExists",
@@ -1696,7 +1791,7 @@ VALUES
     }
   },
   "StreamAnalyticsLogAnalyticsEffect": {
-    "type": "string",
+    "type": "String",
     "defaultValue": "DeployIfNotExists",
     "allowedValues": [
       "DeployIfNotExists",
@@ -1708,7 +1803,7 @@ VALUES
     }
   },
   "TimeSeriesInsightsLogAnalyticsEffect": {
-    "type": "string",
+    "type": "String",
     "defaultValue": "DeployIfNotExists",
     "allowedValues": [
       "DeployIfNotExists",
@@ -1720,7 +1815,7 @@ VALUES
     }
   },
   "TrafficManagerLogAnalyticsEffect": {
-    "type": "string",
+    "type": "String",
     "defaultValue": "DeployIfNotExists",
     "allowedValues": [
       "DeployIfNotExists",
@@ -1732,7 +1827,7 @@ VALUES
     }
   },
   "VirtualNetworkLogAnalyticsEffect": {
-    "type": "string",
+    "type": "String",
     "defaultValue": "DeployIfNotExists",
     "allowedValues": [
       "DeployIfNotExists",
@@ -1744,7 +1839,7 @@ VALUES
     }
   },
   "VirtualMachinesLogAnalyticsEffect": {
-    "type": "string",
+    "type": "String",
     "defaultValue": "DeployIfNotExists",
     "allowedValues": [
       "DeployIfNotExists",
@@ -1756,7 +1851,7 @@ VALUES
     }
   },
   "VMSSLogAnalyticsEffect": {
-    "type": "string",
+    "type": "String",
     "defaultValue": "DeployIfNotExists",
     "allowedValues": [
       "DeployIfNotExists",
@@ -1768,7 +1863,7 @@ VALUES
     }
   },
   "VNetGWLogAnalyticsEffect": {
-    "type": "string",
+    "type": "String",
     "defaultValue": "DeployIfNotExists",
     "allowedValues": [
       "DeployIfNotExists",
@@ -1780,7 +1875,7 @@ VALUES
     }
   },
   "AppServiceLogAnalyticsEffect": {
-    "type": "string",
+    "type": "String",
     "defaultValue": "DeployIfNotExists",
     "allowedValues": [
       "DeployIfNotExists",
@@ -1792,7 +1887,7 @@ VALUES
     }
   },
   "AppServiceWebappLogAnalyticsEffect": {
-    "type": "string",
+    "type": "String",
     "defaultValue": "DeployIfNotExists",
     "allowedValues": [
       "DeployIfNotExists",
@@ -1804,7 +1899,7 @@ VALUES
     }
   },
   "WVDAppGroupsLogAnalyticsEffect": {
-    "type": "string",
+    "type": "String",
     "defaultValue": "DeployIfNotExists",
     "allowedValues": [
       "DeployIfNotExists",
@@ -1816,7 +1911,7 @@ VALUES
     }
   },
   "WVDWorkspaceLogAnalyticsEffect": {
-    "type": "string",
+    "type": "String",
     "defaultValue": "DeployIfNotExists",
     "allowedValues": [
       "DeployIfNotExists",
@@ -1828,7 +1923,7 @@ VALUES
     }
   },
   "WVDHostPoolsLogAnalyticsEffect": {
-    "type": "string",
+    "type": "String",
     "defaultValue": "DeployIfNotExists",
     "allowedValues": [
       "DeployIfNotExists",
@@ -1840,7 +1935,7 @@ VALUES
     }
   },
   "StorageAccountsLogAnalyticsEffect": {
-    "type": "string",
+    "type": "String",
     "defaultValue": "DeployIfNotExists",
     "allowedValues": [
       "DeployIfNotExists",
@@ -1866,6 +1961,7 @@ output "policysetdefinition_deploy_diag_loganalytics_definitions" {
     azurerm_policy_definition.deploy_diagnostics_acr,
     azurerm_policy_definition.deploy_diagnostics_aks,
     azurerm_policy_definition.deploy_diagnostics_analysisservice,
+    azurerm_policy_definition.deploy_diagnostics_apiforfhir,
     azurerm_policy_definition.deploy_diagnostics_apimgmt,
     azurerm_policy_definition.deploy_diagnostics_applicationgateway,
     azurerm_policy_definition.deploy_diagnostics_batch,
@@ -1873,6 +1969,7 @@ output "policysetdefinition_deploy_diag_loganalytics_definitions" {
     azurerm_policy_definition.deploy_diagnostics_cognitiveservices,
     azurerm_policy_definition.deploy_diagnostics_cosmosdb,
     azurerm_policy_definition.deploy_diagnostics_databricks,
+    azurerm_policy_definition.deploy_diagnostics_dataexplorercluster,
     azurerm_policy_definition.deploy_diagnostics_datafactory,
     azurerm_policy_definition.deploy_diagnostics_datalakestore,
     azurerm_policy_definition.deploy_diagnostics_dlanalytics,
@@ -1891,13 +1988,13 @@ output "policysetdefinition_deploy_diag_loganalytics_definitions" {
     azurerm_policy_definition.deploy_diagnostics_logicappsise,
     azurerm_policy_definition.deploy_diagnostics_logicappswf,
     azurerm_policy_definition.deploy_diagnostics_mariadb,
+    azurerm_policy_definition.deploy_diagnostics_mediaservice,
     azurerm_policy_definition.deploy_diagnostics_mlworkspace,
     azurerm_policy_definition.deploy_diagnostics_mysql,
     azurerm_policy_definition.deploy_diagnostics_networksecuritygroups,
     azurerm_policy_definition.deploy_diagnostics_nic,
     azurerm_policy_definition.deploy_diagnostics_postgresql,
     azurerm_policy_definition.deploy_diagnostics_powerbiembedded,
-    azurerm_policy_definition.deploy_diagnostics_publicip,
     azurerm_policy_definition.deploy_diagnostics_recoveryvault,
     azurerm_policy_definition.deploy_diagnostics_rediscache,
     azurerm_policy_definition.deploy_diagnostics_relay,
