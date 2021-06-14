@@ -294,8 +294,8 @@ POLICYRULE
   "dnsServers": {
     "type": "Array",
     "metadata": {
-      "displayName": "IP address of the DNSServers",
-      "description": "Provide the IP address of the DNS server the vnet will use, or leave empty to use Azure DNS."
+      "displayName": "DNSServers",
+      "description": "Default domain servers for the vNET."
     },
     "defaultValue": []
   }
